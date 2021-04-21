@@ -1,0 +1,19 @@
+    \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm, thick]
+      \tikzstyle{every state}=[draw=black,fill=blue!20,text=black]
+      % \tikzstyle{dots}=[thick,draw=none,fill=none,text=black]
+      % \tikzstyle{place}=[draw=none,fill=none,text=black!75]
+      % \tikzstyle{texto}=[draw=none,fill=none,text=black]
+      \node[state] (i) {$i$};
+      \node[state] (j) [right of=i] {$j$};
+      \node[state] (t) [above of=i,xshift=1.5cm,yshift=-0.8cm] {$t$};
+
+      \path[->]
+          (i) edge [loop left] node {$p_{ii}(\vu)$} ( )
+          (j) edge [loop right] node {$p_{jj}(\vu)$} ( )
+          (t) edge [loop above] node {$p_{tt}(\vu) = 1$} ( )
+          (i) edge [bend left] node {$p_{ij}(\vu)$} (j)
+          (j) edge [bend left] node {$p_{ji}(\vu)$} (i)
+          (i) edge node [left] {$p_{it}(\vu)$} (t)
+          (j) edge node [right] {$p_{jt}(\vu)$} (t);
+          % (C) edge node {c} (D);
+    \end{tikzpicture}

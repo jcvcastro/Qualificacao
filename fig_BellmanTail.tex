@@ -1,0 +1,31 @@
+    \begin{tikzpicture}[->,>=stealth',shorten >=1pt,below,node distance=2.3cm, thick]
+      \tikzstyle{every state}=[draw=black,fill=blue!20,text=black]
+      \tikzstyle{dots}=[thick,draw=none,fill=none,text=black]
+      \tikzstyle{place}=[draw=none,fill=none]
+      \tikzstyle{texto}=[draw=none,fill=none,text=black]
+      \node[state] (A)              {$x_0$};
+      \node[state] (B) [right of=A] {$x_{1}$};
+      \node[dots ] (C) [right of=B] {$\dots$};
+      \node[state] (D) [right of=C] {$x^*_{k}$};
+      \node[dots ] (E) [right of=D] {$\dots$};
+      \node[state] (F) [right of=E] {$x^*_{N-1}$};
+      \node[state] (G) [right of=F] {$x^*_N$};
+      \node[place] (k) [below of=A, yshift=1cm] {$|$};
+      \node[place] (l) [below of=G, yshift=1cm] {$|$};
+      \node[place] (m) [above of=D, yshift=-1.4cm, text=red] {$|$};
+      \node[place] (n) [above of=G, yshift=-1.4cm, text=red] {$|$};
+      \node[texto] (f) [below of=G, yshift=2cm, xshift=0.75cm, text=blue] {$r_N$};
+      \node[texto,text=black] (t1) [below of=D, yshift=0.7cm] {Optimal control sequence};
+      \node[texto,text=red] (t1) [above of=E, yshift=-1.1cm, xshift=1.25cm] {Tail subproblem};
+      % \node[texto] (t2) [below of=C, yshift=2.2cm, xshift=1.25cm, text=blue] {$r_k$};
+
+      \path (A) edge node [text=black] {$u^*_0$} (B) 
+            (B) edge node [text=black] {$u^*_1$} (C)
+            (C) edge node [text=black] {$u^*_{k-1}$} (D)
+            (D) edge node [text=red] {$u^*_k$} (E)
+            (E) edge node [text=red] {$u^*_{N-2}$} (F)
+            (F) edge node [text=red] {$u^*_{N-1}$} (G);
+      % \path (C) [draw=blue] edge node {} (D);
+      \draw [dashed,<->,draw=black!75] (k) -- (l);
+      \draw [dashed,->,draw=red] (m) -- (n);
+    \end{tikzpicture}

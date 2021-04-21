@@ -1,0 +1,171 @@
+% -*- TeX-master: "Qualificacao.tex" -*-
+%!TEX root = Qualificacao.tex
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Theorems, definitions, etc...                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem*{cor}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[chapter]
+\newtheorem{assum}{Assumption}[chapter]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{exmp}{Example}[section]
+
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+\newtheorem*{note}{Note}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                               Vectors                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\vet}[1]{\mathrm{\mathbf{#1}}}
+\newcommand{\vx}{\vet{x}}
+\newcommand{\vX}{\vet{X}}
+% \newcommand{\vu}{\vet{u}}
+\newcommand{\vu}{u}
+\newcommand{\vy}{\vet{y}}
+\newcommand{\vA}{\vet{A}}
+\newcommand{\vB}{\vet{B}}
+\newcommand{\vG}{\vet{G}}
+\newcommand{\vH}{\vet{H}}
+\newcommand{\vC}{\vet{C}}
+\newcommand{\vD}{\vet{D}}
+\newcommand{\vQ}{\vet{Q}}
+\newcommand{\vR}{\vet{R}}
+\newcommand{\vt}{\bm{\theta}}
+\newcommand{\vf}{\vet{f}}
+\newcommand{\vg}{\vet{g}}
+\newcommand{\vK}{\vet{K}}
+\newcommand{\vP}{\vet{P}}
+\newcommand{\vv}{\vet{v}}
+\newcommand{\vw}{\vet{w}}
+
+\newcommand{\vtheta}{\bm{\theta}}
+\newcommand{\vepsilon}{\bm{\epsilon}}
+\newcommand{\vvarphi}{\bm{\varphi}}
+\newcommand{\vPhi}{\bm{\Phi}}
+\newcommand{\vPsi}{\bm{\Psi}}
+\newcommand{\vxi}{\bm{\xi}}
+\newcommand{\vmu}{\bm{\mu}}
+\newcommand{\vpi}{\bm{\pi}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        Virtual Signals                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\rv}{\bar{r}}
+\newcommand{\ev}{\bar{e}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                            Other symbols                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\pt}{\tilde{\phi}}
+\newcommand{\ph}{\hat{\phi}}
+
+\newcommand{\Wh}[1]{\hat{W}_{#1}}
+\newcommand{\Wht}[1]{\hat{W}_{#1}^T}
+\newcommand{\Wt}[1]{\tilde{W}_{#1}}
+\newcommand{\Wtt}[1]{\tilde{W}_{#1}^T}
+
+\newcommand{\Wio}{W_i^*}
+\newcommand{\Wiot}{W_i^{*T}}
+
+\newcommand{\Wci}{\hat{W}_{ci}}
+\newcommand{\Wai}{\hat{W}_{ai}}
+\newcommand{\Wcit}{\hat{W}_{ci}^T}
+\newcommand{\Wait}{\hat{W}_{ai}^T}
+
+\newcommand{\laplace}[1]{\mathcal{L} \left\{ #1 \right\}}
+\newcommand{\realiz}{$(A, B, C, D)$ }
+\newcommand{\eqpar}[2]{\frac{\partial{#1}}{\partial{#2}}}
+
+\newcommand{\xb}{\bar{x}}
+% \newcommand{\norm}[1]{||#1||}
+\newcommand{\Sb}{\bar{S}}
+
+\newcommand{\Jio}{J_i^*}
+\newcommand{\Jiz}{J_i^0}
+\newcommand{\Jiho}{\hat{J}_i^*}
+
+% \newcommand{\vpfa}{\mathbf{\phi}}
+
+% Function approximations
+\newcommand{\vpfa}{\bm{\varphi}}
+\newcommand{\pfa}{\phi}
+\newcommand{\Jfa}{\hat{J}}
+\newcommand{\Jfaxp}{\hat{J}(\vx,\vpfa)}
+\newcommand{\Jfaxpk}{\hat{J}(\vx_k,\vpfa_k)}
+\newcommand{\Qfa}{\hat{Q}}
+\newcommand{\Qfaxp}{\hat{Q}(\vx,u,\pfa)}
+
+% Policy Gradient Methods
+\newcommand{\apPG}{\nabla \hat{P}(\vt_k)}
+
+
+\newcommand{\vuo}{\alpha_1^*}
+\newcommand{\vuh}{\hat{\alpha}_1}
+\newcommand{\vi}{\alpha_i}
+\newcommand{\vio}{\alpha_i^*}
+\newcommand{\viho}{\hat{\alpha}_i^*}
+\newcommand{\vih}{\hat{\alpha}_i}
+\newcommand{\vnh}{\hat{\alpha}_n}
+\newcommand{\vnah}{\hat{\alpha}_{n-1}}
+\newcommand{\vnahd}{\dot{\hat{\alpha}}_{n-1}}
+\newcommand{\viah}{\hat{\alpha}_{i-1}}
+\newcommand{\viahd}{\dot{\hat{\alpha}}_{i-1}}
+\newcommand{\viaahd}{\dot{\hat{\alpha}}_{i-2}}
+
+
+\newcommand{\tq}{\tilde{Q}}
+\newcommand{\tqxu}{\tilde{Q}(x_k,u_k)}
+\newcommand{\tqxuo}{\tilde{Q}(x_{k+1},u_{k+1})}
+
+
+
+% Define a counter for the inserted todonotes.
+\newcounter{todoListItems}
+% \newcommand{\todoTrans}[2]{
+% % Increment counter
+% \addtocounter{todoListItems}{1}
+% \todo[%
+% caption={\protect\hypertarget{todo\thetodoListItems}{}[\thetodoListItems] #2}]
+% {
+% #1 \hfill
+% \hyperlink{todo\thetodoListItems}{[\thetodoListItems]}
+% }
+% }
+
+% highlight on todo notes
+\makeatletter
+   \if@todonotes@disabled
+      \newcommand{\todohl}[2]{#1}
+   \else
+      \newcommand{\todohl}[2]{\texthl{#1}\todo{#2}}
+   \fi
+\makeatother
+% \makeatletter
+   % \if@todonotes@disabled
+      % \newcommand{\todohl}[3]{#1}
+   % \else
+      % \newcommand{\todohl}[3]{\texthl{#1}\todo[#3]{#2}}
+   % \fi
+% \makeatother
+
+

@@ -1,0 +1,47 @@
+% \documentclass[tikz, border=1mm]{standalone}
+% \usepackage{tikz}
+% \usetikzlibrary{shapes,arrows,calc,automata}
+% \begin{document}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,thick]
+  \tikzstyle{every state}=[draw=black,fill=blue!20,text=black]
+  \tikzstyle{dots}=[thick,draw=none,fill=none,text=black]
+  \tikzstyle{place}=[draw=none,fill=none,text=black!75]
+  \tikzstyle{texto}=[draw=none,fill=none,text=black]
+\begin{scope}[node distance=3mm and 15mm]
+  \node[state] (A)              {$x_0$};
+  \node[dots ] (B) [right=of A] {$\cdots$};
+  \node[state,draw=blue!75] (C) [right=of B] {$x_{k}$};
+  \node[state] (D) [right=of C] {$x'_{k+1}$};
+  \node[state] (E) [above=of D] {$x_{k+1}$};
+  \node[state] (F) [below=of D] {$x''_{k+1}$};
+  \node[dots] (D1) [right=of D] {$\cdots$};
+  \node[dots] (E1) [right=of E] {$\cdots$};
+  \node[dots] (F1) [right=of F] {$\cdots$};
+  \node[state] (DN) [right=of D1] {$x'_N$};
+  \node[state] (EN) [right=of E1] {$x_N$};
+  \node[state] (FN) [right=of F1] {$x''_N$};
+  \node[texto,text=black] (t1) [above=of D1,yshift=-5mm] {current policy};
+  \node[texto,text=black] (t2) [above=of E1,yshift=-5mm] {current policy};
+  \node[texto,text=black] (t3) [above=of F1,yshift=-5mm] {current policy};
+  \node[place] (l) [below=of FN, yshift=2mm] {|};
+  \node[place] (k) [left=of l, xshift=-57mm] {|};
+  \node[texto,text=black] (t4) [below=of l,yshift=6mm,xshift=-40mm] {Q-function};
+  \node[texto,text=blue] (t5) [above=of C,yshift=-3mm,xshift=-8mm] {Current State};
+  \node[texto,text=black] (t6) [above=of E,yshift=-3mm] {Next State};
+\end{scope}
+  \path (A) edge node {} (B)
+        (B) edge node {} (C)
+        (C) edge node {$u^{(1)}_k$} (D)
+        (C) edge node {$u^{(2)}_k$} (E)
+        (C) edge node {$u^{(p)}_k$} (F)
+        (D) edge node {} (D1)
+        (E) edge node {} (E1)
+        (F) edge node {} (F1)
+        (D1) edge node {} (DN)
+        (E1) edge node {} (EN)
+        (F1) edge node {} (FN);
+      \draw [dashed,<->,draw=black!75] (k) -- (l);
+  % \path (C) [draw=blue] edge node {} (D);
+  % \draw [dashed,<->,draw=black!75] (k) -- (l);
+\end{tikzpicture}
+% \end{document}

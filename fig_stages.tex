@@ -1,0 +1,25 @@
+    \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.5cm, thick]
+      \tikzstyle{every state}=[draw=black,fill=blue!20,text=black]
+      \tikzstyle{dots}=[thick,draw=none,fill=none,text=black]
+      \tikzstyle{place}=[draw=none,fill=none,text=black!75]
+      \tikzstyle{texto}=[draw=none,fill=none,text=black]
+      \node[state] (A)              {$x_0$};
+      \node[dots ] (B) [right of=A] {$\cdots$};
+      \node[state,draw=blue!75] (C) [right of=B] {$x_{k}$};
+      \node[state,draw=blue!75] (D) [right of=C,xshift=1cm] {$x_{k+1}$};
+      \node[dots ] (E) [right of=D] {$\cdots$};
+      \node[state] (F) [right of=E] {$x_N$};
+      \node[place] (k) [below of=C, yshift=1.5cm] {$|$};
+      \node[place] (l) [below of=D, yshift=1.5cm] {$|$};
+      \node[texto] (f) [above of=F, yshift=-1.5cm] {Terminal Cost $r_N$};
+      \node[texto,text=black!75] (t1) [below of=C, yshift=1cm, xshift=1.75cm] {Stage $k$};
+      \node[texto] (t2) [below of=C, yshift=2.2cm, xshift=1.75cm, text=blue] {Control $u_k$};
+
+      \path (A) edge node {} (B)
+            (B) edge node {} (C)
+            (C) edge [draw=blue!75,ultra thick] node [text=blue] {Cost $r_k$} (D)
+            (D) edge node {} (E)
+            (E) edge node {} (F);
+      % \path (C) [draw=blue] edge node {} (D);
+      \draw [dashed,<->,draw=black!75] (k) -- (l);
+    \end{tikzpicture}

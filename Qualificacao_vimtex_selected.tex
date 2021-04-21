@@ -1,0 +1,380 @@
+% PPGEE - UFMG
+%-------------------------------------------------------------------
+
+% Definies gerais do documento 
+
+\documentclass[12pt,a4paper,titlepage]{book}
+% \documentclass[12pt,a4paper,titlepage,final]{book}
+% \documentclass[12pt,a4paper,titlepage,brazil,portugues]{book}
+%--------------------------------------------------------------------
+% \usepackage[left=2.5cm,right=2.5cm,top=4cm,bottom=2.5cm]{geometry}
+\usepackage[left=1.5cm,right=3.5cm,top=4cm,bottom=2.5cm]{geometry}
+%--------------------------------------------------------------------
+% Pacotes usados {{
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts,amstext,textcomp}         % permite simbolos matematicos
+\usepackage{bm}                                                % negrito em letras gregas
+\usepackage{mathrsfs}                                          % permite o uso de letras trabalhadas
+\usepackage{amsthm}
+\usepackage{pgf}
+\usepackage{graphicx}
+\usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{booktabs}                                          % Tabelas com qualidade de publicao
+\usepackage{indentfirst}
+\usepackage{rotating}
+\usepackage{braket}
+\usepackage[ruled,vlined]{algorithm2e}                         % Para algoritmos (melhor que o outro)
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{makeidx}
+\usepackage{setspace}
+\usepackage[colorlinks,citecolor=blue]{hyperref}               % tirar [colorlinks] para imprimir
+\usepackage{ae}
+\usepackage[below]{placeins}
+\usepackage{flafter}
+\usepackage{pxfonts}
+% \usepackage{subfigure}
+\usepackage{appendix}
+\usepackage{listings}                                          % para cdigo fonte
+\usepackage[symbol]{footmisc}                                  % Mudando marcadores do footnote
+\usepackage{tikz}
+      \usetikzlibrary{shapes,arrows,calc,automata,positioning}
+\usepackage{soul}                                              % para highlighth (todonotes)
+\usepackage{natbib}                                            % para usar citep, etc...
+\usepackage{subfig}                                            % para usar citep, etc...
+\usepackage[
+      textsize=scriptsize,
+      colorinlistoftodos,
+      % shadow,
+      color=yellow,
+      backgroundcolor=yellow,
+      % obeyDraft
+      obeyFinal
+      ]{todonotes}
+% \usepackage[
+      % natbib=true,
+      % % citestyle=authoryear,
+      % citestyle=rusnat,
+      % % bibstyle=authortitle,
+      % % style=authoryear-comp,
+      % hyperref=true,
+      % backend=biber,
+      % maxbibnames=99,
+      % giveninits=true,
+      % uniquename=init,
+      % maxcitenames=2,
+      % parentracker=true,
+      % url=false,
+      % doi=false,
+      % isbn=false,
+      % eprint=false,
+      % backref=true]{biblatex}
+% \usepackage[style    = abnt,           % Sistema alfabetico
+          % % style    = abnt-numeric,   % Sistema numerico
+          % % style    = abnt-ibid,      % Notas de referencia]{biblatex}
+% ]{biblatex}
+% \usepackage{mcode}
+% \usepackage{amssymb}
+% \usepackage{amsmath}
+% \usepackage{caligra} %letras caligraficas
+% \usepackage{caligr}%letras caligraficas
+% \usepackage{dsfont}%barra escura para conjuntos
+% \usepackage[dvips]{graphicx}
+% \thispagestyle{empty}
+% \usepackage{epsfig,latexsym}
+% \usepackage{psfrag}
+% \usepackage{epsfig}
+% \usepackage[siunitx]{circuitikz} % fazer diagramas de blocos
+% \usepackage{algorithm}
+% \usepackage[noend]{algpseudocode}   % Para pseudo-codigos
+% \usepackage[linesnumbered,ruled,vlined]{algorithm2e} % Para algoritmos (melhor que o outro)
+% \usepackage[pdftex]{hyperref}
+% \usepackage[hang,small]{caption}
+% \usepackage{icomma}
+
+% Para nao sobrar espaos em branco estranhos
+% \widowpenalty=1000 \clubpenalty=1000
+% \newcommand{\gepeto}[1]{\vspace*{12pt}\begin{singlespace}\hspace{2cm}\begin{small}\parbox{12cm}{#1}\end{small}\end{singlespace}\vspace*{20pt}}
+
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{defi}{Definio}[section]
+% \newtheorem{propo}{Proposio}[section]
+% \newtheorem{coro}{Corolrio}[section]
+% \newtheorem{exem}{Exemplo}[section]
+% \newtheorem{lema}{Lema}[section]
+% \newtheorem{consi}{Considerao}[section]
+
+
+% Modificacoes em legenda
+\setlength{\belowcaptionskip}{10pt}
+% \addbibsource{referencias.bib}
+
+% {{{ Modificas em legenda (quando ocorre quebra das palavras indesejadas)
+% \hyphenation{na-tu-ra-is}
+% \hyphenation{ge-ra-do}
+
+% {{{ Definicao de comandos
+
+\newcommand{\comment}[1]{}
+\newcommand{\veq}{\vspace{0.2cm}}
+\newcommand{\x}{\\[5pt]}
+\newcommand{\C}[1]{\relax}
+
+\newtheorem{teo}{Theorem}[section]
+\newtheorem{defin}[teo]{Definition}
+\newtheorem{nota}{Note}[section]
+
+% }}}
+
+% {{{ Novos operadores
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+% }}}
+
+% {{{ Captulo personalizado
+\makeatletter
+\def\thickhrulefill{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
+\def\@makechapterhead#1{%
+  \vspace*{10\p@}%
+  {\parindent \z@ \centering \reset@font
+        \thickhrulefill\quad
+        \bfseries \@chapapp{} \thechapter
+        \quad \thickhrulefill
+        \par\nobreak
+        \vspace*{10\p@}%
+        \interlinepenalty\@M
+        \hrule
+        \vspace*{10\p@}%
+        \Huge \bfseries #1\par\nobreak
+        \par
+        \vspace*{10\p@}%
+        \hrule
+    \vskip 70\p@    %100
+  }}
+\def\@makeschapterhead#1{%
+  \vspace*{10\p@}%
+  {\parindent \z@ \centering \reset@font
+        \thickhrulefill
+        \par\nobreak
+        \vspace*{10\p@}%
+        \interlinepenalty\@M
+        \hrule
+        \vspace*{10\p@}%
+        \Huge \bfseries #1\par\nobreak
+        \par
+        \vspace*{10\p@}%
+        \hrule
+    \vskip 70\p@
+ }
+}
+% }}}
+
+%--------------------------------------------------------------------
+%Variacao da altura da linha
+\renewcommand{\baselinestretch}{1.1}
+
+%--------------------------------------------------------------------
+%Coloca Rascunho e a data
+\newcommand{\reviewtimetoday}[2]{\special{!userdict begin
+/bop-hook{gsave 20 710 translate 45 rotate 0.8 0.8 0.8 0.8 0 setcmykcolor
+/Times-Roman findfont 10 scalefont setfont 0 0   moveto (#1) show
+0 -12 moveto (#2) show grestore}def end}}
+% You can turn on or off this option.
+\reviewtimetoday{\today}{Draft Version}
+
+%--------------------------------------------------------------------
+%Criar o index
+\makeindex
+
+%--------------------------------------------------------------------
+%Devido ao fancyheading
+\headheight 14.7pt
+
+%--------------------------------------------------------------------
+%Trocando os efeitos da virgula e ponto
+% \DeclareMathSymbol{,}{\mathord}{letters}{"3B}
+% \DeclareMathSymbol{.}{\mathpunct}{letters}{"3A}
+
+% -*- TeX-master: "Qualificacao.tex" -*-
+%!TEX root = Qualificacao.tex
+
+% 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Theorems, definitions, etc...                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem*{cor}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[chapter]
+\newtheorem{assum}{Assumption}[chapter]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{exmp}{Example}[section]
+
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+\newtheorem*{note}{Note}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                               Vectors                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\vet}[1]{\mathrm{\mathbf{#1}}}
+\newcommand{\vx}{\vet{x}}
+\newcommand{\vX}{\vet{X}}
+% \newcommand{\vu}{\vet{u}}
+\newcommand{\vu}{u}
+\newcommand{\vy}{\vet{y}}
+\newcommand{\vA}{\vet{A}}
+\newcommand{\vB}{\vet{B}}
+\newcommand{\vG}{\vet{G}}
+\newcommand{\vH}{\vet{H}}
+\newcommand{\vC}{\vet{C}}
+\newcommand{\vD}{\vet{D}}
+\newcommand{\vQ}{\vet{Q}}
+\newcommand{\vR}{\vet{R}}
+\newcommand{\vt}{\bm{\theta}}
+\newcommand{\vf}{\vet{f}}
+\newcommand{\vg}{\vet{g}}
+\newcommand{\vK}{\vet{K}}
+\newcommand{\vP}{\vet{P}}
+\newcommand{\vv}{\vet{v}}
+\newcommand{\vw}{\vet{w}}
+
+\newcommand{\vtheta}{\bm{\theta}}
+\newcommand{\vepsilon}{\bm{\epsilon}}
+\newcommand{\vvarphi}{\bm{\varphi}}
+\newcommand{\vPhi}{\bm{\Phi}}
+\newcommand{\vPsi}{\bm{\Psi}}
+\newcommand{\vxi}{\bm{\xi}}
+\newcommand{\vmu}{\bm{\mu}}
+\newcommand{\vpi}{\bm{\pi}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        Virtual Signals                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\rv}{\bar{r}}
+\newcommand{\ev}{\bar{e}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                            Other symbols                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\pt}{\tilde{\phi}}
+\newcommand{\ph}{\hat{\phi}}
+
+\newcommand{\Wh}[1]{\hat{W}_{#1}}
+\newcommand{\Wht}[1]{\hat{W}_{#1}^T}
+\newcommand{\Wt}[1]{\tilde{W}_{#1}}
+\newcommand{\Wtt}[1]{\tilde{W}_{#1}^T}
+
+\newcommand{\Wio}{W_i^*}
+\newcommand{\Wiot}{W_i^{*T}}
+
+\newcommand{\Wci}{\hat{W}_{ci}}
+\newcommand{\Wai}{\hat{W}_{ai}}
+\newcommand{\Wcit}{\hat{W}_{ci}^T}
+\newcommand{\Wait}{\hat{W}_{ai}^T}
+
+\newcommand{\laplace}[1]{\mathcal{L} \left\{ #1 \right\}}
+\newcommand{\realiz}{$(A, B, C, D)$ }
+\newcommand{\eqpar}[2]{\frac{\partial{#1}}{\partial{#2}}}
+
+\newcommand{\xb}{\bar{x}}
+\newcommand{\norm}[1]{||#1||}
+\newcommand{\Sb}{\bar{S}}
+
+\newcommand{\Jio}{J_i^*}
+\newcommand{\Jiz}{J_i^0}
+\newcommand{\Jiho}{\hat{J}_i^*}
+
+% \newcommand{\vpfa}{\mathbf{\phi}}
+
+% Function approximations
+\newcommand{\vpfa}{\bm{\varphi}}
+\newcommand{\pfa}{\phi}
+\newcommand{\Jfa}{\hat{J}}
+\newcommand{\Jfaxp}{\hat{J}(\vx,\vpfa)}
+\newcommand{\Jfaxpk}{\hat{J}(\vx_k,\vpfa_k)}
+\newcommand{\Qfa}{\hat{Q}}
+\newcommand{\Qfaxp}{\hat{Q}(\vx,u,\pfa)}
+
+% Policy Gradient Methods
+\newcommand{\apPG}{\nabla \hat{P}(\vt_k)}
+
+
+\newcommand{\vuo}{\alpha_1^*}
+\newcommand{\vuh}{\hat{\alpha}_1}
+\newcommand{\vi}{\alpha_i}
+\newcommand{\vio}{\alpha_i^*}
+\newcommand{\viho}{\hat{\alpha}_i^*}
+\newcommand{\vih}{\hat{\alpha}_i}
+\newcommand{\vnh}{\hat{\alpha}_n}
+\newcommand{\vnah}{\hat{\alpha}_{n-1}}
+\newcommand{\vnahd}{\dot{\hat{\alpha}}_{n-1}}
+\newcommand{\viah}{\hat{\alpha}_{i-1}}
+\newcommand{\viahd}{\dot{\hat{\alpha}}_{i-1}}
+\newcommand{\viaahd}{\dot{\hat{\alpha}}_{i-2}}
+
+
+\newcommand{\tq}{\tilde{Q}}
+\newcommand{\tqxu}{\tilde{Q}(x_k,u_k)}
+\newcommand{\tqxuo}{\tilde{Q}(x_{k+1},u_{k+1})}
+
+
+
+% Define a counter for the inserted todonotes.
+\newcounter{todoListItems}
+% \newcommand{\todoTrans}[2]{
+% % Increment counter
+% \addtocounter{todoListItems}{1}
+% \todo[%
+% caption={\protect\hypertarget{todo\thetodoListItems}{}[\thetodoListItems] #2}]
+% {
+% #1 \hfill
+% \hyperlink{todo\thetodoListItems}{[\thetodoListItems]}
+% }
+% }
+
+% highlight on todo notes
+\makeatletter
+   \if@todonotes@disabled
+      \newcommand{\todohl}[2]{#1}
+   \else
+      \newcommand{\todohl}[2]{\texthl{#1}\todo{#2}}
+   \fi
+\makeatother
+% \makeatletter
+   % \if@todonotes@disabled
+      % \newcommand{\todohl}[3]{#1}
+   % \else
+      % \newcommand{\todohl}[3]{\texthl{#1}\todo[#3]{#2}}
+   % \fi
+% \makeatother
+
+
+
+
+\begin{document}
+Por simplificação, é considerado que o atraso de tempo puro de $u$ para $y$ em $P$ é 1, mas o procedimento pode ser estendido sem problemas para atrasos maiores.
+\end{document}

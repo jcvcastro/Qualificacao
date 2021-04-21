@@ -1,0 +1,77 @@
+% -*- TeX-master: "PT2_Joao_Castro.tex" -*-
+%!TEX root = PT2_Joao_Castro.tex
+\chapter{Virtual Reference Feedback Tuning}\label{cap:vrft}
+\vspace{-1cm}
+
+% \section{Introdução}\label{sec:introvrft}
+
+% O método \emph{Virtual Reference Feedback Tunning}, ou simplesmente VRFT, é um procedimento que visa o projeto de controladores realimentados a partir somente de dados amostrados do processo, sem a necessidade de um modelo que descreva este último. Com isso, se classifica como um método de controle baseado em dados, ou DDC.
+
+The \textit{Virtual Reference Feedback Tunning} method, or simply VRFT, proposed by \cite{campi2002b}, is a procedure that aims to design controllers feedback based only on data sampled from the process, without the need for a model that describes that process. Thus, it is classified as a data-based control method or DDC.
+
+% O principal objetivo deste método é ajustar os parâmetros de um controlador, definido por uma função paramétrica, a partir de dados amostrados do processo, a fim de que o sinal de saída do processo controlado tenha um comportamento o mais próximo possível do sinal de saída de um modelo de referência previamente definido.
+The main objective of this method is to adjust the parameters of a controller, defined by a parametric function, using the process sampled data only, so that the output signal of the controlled process behaves as close as possible to the output signal of a previously defined reference model.
+To reach this objective, VRFT aims to optimize the tracking error by minimizing a performance index $J_y(\vtheta)$, defined by
+\begin{equation}
+    J_y(\vtheta) \triangleq \lim_{N \to \infty}  \frac{1}{N} \sum_{k=1}^N \left[y_r(k,\vtheta) - y_{MR}(k)\right]^2
+\label{eq:Jy},
+\end{equation}
+% sendo $N$ o número de dados amostrados,  $\vtheta = \begin{bmatrix} \theta_1 & \theta_2 & \cdots & \theta_N \end{bmatrix}^T \in \R^n$ um vetor de parâmetros, $k$ um índice temporal
+% % , $\E[\cdot]$ um operador que representa o cálculo da esperança
+% com $y_r(k,\vtheta)$ e $y_{MR}(k)$, definidos como se segue:
+where $N$ represents the number of data samples, $\vtheta = \begin{bmatrix} \theta_1 & \theta_2 & \cdots & \theta_N \end{bmatrix}^T \in \R^n$ a vector of parameters, $k$ a temporal index. The signals $y_r(k,\vtheta) \in \R $ and $y_{MR}(k) \in \mathbb{R}$ are defined as follows:
+
+\begin{itemize}
+    \item $y_r(k,\vtheta)$ representa a resposta obtida em malha fechada quando sobre o efeito de um sinal de referência $r(k)$, ou seja
+    \begin{equation}
+        y_r(k,\vtheta) \triangleq T(q,\vtheta)r(k)
+    \label{eq:yr},
+    \end{equation}
+    onde $T(q,\vtheta)$ representa o modelo em malha fechada, função do vetor de parâmetros $\vtheta$ e $q$ um operador de deslocamento temporal.
+   \item $y_{MR}(k)$ representa a resposta temporal obtida ao se aplicar o sinal de referência $r(k)$ como sinal de entrada de um modelo $T_{MR}(q)$, conhecido como \textit{modelo de referência} e que representa o comportamento desejado em malha fechada, ou seja
+    \begin{equation}
+        y_{MR}(k) \triangleq T_{MR}(q)r(k)
+    \label{eq:yMR},
+    \end{equation}
+\end{itemize}
+
+Para alcançar o objetivo de minimizar \eqref{eq:Jy}, \cite{campi2002b}, para o caso linear, e \cite{campi2006a}, para o caso não linear, mostram que, sob certas condições, apresentadas na sequência, ao se minimizar um índice de custo definido como
+\begin{equation}
+    J_{VR}(\vtheta) \triangleq \lim_{N \to \infty}  \frac{1}{N} \sum_{k=1}^N \left[u(k) - C(q,\vtheta)e(k)\right]^2
+\label{eq:Jvr},
+\end{equation}
+minimiza-se também o índice $J_y(\theta)$ definido em ~\eqref{eq:Jy}. Em \eqref{eq:Jvr}, $u(k)$ representa o sinal de entrada aplicado ao processo durante a coleta de dados, $C(q,\vtheta)$ o modelo do controlador a ser ajustado e $e(k)$ é o chamado \textit{erro virtual}, definido como
+
+\begin{equation}
+    \ev(k) = \rv(k) - y(k) 
+\label{eq:ev},
+\end{equation}
+onde $\rv$ é o sinal de \textit{referência virtual}, obtido ao se filtrar a saída $y(k)$ pelo modelo de referência inverso, na forma
+\begin{equation}
+    \rv(k) = T_{MR}^{-1}(q)y(k)
+\label{eq:refvirt}.
+\end{equation}
+
+O termo ``virtual'' é adotado em referência (ou erro) virtual para enfatizar que nenhum destes sinais são fisicamente disponíveis, mas apenas calculados para fins de projeto do controlador. \todo{melhorar isso aqui.}
+
+Como mencionado anteriormente, para que $J_y(\vtheta)$ e  $J_{VR}(\vtheta)$ apresentem seus valores mínimos para a mesma solução de parâmetros $\vtheta$, certas condições devem ser satisfeitas. Estas condições são apresentadas na sequência, logo após algumas definições que se mostram importantes para o restante do capítulo.
+ 
+\begin{defn}[Ideal Controller]
+     \todo[inline]{Put definition here.}
+\end{defn}
+
+\begin{assum}[Noise free] 
+   The system is not affected by noise.
+\end{assum}
+
+\begin{assum}[Matched control] %% Assumption By of \citep{bazanella2012} pg 13 
+   The ideal controller belongs to control model class considered, i.e. $C_d(q) \in \mathscr{C}$, or, equivalently
+    \begin{equation}
+        \exists \vtheta_d : C(q,\vtheta_d)=C_d(q)
+    \label{eq:assumpMatched}.
+    \end{equation}
+\end{assum}
+
+
+
+

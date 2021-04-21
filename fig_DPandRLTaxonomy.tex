@@ -1,0 +1,22 @@
+    \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm, thick]
+      \tikzstyle{every state}=[draw=black,fill=blue!20,text=black]
+      \tikzstyle{box}=[draw=black,fill=blue!20,text=black]
+      \tikzstyle{dots}=[thick,draw=none,fill=none,text=black]
+      \tikzstyle{place}=[draw=none,fill=none,text=black!75]
+      \tikzstyle{texto}=[draw=none,fill=none,text=black]
+      \node[box] (DP) {Dinamic Programming};
+      \node[box] (RL) [below of=DP]{Reinforcemnt Learning};
+      \node[box] (PIDP) [right of=DP, xshift=2cm]{Police Iteration};
+      \node[box] (VIDP) [above of=PIDP,yshift=-2cm]{Value Iteration};
+      \node[box] (PSDP) [below of=PIDP,yshift=2cm]{Police Search};
+      \node[box] (PIRL) [right of=RL, xshift=2cm]{Police Iteration};
+      \node[box] (VIRL) [above of=PIRL,yshift=-2cm]{Value Iteration};
+      \node[box] (PSRL) [below of=PIRL,yshift=2cm]{Police Search};
+
+      \path (DP) edge node {} (VIDP)
+            (DP) edge node {} (PIDP)
+            (DP) edge node {} (PSDP);
+      \path (RL) edge node {} (VIRL)
+            (RL) edge node {} (PIRL)
+            (RL) edge node {} (PSRL);
+    \end{tikzpicture}

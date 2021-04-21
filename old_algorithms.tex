@@ -1,0 +1,182 @@
+Old Pseudocodes:
+
+PSEUDOCODE --------------------------------------
+\begin{algorithm}
+  \caption{Pseudo code for deterministic finite horizon DP to find optimal cost $J_k^*(\vx_k)$.}\label{alg:DPJs}
+  \begin{algorithmic}
+  \State $J^*_N(\vx_N) \gets r_N(\vx_N), \qquad \text{for all } \vx_N$
+  \State $\vx_1^* \gets \vf_0(\vx_0,\vu_0^*)$
+  \For{$k=N-1, \dots, 0$}
+    \State $J^*_k(\vx_k) \gets \min_{\vu_k \in \mathcal{U}_k} \left[ r_k(\vx_k, \vu_k) + J^*_{k+1} (\vf_k(\vx_k,\vu_k))  \right], \qquad \text{for all } \vx_k$
+  \EndFor
+  \end{algorithmic}
+  \end{algorithm}
+---------------------------------------------------
+
+
+PSEUDOCODE --------------------------------------
+\begin{algorithm}
+  \caption{Computing the optimal control sequence of a DP deterministic finite horizon problem.}\label{alg:OCSFH}
+
+  \begin{algorithmic}
+  \State $\vu_0^* \in \argmin_{\vu_0 \in \mathcal{U}_0} \left[ r_0(\vx_0,\vu_0) + J_1^*\left(\vf_0(\vx_0,\vu_0)\right) \right]$
+  \State $\vx_1^* \gets \vf_0(\vx_0,\vu_0^*)$
+  \For{$k = 0, 1, \dots, N-1$}
+  \State $\vu_k^* \in \argmin_{\vu_k \in \mathcal{U}_k(\vx_k^*)} \left[ r_k(\vx_k^*,\vu_k) + J_{k+1}^*\left(\vf_k(\vx_k^*,\vu_k)\right) \right]$
+    \State $\vx_{k+1}^* \gets \vf_k(\vx_k,\vu_k^*)$
+  \EndFor
+  \end{algorithmic}
+  \end{algorithm}
+-------------------------------------------------
+
+PSEUDOCODE -------------------------------------
+\begin{algorithm}%[H]
+  \caption{Algorithm for stochastic finite horizon problems}\label{alg:SFH}
+
+  \begin{algorithmic}
+  \State $J^*_N(\vx_N) \gets r_N(\vx_N)$
+  \For{$k=N-1,\ 1,\ \dots,\ 0$}
+     \State $J^*_k(\vx_k) \gets \min_{\vu_k \in \mathcal{U}_k} E\left\{ r_k(\vx_k) + J^*_{k+1}(\vx_{k+1})\right\}$
+  \EndFor
+      \State $\vu_0^* \in \argmin_{\vu_0 \in \mathcal{U}_0} E\left\{ r_0(\vx_0,\vu_0) + J_1^*\left(\vf_0(\vx_0,\vu_0)\right) \right\}$
+      \State $\vx_1^* \gets \vf_0(\vx_0,\vu_0^*)$
+  \For{$k = 0, 1, \dots, N-1$}
+  \State $\mu_k^*(\vx_k) \in \argmin_{\vu_k \in \mathcal{U}_k(\vx_k^*)} E\left\{ r_k\left(\vx_k^*,\mu_k(\vx_k)\right) + J_{k+1}^*\left(\vf_k(\vx_k^*,\mu_k(\vx_k))\right) \right\}$
+    \State $\vx_{k+1}^* \gets \vf_k(\vx_k,\vu_k^*)$
+  \EndFor
+  \State the policy $\pi^* = \{\mu_0,\ \dots,\ \mu^*_{N-1} \}$ is optimal.
+\Return $\pi^* = \{\mu_0^*,\ \dots,\ \mu^*_{N-1} \}$ \Comment{Optimal Policy}
+\end{algorithmic}
+\end{algorithm}
+% Fim Pseudocode --------------------------------------------
+
+
+\begin{algorithm}
+  \caption{Iterative Policy evaluation}\label{alg:IPE} % sutton2011 pg 92
+\begin{algorithmic}
+\State $\pi \gets$ policy to be avaluated
+\State $J(x_k) \gets $ arbritrary value, for all $\vx_k \in \Omega_k$ and $k = 1,\ \dots, N-1$
+\State $J(x_N)$ = 0 \Comment{Terminal stage.}
+\While{$\Delta \ge  \theta$} \Comment{$\theta$ is a small positive scalar.}
+  \State $\Delta \gets 0$
+  \For{each $\vx_k \in \Omega_k$}
+  \State $J_{\text{old}} \gets J(\vx_k)$
+    % \State $J_k(\vx_k) \gets E \left\{ r_k(\vx_k) + \sum_{i=k+1}^{N-1} r_i(\vx_i,\mu_i(\vx_i),\vw_i) \right\}$,
+  \State $J(\vx_k) \gets \E \left\{ r_k(\vx_k) + \gamma J(\vx_{k+1}) \right\}$,
+  \State $\Delta \gets \max \left(  \Delta,\left| J_{\text{old}} -J(\vx_k) \right| \right)$
+  \EndFor
+\EndWhile
+\end{algorithmic}
+\todo[inline]{corrigir? - Confirmar se tem mesmo esse $K=1, \dots, N-1$ na inic. de J! Olhar isso nos outros codigos tb.}
+\end{algorithm}
+
+
+
+\begin{algorithmic}
+
+  \State $\pi(\vx) \gets$ policy to be avaluated for all $\vx_k \in \Omega_k$
+\State $J(x_k) \gets $ arbritrary value $\in \mathbb{R}$, for all $\vx_k \in \Omega_k$ 
+\\
+\While{policy-stable = false} \Comment{Repeat until the policy stays stable.}
+  \State policy-stable $\gets true$
+  % \State \textbf{2.} Policy Evaluation
+  \While{$\Delta \ge  \theta$} \Comment{Start of policy evaluation}
+    \State $\Delta \gets 0$
+    \For{each $\vx_k \in \Omega_k$}
+      \State $J_{\text{old}} \gets J(\vx_k)$
+      \State $J(\vx_k) \gets \E \left\{ r_k(\vx_k) + \gamma J(\vx_{k+1}) \right\}$,
+      \State $\Delta \gets \max \left(  \Delta,\left| J_{\text{old}} - J(\vx_k) \right| \right)$
+    \EndFor
+  \EndWhile \Comment{End of policy evaluation}
+
+  % \State \textbf{2.} Policy Improvement
+  \For{each $\vx_k \in \Omega_k$} \Comment{Start of policy improvement}
+    \State $u_{old} \gets \pi(\vx_k)$
+    \State $\pi(\vx_k) \gets \argmin_{u \in \mathcal{U}_k}\E \left\{ r_k(\vx_k,u(x_k)) + \gamma J(\vx_{k+1}) \right\}$,
+    \If {$u_{old} \neq \pi(x_k)$} 
+    \State policy-stable $\gets false$ \EndIf
+  \EndFor   \Comment{End of policy improvement}
+\EndWhile
+
+\State \textbf{return} $J \approx J^*$ and $\pi \approx \pi^*$
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\begin{algorithm}
+  \caption{Value Iteration}\label{alg:VaI} % sutton2018 pg 80
+\begin{algorithmic}
+
+  \State $J(x_k) \gets $ arbitrary value except that $J(terminal) = 0$
+  \While{$\Delta \ge  \theta$} 
+    \State $\Delta \gets 0$
+    \For{each $\vx_k \in \Omega_k$}
+      \State $J_{\text{old}} \gets J(\vx_k)$
+      \State $J(\vx_k) \gets \min_{u_k \in \mathcal{U}_k}\E \left\{ r_k(\vx_k,\vu_k) + \gamma J(\vx_{k+1}) \right\}$,
+      \State $\Delta \gets \max \left(  \Delta,\left| J_{\text{old}} - J(\vx_k) \right| \right)$
+    \EndFor
+  \EndWhile 
+  \State $\pi(x_k) = \argmin_{u_k \in \mathcal{U}_k}\E \left\{ r_k(\vx_k,\vu_k) + \gamma J(\vx_{k+1}) \right\}$,
+ \State \textbf{return} $\pi \approx \pi^*$ 
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\begin{algorithm}%[H]
+  \caption{Pseudo code for Policy evaluation on TD(0)}\label{alg:TD(0)}
+\begin{algorithmic}
+\State $\pi \gets $ policy to be evaluated
+\State $\alpha \gets $ value $\in (0,1]$
+\State $J(x) \gets$ arbitrary value $\forall x \in \Omega$ except for $V(terminal) = 0$
+
+\Loop{ for each episode:}
+  \State Initialize $x_k$
+  \While{$x_k$ is not terminal}
+    \State $u_k \gets$ action given by $\pi(x_k)$
+    \State Take control action $u_k$, observe $r_k, x_{k+1}$
+    \State $J(x_k) \gets J(x_k) + \alpha[r_k(x_k) + \lambda J(x_{k+1}) - J(x_k)]$
+    \State $k = k+1$
+  \EndWhile
+\EndLoop
+% \Return $J(x_k)$ for all $x_k \in \Omega$ \Comment{Optimal Policy}
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+\begin{algorithm}%[H]
+  \caption{Pseudo code for Sarsa to estimating $\tq \approx Q^*$ }\label{alg:sarsa}
+\begin{algorithmic}
+\State $\pi \gets $ policy to be evaluated
+\State $\alpha \gets $ value $\in (0,1]$
+\State $J(x) \gets$ arbitrary value $\forall x in \Omega$ except for $V(terminal) = 0$
+
+\Loop{ for each episode:}
+  \State Initialize $x_k$
+  \While{$x_k$ is not terminal}
+    \State $u_k \gets$ action given by $\pi(x_k)$
+    \State Take control action $u_k$, observe $r_k, x_{k+1}$
+    \State $J(x_k) \gets J(x_k) + \alpha[r_k(x_k) + \lambda J(x_{k+1}) - J(x_k)]$
+    \State $k = k+1$
+  \EndWhile
+\EndLoop
+% \Return $J(x_k)$ for all $x_k \in \Omega$ \Comment{Optimal Policy}
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+% \caption{Computing the optimal control sequence for a approximation in Value Space.}\label{alg:AVS}
+% \begin{algorithmic}
+% \State $\tilde{\vu}_0 \in \argmin_{\vu_0 \in \mathcal{U}_0} \left[ r_0(\vx_0,\vu_0) + \tilde{J}_1\left(\vf_0(\vx_0,\vu_0)\right) \right]$
+% \State $\tilde{\vx}_1 \gets \vf_0(\vx_0,\tilde{\vu}_0)$
+% \For{$k = 0, 1, \dots, N-1$}
+% \State $\tilde{\vu}_k \in \argmin_{\vu_k \in \mathcal{U}_k} \left[ r_k(\tilde{\vx}_k,\vu_k) + \tilde{J}_{k+1}\left(\vf_k(\tilde{\vx}_k^*,\tilde{\vu}_k)\right) \right]$
+  % \State $\tilde{\vx}_{k+1} \gets \vf_k(\tilde{\vx}_k,\tilde{\vu}_k)$
+% \EndFor
+% \end{algorithmic}
+% \end{algorithm}

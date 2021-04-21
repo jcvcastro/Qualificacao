@@ -1,0 +1,54 @@
+%------------------------------------------------------------------------------
+\chapter{Reinforcement Learning}
+\vspace{-1cm} \label{cap2}
+
+% \begin{flushright}
+% \begin{minipage}{0.7\linewidth}
+%     \emph{``\dots''}
+% \end{minipage}
+% \end{flushright}
+%
+% \begin{flushright}
+% Cicrano
+% \end{flushright}
+
+%\vspace{1cm}
+
+%Colocar uma descrição do capítulo aqui!
+\section{Introduction}\label{sec:int_cap_2}
+\section{Approximation in Value Space}\label{}
+\begin{itemize}
+    \item Suboptimal control;
+    \item $J_k^{*}$ is approximated by $\tilde{J}_k$;
+    \item At state $k$ we use control obtained from
+        \begin{equation}
+        \tilde{\mu}_k(x_k) \in \text{arg} \min_{u_k \in U_k(x_k)}{E\left\{ g_{k}(x_k,\ u_k,\ g_k) + J_{k+1}\left(f_k(x_k,\ u_k,\ w_k)\right) \right\}} 
+        \label{e:201}.
+        \end{equation}
+\end{itemize}
+The approximation in value space~\eqref{e:201} is referred as a one step lookahead equation.
+A variation can be accomplished by taking a multi-step lookahead approach, where the cost function 
+% TODO: olhar se é a cost function que é minimizada mesmo.
+is minimized over $l+1$ stages with future costs approximated by a function $\tilde{J}_{k+l}$ given by
+\begin{equation}
+\tilde{J}_{k+1}(x_{k+1}) = \min_{u_{k+1} \in U_{k+1}(x_{k+1})} E\left\{ g_{k+1}(x_{k+1},\ u_{k+1},\ w_{k+1}) + \tilde{J}_{k+2}\left( f_{k+1}(x_{k+1},\ u_{k+1},\ w_{k+1}) \right)  \right\}
+\label{e:Jkp1}.
+\end{equation}
+
+\section{Rollout}
+% Section 2.4 - Bertsekas
+\begin{itemize}
+    \item Principal aim: policy improvement
+    \item ``Approximation in value space with the approximate costo-to-go values $\tilde{J}_{k+l}(x_{k+l})$ calculated by running the base policy.''
+    \item ``choice of base policy is important, but experimental evidences has shown that it may not be crucial for many contexts''
+\end{itemize}
+
+% Sectionn 2.4.1 - On-line Rollout for Deterministic Finite-State Problems
+\begin{itemize}
+    \item ``Considers every tail subproblem starting at every possible next state $x_{k+1}$ solving them using a suboptimally algorithm, the \emph{base heuristics}.''
+    \item Rollout algorithm then applies a control that minimizes over $u_k \in U_k(x_k)$ the tail expression
+        \begin{equation}
+            \tilde{v} g_k(x_k,u_k) +  g_{k+1}(x_{k+1}) + \cdots + g_{N-1}(x_{N-1},u_{N-1}) + g_N(x_N)
+            \label{eq:rollout}.
+        \end{equation}
+\end{itemize}

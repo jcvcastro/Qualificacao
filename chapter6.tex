@@ -1,0 +1,98 @@
+% -*- TeX-master: "Qualificacao.tex" -*-
+%!TEX root = Qualificacao.tex
+
+\chapter{Conclusões}\label{cap:Concl}
+\vspace{-1cm}
+
+% Frase citação inicial {{{1
+% \begin{flushright}
+% \begin{minipage}{0.7\linewidth}
+%     \emph{``\dots''}
+% \end{minipage}
+% \end{flushright}
+%
+% \begin{flushright}
+% Cicrano
+% \end{flushright}
+%
+%\vspace{1cm}
+
+
+
+\section{Considerações finais}\label{sec:Cons_finais}
+
+
+% Como produto/trabalho em desenvolvimento durante o semestre, cita-se o trabalho que tem sido feito no sentido de desenvolver metodologias para escolha de estruturas para o controlador no âmbito do controle baseado em dados, ou DDC (Data-Driven Control).
+% Mais especificamente, tem-se dado ênfase a escolha da estrutura do controlador a partir do uso de métodos VRFT.
+% Como deixa claro em seu nome, ao usar o termo “sintonia” (em inglês, “tunning” ), a metodologia VR  FT visa a sintonia de um controlador pertencente a uma classe de controladores pré-estabelecida.
+% Como abordado pelos autores do método \citep{campi2002,campi2006a}, por outros estudiosos do assunto \citep{bazanella2012} e apresentado neste relatório na seção de revisão bibliográfica, o método visa minimizar o erro de rastreamento de um modelo de referência pré-definido a partir da minimização de uma função de custo.
+% Tal função é definida a partir do erro quadrático entre o sinal de excitação utilizado no processo a se controlar e o sinal de controle “virtual”, gerado pelo controlador identificado ao se aplicar  o mesmo sinal de referência capaz de produzir o mesmo sinal de saída  virtual utilizado na identificação.
+% \cite{campi2002} mostram, para o caso linear, e \cite{campi2006}  e não linear, que ao se minimizar esta nova função de custos, minimiza-se também o erro de rastreamento, desde que se obedeça os seguintes critérios: a classe do controlador considerado tenha uma estrutura que possibilite abrigar o que se nomeia de controlador ideal (vide eq.
+% ); que o processo não seja afetado por ruídos; e o controlador seja parametrizado linearmente.
+% Caso o controlador ideal não possa ser representado pela classe considerada, o erro mínimo de rastreamento não é mais garantido e a introdução de um filtro ao projeto, visando se aproximar desse mínimo é desejado.
+%
+%
+% No desenvolvimento do trabalho, foco deste relatório, tem-se feito um estudo de como seria possível, e quais as vantagens poderia-se obter se, ao invés de apenas tentar achar a melhor sintonia para um controlador com estrutura pré-estabelecida,  se procurasse também uma melhor estrutura dentro de um um conjunto de classes de controladores, de forma que o erro de rastreamento ótimo ou pelo menos sub-ótimo possa ser encontrado.
+%
+% Para atingir este propósito, tem-se investigado o uso de técnicas de seleção de estruturas que, com devidas adaptações e reformulações, sejam capazes selecionar modelos que resultem em controladores não lineares (ou mesmo lineares) que possam levar a respostas melhores do que aqueles que fazem uso de estruturas pré definidas.
+%
+% Dentre as ferramentas que têm-se utilizado, destacam-se o uso da taxa de redução de erro (ERR) e do algoritmo   Randomized Model Structure Selection (RaMSS) \citep{falsone2014,falsone2015}. Estas estratégias têm sido estendidas e utilizadas em aplicações para determinação de modelos de processos dinâmicos \citep{retesNARMAXModelIdentification2019} ou até mesmo no projeto de compensadores para aplicações em que o processo exibe determinados efeitos de não linearidade específicas, como no caso de efeitos histeréticos \citep{abreuIdentificationNonlinearityCompensation2020}.
+
+
+\section{Propostas de continuidade}\label{sec:Prop_cont}
+
+% Como produto/trabalho em desenvolvimento durante o semestre, cita-se o trabalho que tem sido feito no sentido de desenvolver metodologias para escolha de estruturas para o controlador no âmbito do controle baseado em dados, ou DDC (Data-Driven Control).
+A principal foco desta pesquisa tem sido o estudo e desenvolvimento de metodologias de projeto de controladores DDC, com foco especial na seleção de estruturas do controlador com o uso da técnica VRFT.
+
+Em particular, o método RaMSS, tem se mostrado promissor para a aplicação desejada. Esse método faz apelo às técnicas exploratórias que recorrem a buscas aleatórias ao estilo Monte Carlo, mas com mecanismos de seleção que reduzem drasticamente o custo computacional, evitando uma busca exaustiva, ao mesmo tempo em que tenta garantir uma seleção adequada de modelos.
+%
+Apoiado nesta técnica, algumas adaptações têm sido estudadas no sentido de lidar com a identificação do controlador e não mais do processo.
+
+Neste sentido, lida-se atualmente com questões que, apesar de estarem sendo abordadas no decorrer da pesquisa, resultados mais concretos ainda não foram alcançados.
+Porém, as experiências e estudos têm-se mostrado promissoras, no sentido que, do ponto de vista do autor, bons resultados podem ser alcaçados.
+Na sequência apresenta-se itens específicos a serem abordados, que podem ser tomados como propostas de continuidade:
+
+
+Uma primeira proposta diz respeito ao estudo do uso de índices de desempenho que melhor representem a realidade do controlador ao se atualizar os termos de RIPs.
+Como já abordado, originalmente o RAmSS utiliza medidas como o MSPE e MSSE para esta atualização.
+Para fins de modelagem  de processos físicos, onde muitas vezes a predição do comportamento entrada-saída é o alvo, tais índices se mostram adequados \cite{falsone2015}.
+%
+Porém, ao se abordar o problema da idendificação do controlador, a redução do erro de predição, seja ele de passo a frente, como no caso do MSPE ou de simulação livre, como no caso do do MSSE, nem sempre é o indicativo de que haverá erro de redução de rastreamento do modelo de referência. E, para sistemas de controle, é este erro de rastreamento se torna o principal alvo em sistemas de controle.
+%
+% omo abordado na revisão bibliográfica deste relatório, o método RaMSS faz uso de um índice de desempenho baseado no cálculo de alguma grandeza que quantifique a qualidade de o modelo em algum sentido. Uma escolha comum é calcular este índice baseado no erro quadrático médio de predição (MSPE).
+%
+Um estudo sobre o uso deste índice está em andamento\todo{conforme resultados apresentados na seção ???}. O que se tem observado é que minimizar o MSPE diretamete pela estratégia RaMSS apesar de muitas vezes apresentar bons resultados\todo{não esquecer de explicar o porque destes resultados mesmo quando minimizando o MSPE, que no caso de controle fica em função dos sinais de controle e não da saída. Creio que dá para explicar isso no contexto do VRFT, em que minimizar este índice implica em minimizar o MSE de rastreamento sob certas condições.}, não dá garantias que o rastreamento ótimo é alcançado, i.e. aquele em que o erro de rastreamento médio quadrático é mínimo. 
+
+Como alternativa, propõe-se o uso de algum índice que leve em conta o resultado em malha fechada ao se aplicar os controladores intermediários identificados e selecionados pelo procedimento. Algo parecido tem sido usado no que diz respeito a identificação de processos  em que o erro quadrático médio de simulação (MSSE) é utilizado em substituição ao MSPE \citep{aguirre2010}. Neste caso, segundo \citep{piroddi2003}, o uso de informações da simulação-livre pode melhorar a robustez na seleção de estrutura do processo quando sob condições de identificabilidade parciais.    
+
+
+O MSSE depende da simulação livre, que em suma é a resposta em malha aberta a um sinal de excitação conhecido. Algo parecido poderia ser utilizado ao se avaliar a estrutura no procedimento VRFT, porém, neste caso, seria desejável a resposta do sistema em malha fechada com o controlador obtido a partir da estrutura avaliada. O grande problema neste caso é que esta simulação passa a ser dependente de um modelo, ainda que aproximado, do processo, ou do próprio processo. Porém, como estratégias DDC visam exatamente não identificar um modelo para o processo, tal situação pode ser um empecilho prático. Uma proposta de solução para este problema é apresentada mais a frente neste texto.
+
+Uma segunda proposta, a qual também vem sendo analisada, consiste no uso de informações auxiliares durante o processo de identificação dos parâmetros do controlador.  
+Apesar de já terem sido desenvolvidas técnicas para incorporar informação auxiliar no processo de identificação, por exemplo via restrições e otimização multiobjetivo \citep{barroso2006}, todas estas restrições dizem respeito à planta.
+Neste sentido surgem questões como: de que forma estas técnicas podem ser usadas na abordagem DDC?
+Seria possível encontrar um análogo da informação auxiliar, usada em métodos tradicionais, para estratégias DDC, em que não há informação da planta?
+Poderia esta ser definida, por exemplo, a partir restrições que garantam aspectos relevantes ao controle, como limitações de ganho devido a saturação de atuadores, inserção de integradores no controlador, além de aspectos relativos a robustez? Neste sentido, um procedimento para garantir a presença de integradores no modelo do controlador já vem sendo estudado, mas ainda sem resultados conclusivos.
+
+Outra proposta a ser estudada diz respeito ao estudo do uso de filtros no processo de identificação do controlador, como é comum na estratégia VRFT. Na estratégia, quando o controlador ideal, ou compatível, não pertence à classe de controladores considerada, ou seja, a hipótese \ref{ass:machedControl} não é satisfeita, um filtro a ser aplicado ao sinal usado no processo de identificação deve ser projetado a fim de se aproximar de uma solução ótima, conforme apresentado por \cite{campi2002,campi2006} e discutido no Capítulo \ref{cap:VRFT}.
+\todo{terminar este pensamento} 
+
+Uma quarta proposta diz respeito ao problema levantado anteriormente, onde o sinal de saída, e consequentemente o erro de rastreamento são requeridos para o cálculo do índice de atualização dos RIPs no procedimento RaMSS.
+Como a simulação da resposta em malha fechada (ou mesmo malha aberta) é inviável em estratégia DDC, devido a uma falta de modelo para o processo, pretende-se fazer do uso de técnicas de Aprendizado por Reforço (RL), abordadas no Capítulo \ref{cap:RL}, para que dados colhidos do processo real, enquanto em funcionamento, possam ser usados para o cálculo em tempo real dos RIP e consequentemente para  escolha de melhor estrutura.
+
+Algumas técnicas de RL se mostram promissoras neste caso, uma vez que muitas vezes levam à otimização de índices de desempenho a partir de dados amostrados, sem a necessidade do modelo do processo, ao mesmo tempo em que evitam o alto número de realizações amostrais como em metodologias Monte Carlo. Dentre elas a estratégia TD Learning,
+\todo{Colocar referência}
+tem sido considerada, com uma atenção ao método conhecido como Q-learning \cite{watkins1992}, que permite que um controlador possa ser ajustado em uma abordagem conhecida como \textit{off-policy} que permite o aprendizado de uma política de controle enquanto o sistema em malha fechada se encontra sob o efeito de outra. No âmbito deste trabalho, o sentimento é que deva ser possível o uso de uma estratégia parecida juntamente com o concito do RAmSS, possa se atualizar os RIPs e consequentemente a estrutura, e talvez até parâmetros, do controlador com um menor esforço e, se possível, com provas de convergência.
+
+Por fim, análises a respeito de robustez, na presença de ruídos de medição ou de processos devem ser também levadas em conta, principalmente em uma etapa final. Inclusão de termos de média móvel ao procedimento RaMSS tem sido cogitado como alternativa a reduzir a polarização durante a etapa de identificação, em alternativa ao uso de estratégias baseadas em variáveis instrumentais, comuns no procedimento VRFT.
+
+
+
+\vspace{2cm}
+
+% No atual estágio desta pesquisa, tem-se trabalhado com a ideia de um índice que quantifique o erro médio de rastreamento em função do modelo do controlador sintonizado por uma estratégia VRFT, de modo que alguma informação da resposta em malha fechada com o controlador analisado possa ser usada para  o cálculo dos índices de probabilidades de inclusão do regressor, ou RIP (vide seção de Revisão Bibliográfica).
+% Porém, como a simulação da resposta em malha fechada (ou mesmo malha aberta) é inviável devido a uma falta de modelo para o processo, o que se estuda é o uso de técnicas de Aprendizado por Reforço (RL) para que dados colhidos do processo real, enquanto em funcionamento, possam ser usados para o cálculo em tempo real dos RIP e consequentemente para  escolha de melhor estrutura.
+
+% Algumas técnicas de RL se mostram promissoras neste caso, uma vez que muitas vezes levam à otimização de índices de desempenho a partir de dados amostrados, sem a necessidade do modelo do processo, ao mesmo tempo em que evitam o alto número de realizações amostrais como em metodologias Monte Carlo. Dentre elas a estratégia TD Learning, tem sido considerada, com uma atenção ao método conhecido como Q-learning, que permite que um controlador possa ser ajustado em uma abordagem conhecida como off-policy. Nesse caso, um controlador ou lei de controle (no caso do presente trabalho, mais precisamente sua estrutura) pode ser determinado enquanto o sistema em malha fechada obedece a uma lei (ou política) de controle diferente. Isto ajuda em eventuais problemas de instabilidade e exploração.
+
+% Durante o semestre tem sido desenvolvido um algoritmo no intuito de implementar as ideiais consideradas anteriormente. Parte do algoritmo desenvolvido por Retes (2018), tem sido aproveitada, assim como algoritmos implementados e desenvolvidos pelo grupo do MACSIN1, grupo do qual o autor faz parte desde o início do doutorado. O algoritmo tem sido desenvolvido na linguagem R, portanto traduções de algumas ferramentas já disponíveis no MACSIN em outras linguagens tiveram e estão tendo que ser adaptadas. Os resultados apresentados na seção “Análise e Processamento de Dados” foram obtidos, em sua maioria, a partir deste algoritmo.

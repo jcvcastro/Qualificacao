@@ -1,0 +1,50 @@
+% \documentclass[tikz, border=1mm]{standalone}
+% \usepackage{tikz}
+% \usetikzlibrary{shapes,arrows,calc,automata}
+% \begin{document}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,thick]
+  \tikzstyle{circulo}=[circle,draw=black,fill=blue!20,text=black, minimum size=25pt,inner sep=0pt, outer sep=0]
+  \tikzstyle{dots}=[thick,draw=none,fill=none,text=black]
+  \tikzstyle{place}=[draw=none,fill=none,text=black!75]
+  \tikzstyle{texto}=[draw=none,fill=none,text=black]
+
+  \draw[fill=black!20,red!20] (4.6,1.6) rectangle (5.3,-2.8);
+
+  \node[circulo] (x0) at    (0,0)  {$x_0$   } ;
+  \node[dots]    (dots) at  (2,0)  {$\dots$ } ;
+  \node[circulo,draw=blue,text=blue] (xk) at    (4,0)  {$x_k$   } ;
+
+  \node[circulo] (xk1) at   (6,1.2){$x_{k+1}$   } ;
+  \node[circulo] (xk1l) at  (6,0)  {$x'_{k+1}$  } ;
+  \node[circulo] (xk1ll) at (6,-2) {$x^{(p)}_{k+1}$ } ;
+
+  \node[dots,label=below: current policy]    (dN1) at  (8,1.2)  {$\dots$ } ;
+  \node[dots,label=below: current policy]    (dN2) at  (8,0)  {$\dots$ } ;
+  \node[dots,label=below: current policy]    (dN3) at  (8,-2)  {$\dots$ } ;
+
+  \node[circulo] (xN) at (10,1.2) {$x_{N}$ } ;
+  \node[circulo] (xNl) at (10,0) {$x'_{N}$ } ;
+  \node[circulo] (xNll) at (10,-2) {$x^{(p)}_{N}$ } ;
+
+  \node[place] (ql1) at (4, -3) {$|$ } ;
+  \node[place] (ql2) at (10,-3) {$|$ } ;
+  \node[texto] (qlearn) at (7,-3.3) {Q-functions};
+  \draw[dashed,<->,draw=black!75] (ql1) -- (ql2);
+  
+  \path (x0) edge node {} (dots)
+        (dots) edge node {} (xk)
+
+        (xk) edge node {} (xk1)
+        (xk) edge node {} (xk1l)
+        (xk) edge node {} (xk1ll)
+
+        (xk1) edge node {} (dN1)
+        (xk1l) edge node {} (dN2)
+        (xk1ll) edge node {} (dN3)
+
+        (dN1) edge node {} (xN)
+        (dN2) edge node {} (xNl)
+        (dN3) edge node {} (xNll);
+
+\end{tikzpicture}
+% \end{document}
