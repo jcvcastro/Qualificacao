@@ -1,0 +1,100 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=14.454cm,
+height=1.643cm,
+at={(0cm,2.357cm)},
+scale only axis,
+xmin=0,
+xmax=60,
+ymin=-2,
+ymax=1,
+ylabel style={font=\color{white!15!black}},
+ylabel={$\tilde{y}$},
+axis background/.style={fill=white}
+]
+\addplot[const plot, color=mycolor1, line width=1.0pt, forget plot] table[row sep=crcr] {%
+0	0\\
+11	1\\
+12	0.109999999999999\\
+13	0.823\\
+14	0.322899999999997\\
+15	0.602670000000003\\
+16	0.527141\\
+17	0.431724299999999\\
+18	0.654355889999998\\
+19	0.352215547\\
+20	0.687748858100001\\
+21	0.359054503629999\\
+22	0.649408257349002\\
+23	0.418762359602702\\
+24	0.578577382796212\\
+25	0.491408561564285\\
+26	0.511743539103747\\
+27	0.546909134272198\\
+28	0.470859640454265\\
+29	0.572011303809994\\
+30	0.460893071159603\\
+31	0.568872735980683\\
+32	0.474201891905153\\
+33	0.54875859497669\\
+34	0.497748875015503\\
+35	0.524820036492287\\
+36	-1.4803931620493\\
+37	0.28681234628997\\
+38	-1.11326645905352\\
+39	-0.146896896641003\\
+40	-0.669662108467485\\
+41	-0.554056898292473\\
+42	-0.33237358612881\\
+43	-0.801719384947049\\
+44	-0.18117817668697\\
+45	-0.860621591674509\\
+46	-0.202000752803755\\
+47	-0.778101446894006\\
+48	-0.325626938037182\\
+49	-0.633953047821585\\
+50	-0.471778268273567\\
+51	-0.500814505677674\\
+52	-0.581192725729103\\
+53	-0.421320761718391\\
+54	-0.62880052449546\\
+55	-0.403982498983012\\
+56	-0.620189332132519\\
+57	-0.432492136188316\\
+58	-0.578611902773851\\
+59	-0.4803660563338\\
+};
+\end{axis}
+
+\begin{axis}[%
+width=14.454cm,
+height=1.643cm,
+at={(0cm,0cm)},
+scale only axis,
+xmin=0,
+xmax=60,
+xlabel style={font=\color{white!15!black}},
+xlabel={iteration ($k$)},
+ymin=-1,
+ymax=1,
+ylabel style={font=\color{white!15!black}},
+ylabel={$\tilde{u}$},
+axis background/.style={fill=white}
+]
+\addplot[const plot, color=mycolor1, line width=1.0pt, forget plot] table[row sep=crcr] {%
+0	0\\
+10	1\\
+35	-1\\
+59	-1\\
+};
+\end{axis}
+\end{tikzpicture}%

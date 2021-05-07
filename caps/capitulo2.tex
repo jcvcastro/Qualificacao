@@ -1,0 +1,194 @@
+% -*- TeX-master: "Qualificacao.tex" -*-
+%!TEX root = Qualificacao.tex
+
+\chapter{Basic concepts in system identification}
+\label{cap:cap2} \vspace{-1cm}
+
+% \begin{flushright}
+% \begin{minipage}{0.7\linewidth}
+% \emph{``...''}
+% \end{minipage}
+% \end{flushright}
+%
+% \begin{flushright}
+% {fulano}
+% \end{flushright}
+% \todo[inline]{Deixar claro na seção que a identificação não é feita somente por mínimos quadrados (é o que está parecendo). Apresentar outras abordagens. Apresentar outros tipos de modelos que não polinomiais (acho que isso é feito na secao de escolha do modelo, de maneira breve, mas não cito nada sobre estruturas, NARX, etc.) Deixar isso claro.  Talvez criar uma seção para modelos NARX.}
+% {{{ Pequena intro
+Com o objetivo de descrever fenômenos da natureza ou mesmo mecanismos e processos criados pelo próprio ser humano, foram desenvolvidos, ao longo de séculos, diversas formas de representar taais fenômenos por meio de expressões matemáticas, conhecidas como modelos matemáticos, ou simplesmente, modelos.
+
+Para obtenção de tais modelos, de maneira geral, duas abordagens podem ser utilizadas: modelagem pelos primeiros princípios, ou modelagem por identificação de sistemas. No primeiro caso, os modelos são obtidos a partir de aplicações de leis, em geral da física, desenvolvidas e documentadas ao longo dos anos de observações de fenômenos, naturais ou não, por cientistas das mais diversas áreas. No segundo caso, modelos matemáticos são obtidos a partir de análises feitas em dados de sinais colhidos do sistema a modelar valendo-se de técnicas de identificação desenvolvidas para tal. Em ambos os casos os modelos obtidos são expressões matemáticas que descrevem o comportamento aproximado do processo modelado.
+
+No presente trabalho, não é de interesse a obtenção de um modelo para o processo e sim de um modelo para o controlador. No entanto, as metodologias utilizadas  para identificação de sistemas podem ser usadas diretamente, ou  em alguns casos, com adaptações específicas para fins de idendificação de controladores. Neste sentido, técnicas de identificação utilizadas no âmbito de identificação de modelos têm sido usadas no projeto de controladores orientados a dados, visando tanto modelos de controladores lineares \citep{campi2002} quanto não lineares \citep{campi2006}.
+% \todo{Está com cara que é melhor colocar este parágrafo mais para frente.}
+
+Com o passar dos anos, com o aumento do poder de processamento dos computadores assim como facilidade na aquisição e armazenamento  de dados, o uso  de técnicas  de identificação de modelos não lineares vêm cada vez mais se mostrando interessantes para predições ou até mesmo para melhor entendimento de fenômenos. Da mesma forma, espera-se que controladores não lineares projetados por técnicas de controle orientado a dados resulte muitas vezes em controladores com melhor desempehho ou até mesmo maior robustez.
+
+Há algumas décadas já se estuda o problema de modelagem de sistemas não lineares onde se destacam alguns trabalhos \citep{billings1980,leontaritis1985,leontaritis1985a,korenberg1988,billings1989,chen1990,chen1992,aguirre1995,aguirre2000,zhu2005}.
+O processo de identificação de sistemas consiste basicamente nos seguintes passos: (1) Coleta de dados; (2) Escolha do tipo de modelo; (3) Seleção de estrutura; (4) Estimação de parâmetros; (5) validação do modelo. As próximas seções tratam de maneira breve cada um desses passos.
+
+\section{Coleta e pré-processamento de dados}\label{sec:coleta}
+O primeiro passo na identificação (de modelos) de sistemas é a coleta de dados. Neste processo alguns cuidados devem ser tomados quanto ao intervalo de amostragem considerado ao se colher sinais, do sistema a se identificar. Para sistemas não autônomos, caso dos sistemas controlados, deve-se ainda tomar certos cuidados na escolha do sinal utilizado para excitação do processo, quando possível. 
+Os sinais de entrada devem ser projetados de maneira a excitar a dinâmica do sistema na faixa de frequências de interesse, por meio da escolha de sinais com potências expectrais adequadas. Neste caso é dito que o sinal deve ser \textit{persistentemente excitante}. Sinais como ruído branco filtrado ou sinais binários pseudo-aleiatórios (PRBS) são comumente  utilizados na prática.
+
+A escolha adequada da amplitude do sinal de entrada também é um fator que merece cautela. Por exemplo, o sinal não deve ser tal que leve a resposta do processo a ultrapassar certos limiares,  próximos a um ponto de operação, que garantem um comportamento próximo ao linear para o caso da identificação de modelos lineares. Da mesma forma, quando a identificação é de um modelo não linear, a amplitude deve ser tal que explore as características não lineares do processo. 
+Problemas como superamostragem, outliers, ou casos em que os sinais de excitação não podem ser previamente escolhidos, podem ser resolvidos ou amenizados por tratamento prévio dos dados, processo conhecido como pré-processamento. 
+
+\section{Escolha da classe do modelo}\label{sec:escolha_modelo}
+
+Existem diversas classes modelos que podem ser utilizados para descrever a relação entrada-saída de um processo. Estas classes apresentam diferentes estruturas que se mostram mais ou menos adequadas a determinada aplicação. Por exemplo, para sistemas não lineares, a estrutura do modelo deve se mostrar complexa o suficiente para representar as não linearedades de interesse. Dentre as diversas classes usuais na representação de modelos destacam-se: funções radiais de base \citep{broomhead1988}, redes neurais \citep{haykin1994}, wavelets \citep{strang1989}, séries de Volterra \citep{billings1980}, funções polinomiais e racionais \citep{billings1989}.
+
+\section{Seleção de estrutura}\label{sec:estr_selection}
+
+Uma vez definida a classe de um modelo, a escolha de sua estrutura (i.e., número e/ou ordem de termos em um modelo polinomial NARX) passa a ser a próxima tarefa, antes da identificação de seus parâmetros.
+Esta pode ser uma tarefa difícil, uma vez que deseja-se encontrar um modelo com variância e polarização (viés) menores possíveis, e estas duas grandezas se mostram contraditórias. 
+\todo{Encontrar palavra melhor que \textit{contraditórias}.}
+Em suma, o modelo deve ser suficientemente rico para capturar a dinâmica e repetir o comportamento do sistema modelado, mas não tanto ao ponto de modelar os ruídos  presentes nosc sinais amostrados.
+Se o modelo é muito simples, pode não se ajustar bem aos dados de treinamento, e se complexo demais (com muitos termos), pode afetar a predição do comportamento para dados diferentes daqueles usados no treinamento.
+
+Na tentativa de achar uma solução para esse problema, abordagens tem sido apresentadas nas últimas décadas.
+Dentre elas destaca o Akaike’s Information Criterion (AIC), assim como sua versão corrigida, (AICc).
+O AIC, introduzido por \cite{akaike1974}, é definido como:
+\begin{equation}
+    AIC(n_\theta) = N \ln[\sigma^2_{\text{erro}}(n_\theta)] + 2 n _\theta
+\label{eq:AIC},
+\end{equation}
+sendo $N$ o número de dados, $\sigma^2_{\text{erro}}(n_\theta)$ a variância dos resíduos e $n_\theta = \text{dim}[\hat {\theta}]$ o número de parâmetros do modelo.
+Segundo \cite{aguirre2015}, \eqref{eq:AIC} pode ser analisada pelo seguinte: ``À medida que termos são incluídos no modelo, o número de grau de liberdade aumenta, permitindo um ajuste aos dados mais exato. Assim, $\sigma^2_{\text{erro}}(n_\theta)$ diminui a medida em que  aumenta'',
+mas ``\dots a partir de determinado momento, a diminuição na variância dos resíduos resultante da inclusão de um novo termo é insignificante e não justificaria a inclusão do respectivo termo''.
+Em suma, a primeira parcela de \eqref{eq:AIC} quantifica a diminuição na variância dos resíduos devido à inclusão de um termo, ao passo que a segunda parcela  penaliza a inclusão de cada termo. 
+
+Visando corrigir um problema apresentado pelo AIC que eleva a probabilidade do AIC a selecionar modelos com alto número de parâmetros quando o tamanho da amostra é pequeno, o que leva a um sobre-ajuste, surge o AICc \citep{cavanaugh1997}, dado pela equação
+\begin{equation}
+    AICc = AIC + \frac{2k^2+2k}{n-k-1}
+\label{eq:AICc}.
+\end{equation}
+\todo{falar um pouquinho mais sobre este caso.}
+
+Outros critérios parecidos com de Akaike também podem ser encontrados na literatura, dentre eles, o Bayesian Information Criterion (BIC), \citep{schwarz1978}; e o Final Prediction Error (FPE) \citep{kashyap1977}.
+
+Outras abordagens, já consideradas clássicas, que diferem dos critérios anteriormente citados podem ser encontradas na literatura, com destaque para a Error Reduction Ratio (ERR) (Billings et al., 1989).
+Nesta abordagem, a redução da variância  dos ruídos que ocorre quando um novo termo é incluído no modelo é quantificada e normalizada com respeito à variância de saída.
+A ERR resultante da inclusão do i-ésimo regressor é dada por
+\begin{equation}
+    [\text{ERR}]_i  = \frac{MS1PE(\nu_{i-1})-MS1PE(\nu_i)}{\langle\vy,\vy\rangle}
+\label{eq:ERR},
+\end{equation}
+sendo $i = 1, 2, \dots, m$; $m$ o número de termos candidatos testados;  MS1PE$\nu_i$ o erro de  um passo a frente do modelo com $i$ termos, ou regressores; e $\nu$ representa uma família de modelos com estruturas aninhadas tal que $\nu_{i-1} \subset \nu_i$.
+\todo{parece que faltou falar de $\vy$.}
+
+Extensões do critério ERR são possíveis, como o ERR$_2$ \citep{alves2012}, que usa predição 2 passos a frente ao invés de 1.
+Outro critério parecido com a ERR é a Simulation Error Reduction Ratio (SRR), introduzida por \citep{piroddi2003}, e que se mostra vantajosa em condições não ideais, resultando muitas vezes em modelos mais compactos, mas com custos computacionais mais elevados. Ela é dada por
+\begin{equation}
+[\text{SRR}]_i  = \frac{MSSE(\nu_{i-1})-MSSE(\nu_i)}{\langle\vy,\vy\rangle}
+\label{eq:SRR},
+\end{equation}
+onde agora MSSE$\nu_i$ representa o erro médio quadrático de simulação para o modelo com $i$ regressores, o que implica no uso de simulação livre.
+
+Técnicas mais recentes, muitas das quais se baseiam em abordagens do tipo Monte Carlo, têm sido apresentadas à comunidade acadêmica nos últimos anos. Para fins desta pesquisa, destaca-se o método Randomized Model Structure Selection, ou simplesmente, RaMSS \citep{falsone2014,falsone2015}.
+\todo[inline]{Falar um pouco mais aqui sobre RaMSS e indicar que será abordado em capítulo a parte. Estou decidindo ainda como ficará (se capítulo a parte ou se falo neste mesmo capítulo, mas talvez como uma seção a parte depois desta introdução sobre identificação).} 
+
+
+
+
+\section{Parameter Estimation}%
+\label{sec:parest}
+\todo{Aqui está parecendo que a estimação é feita exclusivamente por mínimos quadrados. Deixar claro que não. Citar outras. Criar uma seção para mínimos quadrados.} 
+
+No processo de identificação de sistemas dinâmicos, mais especificamente utilizando estimação paramétrica, uma vez que os dados são colhidos, pré-processados e a classe do modelo e sua estrutura são escolhidos, o problema passa ser o de se determinar os melhores parâmetros para este modelo. A este processo dá-se o nome de estimação de parâmetros. O objetivo é encontrar uma função paramétrica $\hat{f}(\vvarphi_{k},\hat{\vtheta}) :  \R^{n_{\hat{\theta}}} \mapsto \R$ que se aproxime da função ideal e em geral, desconhecida, $f(\vvarphi_{k}) : \R^{n_\theta} \mapsto \R$ por meios de dados de treinamento amostrados. Desta forma
+\begin{equation}
+    y_k = f(\vvarphi_{k}) \approx \hat{f}(\vvarphi_{k},\hat{\vtheta}),
+\end{equation}
+em que $\vvarphi_{k-1} \in \R^{n_{\hat{\theta}}}$ é o vetor de regressores, formado por combinações lineares ou não lineares da saída $y_{k-1},\  \dots ,\ y_{k-n_y}$ (e.g. modelos FIR) e/ou entrada $u_{k-1},\  \dots ,\ u_{k-n_u}$ (e.g., modelos ARX, ou NARX) e até mesmo do resíduo $\xi_{k},\  \dots ,\ \xi_{k-n_\xi-1}$ (e.g., modelos ARMA, NARMAX); $\hat{\vtheta} \in \R^n_\theta$, é um vetor de parâmetros estimados; $y_k \in \R$, o sinal amostrado no instante $k$; e $n_{\hat{\theta}},\ n_y,\ n_u$  representam respectivamente: o número de parâmetros e os máximos atrasos na saída e na entrada. 
+
+Considerando que a função ideal $f(\vvarphi_{k})$ possa ser escrita na forma paramétrica 
+\begin{equation}
+    y_k = f(\vvarphi_{k},\vtheta),
+   \label{eq:yk}
+\end{equation}
+em que $\bm{\theta} \in \mathbb{R}^{n_\theta}$  é o vetor de parâmetros ideal, 
+% em que $\bm{\theta} \in \mathbb{R}^{n_\theta}$  é o vetor de parâmetros ideal, esta função define um conjunto de equações, ou restrições, que pode ser reescrita, para várias observações do escalar $y$, da seguinte forma:
+% \begin{align}
+% \label{eq:restricoes}
+%    y_k &= f(\vvarphi_{k}, \vtheta) \nonumber\\
+%    y_{k-1} &= f(\vvarphi_{k-1}, \vtheta) \\
+%    \vdots &= \vdots \nonumber\\
+%    y_{k-N+1} &= f(\vvarphi_{k-N+1}, \vtheta),\nonumber
+% \end{align}
+% sendo $y_k$ a $k$-ésima observação de $y$, e $\vvarphi_{k}= \begin{bmatrix} \varphi_{k-1,k}^T & \varphi_{k-2,k} & \dots & \varphi_{k-n_\theta,k} \end{bmatrix}$\todo[color=orange]{\textbf{LAA: } Corrigir isso aqui conforme comentários do aguirre. Olhar a difinição de $\Psi$ também.} a $k$-ésima observação dos $n_\theta$ regressores no instante, ou amostra, $k$.
+%
+% Assumindo que $f$ é linear nos parâmetros $\vtheta$ e que tanto $f$ quanto $\vtheta$ não mudam de uma restrição para a outra em~\eqref{eq:restricoes}, pode-se escrever \eqref{eq:yk} na seguinte forma matricial
+e assumindo que $f$ é linear nos parâmetros e que tanto $f$ quanto $\vtheta$ não mudam em relação ao tempo $k$, pode-se escrever \eqref{eq:yk} na seguinte forma matricial
+\begin{equation}
+\label{eq:yMatrix}
+   \vy = \Psi\bm{\theta},
+\end{equation}
+em que $\Psi = \begin{bmatrix} \vvarphi_{k} & \vvarphi_{k-1} & \dots & \vvarphi_ {k-N+1} \end{bmatrix}^T$ e $\vy = \begin{bmatrix} y_k & y_{k-1} & \dots & y_{k-N+1} \end{bmatrix}^T$.
+
+% A solução deste problema pode ser encontrada a partir do método dos mínimos quadrados
+
+Se $N=n_\theta$ restrições, o vetor de parâmetros $\vtheta$ pode ser determinado por
+\begin{equation}
+   \vtheta = \Psi^{-1}\vy
+\label{eq:thetaest}.
+\end{equation}
+
+Porém se $N > n_\theta$ restrições são tomadas, o sistema é dito sobre-determinado e a matrix $X$ passa a ser não quadrada e não invertível. Uma solução é reescrever \eqref{eq:yMatrix} de forma que a solução não seja exata, a partir da introdução de um termo de erro $\bm{\xi} \in \mathbb{R}^N$, conhecido como vetor de \emph{resíduos}, resultando em
+\begin{equation} 
+\label{eq:ysobredet}
+   \vy =  \Psi\hat{\vtheta} + \vxi.
+\end{equation}
+
+Para que o modelo capture o comportamento do processo modelado, é intuitivo que o vetor de parâmetros estimados $\hat{\vtheta}$ seja escolhido de forma que $\vxi$ seja reduzido em algum sentido. Na estratégia conhecida como Mínimos Quadrados Ordinário ou, simplesmente, mínimos quadrados ou LS (do inglês Least Squares), uma função de custo relacionada ao vetor de resíduos é definida como
+\begin{equation}
+\label{eq:JLS}
+   J_{LS} = \sum_{k=1}^{N} \vxi(k)^2 = \vxi^T\vxi = ||\vxi||^2.
+\end{equation}
+Prova-se que o vetor $\hat{\vtheta}_{LS}$, definido como o conjunto de parâmetros que minimiza $J_{LS}$ pode ser calculado por meio da pseudo-inversa de $\Psi$, de forma que \citep{aguirre2015}:
+\begin{equation}
+   \hat{\vtheta}_{LS} = [\Psi^T \Psi]^{-1}\Psi^T \vy.
+   \label{eq:LS}
+\end{equation}
+A equação \eqref{eq:LS} representa o estimador dos mínimos quadrados, onde os parâmetros são determinados pela minimização da função de custo referente ao somatório do quadrado dos erros de modelagem.
+Alternativas numéricas mais interessantes que o algorítimo clássico de \eqref{eq:LS} podem ser encontradas \citep{aguirre2015,ljung1999}, porém o fundamento básico permanece o mesmo.
+
+
+\section{Model Validation}\label{sec:model_validation}
+
+Tendo sido estimados os parâmetros que minimizam o resíduo em algum sentido, como por exemplo em função do somatório do quadrado dos erros de modelagem, caso dos mínimos quadrados apresentado em \eqref{eq:LS}, deve-se avaliar o desempenho do modelo quando este estiver sujeito a excitações diferentes daquelas submetidas durante o processo de identificação (treinamento). 
+
+Para  isso, é comum utilizar-se de um conjunto de dados amostrados diferente daquele usado no processo de identificação. A este conjunto de dados dá-se o nome de conjunto de validação. É usual colher-se uma certa quantidade de dados do processo, sujeito a um sinal de excitação adequado, e posteriormente dividir o conjunto de dados resultante em um conjunto de treinamento e outro de validação.
+
+O passo seguinte consiste em utilizar-se de algum índice de desempenho de forma a quantificar a qualidade da previsão em um teste conhecido como \textit{free-run simulation}. Nessa simulação, o modelo obtido no processo de identificação é submetido ao mesmo sinal de excitação sob o qual fora submetido o conjunto de validação. Os resultados simulados e colhidos armazenados previamente são então comparados a partir de alguma métrica. Dentre as métricas mais usuais, destacam-se o \textit{Mean Square Error} (MSE) e a \textit{Mean Absolute Percentage Error} (MAPE).
+
+O MSE é dado por
+\begin{equation}
+\label{eq:MSE}
+   \text{MSE} = \frac{1}{N}\sum_{k=1}^{N}(y_k-\hat{y}_k)^2,
+\end{equation}
+sendo $M$ o número de amostras, $y_k$ o dado amostrado no intervalo $k$ e $\hat{y}_k$ a predição do modelo. O MSE pode ser calculado tanto sobre os dados de treinamento quanto sobre dados de validação. Porém, para fins de validação, os dados de validação devem ser utilizados, umas vez que assim pode-se obter uma medida do desempenho para o modelo se comportando fora do ambiente de treinamento. Um bom modelo, em geral, deve apresentar o MSE sobre os dados de validação próximo ao MSE sobre os dados de treinamento. 
+
+Baseados no MSE, definem-se dois outros índices de desempenho: o \textit{Mean Square Prediction Error}, ou MSPE, e o \textit{Mean Square Simulation Error}, ou MSSE.
+O MSPE é definido como o MSE utilizando como dados de predição do modelo $\hat{y}_k$ dados de predição um passo a frente. Já o MSSE, utiliza dados de simulação livre como dados de predição $\hat{y}_k$ nos cálculos. Versões modificadas do MSPE podem ser também usadas, como o MS2PE, que utiliza predição de 2 passos a frente.
+
+O MAPE, por sua vez, calcula o desvio absoluto da predição em relação aos dados observados e é, em geral, calculado em porcentagem, na forma
+\begin{equation}
+\label{eq:MAPE}
+   % \text{MAPE} =  \frac{100\%}{N}\sum_{k=1}^{N} \frac{|y_k - \hat{y}_k|}{|\max(y_k)-\min(y_k)|}. % Petrus
+   \text{MAPE} =  \frac{100}{N{\sigma(\bm{y})}}\sum_{k=1}^{N} {|y_k - \hat{y}_k|}\ \%, % Codigo Aguirre
+\end{equation}
+em que $\bm{y}=[y_1,\ y_2,\ \dots,\ y_N]^T$ e $\sigma(\bm{y})$ representa o desvio padrão de $\bm{y}$. 
+
+Diferentes formas de escolha dos dados de treinamento e validação em relação à usual apresentada em \eqref{eq:MAPE} podem ser usados.
+% , como por exemplo, quando escolhe-se metade dos dados, ou conjuntos proporcionais.
+Uma destas formas é a “leave-one-out cross-validation”, em que apenas um dado, de todo o conjunto de dados é usado de cada vez \citep{allen1974}.
+% \todo{Melhorar um pouco.} % Acho que esta ok agora, mexi.
+
+Além da validação quantitativa em geral recorre-se ainda a uma avaliação qualitativa, na qual é realizada uma comparação gráfica, quanto ao comportamento dinâmico, entre a curva do sinal amostrado e a curva do sinal estimado pelo modelo resultante.
+\todo{Melhorar este final}
+
+\input{docs/chapter2A.tex}
+
+\input{docs/chapter2B.tex}
+
+

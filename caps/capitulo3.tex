@@ -1,0 +1,523 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  CHAPTER 3 - VIRTUAL REFERENCE FEEDBACK TUNNING  ( V R F T )  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% -*- TeX-master: "Qualificacao.tex" -*-
+%!TEX root = Qualificacao.tex
+
+\chapter{Virtual Reference Feedback Tuning}\label{cap:VRFT}
+\vspace{-1cm}
+
+% \section{Introdução}\label{sec:introvrft}
+
+O método \emph{Virtual Reference Feedback Tunning}, ou simplesmente VRFT, é um procedimento que visa o projeto de controladores realimentados a partir somente de dados amostrados do processo, sem a necessidade de um modelo que descreva este último. Com isso, se classifica como um método de controle baseado em dados, ou DDC.
+
+The main objective of this method is to adjust the parameters of a controller, defined by a parametric function like \eqref{eq:uknl_par}, using the process sampled data only, so that the output signal of the controlled process, $y_\theta(k)$ behaves as close as possible to the output signal $\tilde{y}$ of a previously defined reference model as defined in \eqref{eq:Mmap}.
+To reach this objective, VRFT aims to optimize the tracking error by minimizing a performance index $J_{RM}^N(\vtheta)$ as stated in \eqref{eq:Jy}, rewritten here for convenience:
+\begin{equation}
+   J_{RM}^N(\bm{\theta}) \triangleq \lim_{N \to \infty}  \frac{1}{N} \sum_{k=1}^N \left[y(k,\vtheta) - \tilde{y}(k)\right]^2 = 
+    \left\lVert y_\theta - \tilde{y} \right\lVert^{2}
+   \label{eq:Jy},
+\end{equation}
+where $N$ represents the number of data samples, $\vtheta = \begin{bmatrix} \theta_1 & \theta_2 & \cdots & \theta_N \end{bmatrix}^T \in \R^N$ a vector of parameters and $k$ a temporal index. The signal $y_\theta(k) \in \R $ represents the output of the  system controlled with the parametrized controller $C_\theta$, and $\tilde{y}(k) \in \mathbb{R}$ are the output of a reference model $M$, both subject to the same reference signal.
+
+% \begin{itemize}
+% % \item $y_r(k,\vtheta)$ representa a resposta obtida em malha fechada utilizando um controlador com parâmetros $\vtheta$, quando sobre o efeito de um sinal de referência $r(k)$, ou seja
+% \item $y_{r}(k)$ represents the response obtained in closed loop using a controller with  parameters $\vtheta$, when under the effect of a  reference signal $r(k)$, i.e.
+% \begin{equation}
+% y_r(k,\vtheta) \triangleq M(q,\vtheta)r(k)
+% \label{eq:yr},
+% \end{equation}
+% % onde $M(q,\vtheta)$ representa o modelo em malha fechada do sistema controlado, função do vetor de parâmetros $\vtheta$ e $q$ um operador de deslocamento temporal.
+% where $M(q,\vtheta)$ represents the closed loop model of the controlled system, function of the vector of parameters, $\vtheta$, and a time displacement operator, $q$.
+% % \item $y_{mr}(k)$ representa a resposta temporal obtida ao se aplicar o sinal de referência $r(k)$ como sinal de entrada de um modelo $M(q)$, conhecido como \textit{modelo de referência} e que representa o comportamento desejado em malha fechada, ou seja
+% \item $y_{MR}(k)$ represents the temporal response obtained by applying the reference signal $r(k)$ as an input signal for a model $M(q)$, known as a \textit{reference model} and representing the desired closed-loop behavior, i.e.
+% \begin{equation}
+% y_{MR}(k) \triangleq M(q)r(k)
+% \label{eq:yMR},
+% \end{equation}
+% \end{itemize}
+
+% Para alcançar o objetivo de minimizar \eqref{eq:Jy}, \cite{campi2002}, para o caso linear, e \cite{campi2006}, para o caso não linear, mostram que, sob certas condições, apresentadas na sequência, ao se minimizar um índice de custo definido como
+To achieve the objective of minimizing \eqref{eq:Jy}, \cite{campi2002}, for the linear case, and \cite{campi2006}, for the non-linear case, show that, under certain conditions, presented in sequence, when minimizing a cost index defined as
+\begin{equation}
+   J_{VR}^N(\vtheta) \triangleq \lim_{N \to \infty}  \frac{1}{N} \sum_{k=1}^N \left[u(k) - C_\theta(q,\vtheta)\bar{e}(k)\right]^2
+   \label{eq:Jvr},
+\end{equation}
+% minimiza-se também o índice $J_{RM}(\theta)$ definido em ~\eqref{eq:Jy}. Em \eqref{eq:Jvr}, $u(k)$ representa o sinal de entrada aplicado ao processo durante a coleta de dados, $C(q,\vtheta)$ o modelo do controlador a ser ajustado e $e(k)$ é o chamado \textit{erro virtual}, definido como
+the index $J_{RM}(\vtheta)$ defined in~\eqref{eq:Jy} is also minimized.
+
+% \textbf{Notation:} Será adotado o símbolo ``til'' sobre as variáveis para indicar que representam dados obtidos, ou calculados, a partir do experimento de coleta de dados, utilizados para fins de identificação dos parâmetros do controlador.
+\textbf{Notation:} The symbol ``tilde'' will be adopted on the variables to indicate that they represent data obtained, or calculated, from the data collection experiment, used for the purpose of identifying the controller parameters.
+
+According to the notation adopted, $\tilde{u}(k)$ em ~\eqref{eq:Jvr} represents the input signal applied to the process during data collection, $C (q,\vtheta)$ the controller model to be adjusted and $\tilde{e}(k)$ is the so-called \textit{virtual error}, defined as
+\begin{equation}
+   \tilde{e}(k) = \tilde{r}(k) - \tilde{y}(k) 
+   \label{eq:ev},
+\end{equation}
+where $\tilde{r}(k)$ is a signal called \textit{virtual reference}, obtained by filtering the output $\tilde{y}(k)$ by the inverse of the reference model $M$ defined in  \eqref{eq:Mmap} and in \eqref{eq:Mq} for a linear case. So, for a linear reference model, the virtual reference can be defined as
+\begin{equation}
+   \tilde{r}(k) = M^{-1}(q){\tilde{y}}(k)
+   \label{eq:refvirt}.
+\end{equation}
+
+% O termo, $\tilde{y}(k)$ em \eqref{eq:ev} e \eqref{eq:refvirt}, representam o sinal de saída amostrado utilizado no experimento.
+The term, $\tilde{y}(k)$ in \eqref{eq:ev} and \eqref{eq:refvirt}, represents the sampled output signal used in the experiment.
+
+% A Figura \ref{fig:Figs-diagrama_VRFT-eps} mostra um diagrama de blocos com as etapas utilizadas no experimento para obteção dos parâmetros do controlador via procedimento VRFT.
+Figure~\ref{fig:Figs-diagrama_VRFT-eps} shows a block diagram with the steps used in the experiment to obtain the controller parameters via the VRFT procedure.
+\begin{figure}[H]
+   \centering
+   \includegraphics{Figs/diagrama_VRFT_maps.eps}
+   % \includegraphics{Figs/diagrama_VRFT.eps}
+   \todo[inline]{Corrigir os termos na figura.} 
+   \caption{Experiment to obtain the data used to identify the controller parameters by the VRFT method: real data (\textit{black solid lines}), virtual data (\textit{blue dashed lines}) and the cotroller to tune in (\textit{red dashed block}).}
+   \label{fig:Figs-diagrama_VRFT-eps}
+\end{figure}
+% onde $\tilde{r}$ é o sinal de \textit{referência virtual}, obtido ao se filtrar a saída $y(k)$ pelo modelo de referência inverso, na forma
+% O termo ``virtual'' é adotado nos sinais de referência e erro para enfatizar que nenhum destes sinais são fisicamente disponíveis, mas apenas calculados para fins de projeto do controlador. \todo{melhorar isso aqui.}
+The term ``virtual'' is adopted in the reference $\tilde{r}$ and in the tracking error $\tilde{e}$ signals to emphasize that none of these signals are physically available, but only calculated for controller design purposes. 
+The dashed lines (in blue) in Figure \ref{fig:Figs-diagrama_VRFT-eps} represent these virtual data, and the red block represents the controller under which the vector of parameters $\bm{\theta}$ need to be adjusted.
+
+% Como mencionado anteriormente, para que $J_{RM}(\vtheta)$ e  $J_{VR}(\vtheta)$ apresentem seus valores mínimos para a mesma solução de parâmetros $\vtheta$, certas condições devem ser satisfeitas. Estas condições são apresentadas na sequência, logo após algumas definições que se mostram importantes para o restante do capítulo.
+The condition for  $J_{RM}(\vtheta)$ and $J_{VR}(\vtheta)$ reach their minimum values for the same parameter solution $\vtheta$ are presented in sequence, right after some definitions and assumptions that are important for the rest of the chapter.
+
+\section{Initial Considerations}\label{sec:vrft_Init_Cons}
+% Nesta seção são apresentadas algumas definições e suposições utilizadas no restante do capítulo.
+This section presents some definitions and assumptions used in the rest of the chapter.
+
+\begin{assum}[The Process]
+   It is assumed that the process is the one presented in section \ref{sec:TheProcess} and therefore, it is a nonlinear process, assumed to be smooth (assumption \ref{ass:psuave}) and invertible (assumption \ref{ass:invert}).
+\end{assum}
+
+\begin{defn}[Ideal Controller]\label{def:idealControler}
+   % O controlador ideai é definido como na seção \ref{sec:ideal_controller} e é representado pelo mapa $C^\star$, que mapeia de $\tilde{e} \mapsto \tilde{u}$. Para o caso linear, usa-se a notação $C^\star(q,\bm{\theta})$ para representações temporais ou $C^\star(z,\bm{\theta})$ para funções de transferência.
+   The ideal controller is defined as in the section \ref{sec:ideal_controller} and is represented by the map $C^\star $, which maps $\tilde{e}\mapsto \tilde{u}$. For the linear case, the notation $C^\star(q,\bm{\theta})$ is used for temporal representations or $C^\star (z,\bm{\theta})$ for transfer functions.
+   % É o controlador que, quando colocado na malha fechada, resulta na mesma saída $\tilde{y}(k)$ que o modelo de referência $M$ (ou $M(q)$ e $M(z)$ para o caso linear), quand ambos estão sobre efeito do mesmo sinal de referência $\tilde{r}$.
+   % \todo[inline]{}
+\end{defn}
+
+% Considerando que uma estrutura para o controlador é previamente escolhida (i.e. se ela é linear ou não, quantos parâmetros considerados), diz-se que esta estrutura é definida por uma <eq>\mathscr{C}<eq>. Ou seja, a classe <eq>\mathscr{C}<eq> representa todos possíveis controladores utilizando aquea mesma estrutura.
+Considering that a structure for the controller is previously chosen (i.e. if it is linear or not, how many parameters are considered, or what regressors are considered in construction), it is said that this structure is defined by a $\mathscr{C}$ class. That is, the $\mathscr{C}$ class represents all possible controllers using the same structure.
+\todo{Olhar se consigo colocar isso de maneira formal (equacao). Vide Bazanella.} 
+
+\begin{assum}[Matched control]\label{ass:machedControl} %% Assumption By of \citep{bazanella2012} pg 13 
+   The ideal controller belongs to control model class considered, i.e. $C^\star(q) \in \mathscr{C}$, or, equivalently
+   \begin{equation}
+      \exists \bm{\theta}_0 : C(q,\bm{\theta}_0)=C^\star(q)
+      \label{eq:assumpMatched}.
+   \end{equation}
+\end{assum}
+
+\begin{assum}[Noise free]
+   \label{ass:noiseFree} 
+   The system is considered to be not affected by noise.
+\end{assum}
+% A não ser quando mencionado o contrário, neste capítulo considera-se que não existem ruídos de medição, ou seja, $\nu(k)$  é nulo e $y_{\theta\nu}(k) = y_\theta(k)$ (Figura \ref{fig:diagrama_MF}).
+Unless otherwise noted, this chapter assumes that there are no measurement noise, that is, $\nu(k)$ is null and $y_{\nu}(k) = y(k)$ (see Figure \ref{fig:diagrama_MF}).
+
+\begin{assum}[The asymptotic counterpart] \label{ass:asympCount}
+   The measured signals $\tilde{u}(t)$ and $\tilde{y}(t)$ are considered realizations of stationary and ergodic stochastic processes so, when the number of available data grows $(N \to \infty)$, the following holds\footnote{The operator $\mathbb{E}[\cdot]^{2}$ represents the expected value operator of a quadratic random variable: $\mathbb{E}[\cdot]^{2} = \lim_{N\to \infty} \frac{1}{N}\sum_{k=1}^{N} \left( \cdot \right)^{2}$.}:
+   $$ J_{\mathrm{VR}}^{N}(\theta) \rightarrow J_{\mathrm{VR}}(\theta)=\mathbb{E}\left[ \left(\tilde{u}-C_\theta[\tilde{e} ]\right)\right]^{2}, $$
+   \todo{Confirmar este quadrado na esperanca.} 
+   so,  $J_{VR}$ is the \textit{asymptotic counterpart} of $J_{VR}^N$ and for the rest of text $J_{VR}$ will be used in place of $J_{VR}^N$ for analysis purposes.
+\end{assum}
+
+\begin{assum}[Linear parametrized controller] \label{ass:LPC}
+   % O controlador é assumido linear nos parâmetros, conforme \eqref{eq:uknl_par}, e será representado pelo mapa $C_{\theta}$, ou por $C_\theta(q, \bm{\theta}, \tilde{e} )$, a depender do contexto. Caso seja linear adota-se $C_\theta(q,\bm{\theta})$ quando em função do tempo, ou $C_\theta(z,\bm{\theta})$ quando na forma de função transferência.
+   The controller is assumed to be linear in the parameters, as \eqref{eq:uknl_par}, and will be represented by the map $C_{\theta}$, or by $C_\theta(q, \bm{\theta}, \tilde{e} )$, depending on the context. If it is linear, $C_\theta(q,\bm{\theta})$ is used as a function of time, or $C_\theta(z,\bm{\theta})$ when in the form of a transfer function.
+\end{assum}
+
+% Note que, a partir da assumption \ref{ass:LPC}, pode-se escrever o controlador $C_\theta(q,\bm{\theta},\tilde{e}) = \bm{\vvarphi}^{T}\bm{\theta}$, sendo $\bm{\vvarphi}$ um vetor de regressores conforme discutido na section \ref{sec:parest}. Com isso, considerando a assumption \ref{ass:asympCount}, tem-se
+Note that, from assumption \ref{ass:LPC}, we can write the controller $C_\theta(q,\bm{\theta},\tilde{e}) = \bm{\vvarphi}^{T}\bm{\theta}$, with $\bm{\vvarphi}$ being a vector of regressors as discussed in section \ref{sec:parest}. Thus, considering the assumption \ref{ass:asympCount}, we have
+\begin{equation}
+   J_{VR}(\bm{\theta}) = \frac{1}{N}\sum_{k=1}^{N} \left[ \tilde{u}(k) - \bm{\varphi}^{T}(k)\bm{\theta} \right]^{2} = \norm{\tilde{u}(k)-\bm{\varphi}^T(k)\bm{\theta}}^{2}
+\label{eq:JVR_reg}
+\end{equation}
+% sendo, $\bm{\Psi}$ uma matriz de regressores, como definido na seção \ref{sec:parest}, equação \ref{eq:yMatrix}.
+where $\bm{\Psi}$ is xx the regressors matrix, as defined in the section \ref{sec:parest}, equation \ref{eq:yMatrix}.
+
+\begin{defn}[SR$q$ process \citep{bazanella2012}] \label{def:SRq}
+   A quasi-stationary process is said to be sufficiently rich of order $q$ -- or simply SR$q$ -- if its spectrum has at least $q$ nonzero components.
+\end{defn}
+
+\begin{defn}[Persistence of excitation \citep{bazanella2012}] \label{def:PoE}
+   A quasi-stationary vector $\vvarphi$ is said to be persistently exciting if $\bar{\mathbb{E}}[\vvarphi(k)\varphi(k)^{T}] > 0$
+\end{defn}
+\todo{colocar uma assumption que esta definição é satisfeita? Acho que basta a PoE que a SRq já se satisfaz.} 
+
+\begin{assum}
+   The signal $\tilde{r}$ used in the excitation of process $P$ is persistently exciting (definition \label{def:PoE}), which implies being SRq (definition \label{def:SRq}).
+\end{assum}
+
+% Assume-se que o processo é aquele apresentado na seção \ref{sec:TheProcess} e portanto, assume-se que as hipóteses \ref{ass:psuave} e \ref{ass:invert} são satisfeitas.
+
+% \begin{assum}[Processo suave]
+   % O processo (eq. \eqref{eq:yknl}) é considerado suave, i.e. $p$ é suave.
+% \end{assum}
+%
+% \begin{assum}[Invertibility Condition]
+   % For any given $i.c.$, if $u_1(0{:}N-1) \neq u_1(0{:}N-1)$, then $P[u_1(0{:}N-1),i.c.] \neq P[u_2(0{:}N-1)]$.
+% \end{assum}
+
+\section{The Ideal Control Design Problem -- The Matched Control}%
+\label{sec:the_ideal_control_design_problem}
+
+Como já mencionado, a proposta do procedimento VRFT é mostrar que ao se resolver o problema de minimizar  $J_{VR}(\bm{\theta})$, ou seja ao se encontrar o vetor de parâmetros $\bm{\theta}$ que leva a esta solução, minimiza-se também a função de custo relativa ao erro de rastreamento do modelo de referência, $J_{RM}(\bm{\theta})$, ou 
+\begin{equation}
+   \bm{\theta}_0 = \argmin_{\forall \bm{\theta} \in \mathbb{R}^n_\theta} J_{VR}(\bm{\theta}) = \argmin_{\forall \bm{\theta} \in \mathbb{R}^n_\theta} J_{RM}(\bm{\theta})
+\label{eq:theta_JVR_JRM}
+\end{equation}
+
+Considerando que \textit{todas} as hipóteses da seção anterior são satisfeitas, \cite{campi2002} mostram que isso é possível para caso linear, assim como para o caso não linear \citep{campi2006}. Com isso, definem o seguinte teorema:
+
+% \vspace{10pt} \noindent\textbf{Caso Não Linear}
+
+\begin{thm}[\cite{campi2006}] 
+   \label{thr:teoremaVRF1}
+   If $\theta_0$ gives the perfect tracking, i.e. $\norm{y_{\theta_0} - M[\tilde{r}] }^2 = 0$, then, $\theta_0$ is a minimizer of $\norm{C_\theta[\tilde{e}] - \tilde{u}}^2$.
+\end{thm}
+
+Proof:
+
+Como $\left\|y_{\theta_{0}}-M[\tilde{r}]\right\|^{2}=0$, deduz-se que
+\begin{equation}
+y_{\theta_{0}}=\tilde{y}.
+\label{eq:yteta_ytilde}
+\end{equation}
+
+Como $y_{\theta_0}$ é a resposta da planta em malha fechada com o controlador $C_{\theta_0}$, e $\tilde{y}$ a resposta da planta $P$ a $\tilde{u}$,
+\begin{equation*}
+y_{\theta_{0}}=P\left[C_{\theta_{0}}\left[\tilde{r}-D y_{\theta_{0}}\right]\right] \texttt{ and } \tilde{y}=P[\tilde{u}].
+\label{eq:}
+\end{equation*}
+Considerando a assumption \ref{ass:invert}, é possível concluir que
+\begin{equation}
+   C_{\theta_{0}}\left[\tilde{r}-D y_{\theta_{0}}\right]=\tilde{u}.
+\label{eq:Cteta}
+\end{equation}
+
+A partir de \eqref{eq:yteta_ytilde}, 
+\begin{equation*}
+   \tilde{r}-D y_{\theta_{0}}=\tilde{r}-D \tilde{y}=\tilde{e}
+\label{eq:}
+\end{equation*}
+que, substituindo em \eqref{eq:Cteta}, resulta em
+\begin{equation*}
+C_{\theta_{0}}[\tilde{e}]=\tilde{u},
+\label{eq:}
+\end{equation*}
+que implica em $\norm{C_\theta[\tilde{e}] - \tilde{u}}^2 = \norm{\tilde{u} - \tilde{u}}^2 = 0$. 
+
+% TODO [DONE] {Coloar isto em algum lugar por aqui:\\ - In contrast with $J$, the $J_{VR}$ cost can be constructed out of data without knowledge of $P$.\\ - Since the controller class is linearly parametrized, $J_{VR}$ is quadratic in $\bm{\theta}$ (and, therefore, easy to minimize).} 
+
+Utilizar o índice $J_{VR}(\bm{\theta})$ no lugar de $J_{RM}(\bm{\theta})$ tem a grande vantagem de não ser necessário o conhecimento de um modelo para o processo, o que classifica o VRFT como uma estratégia DDC. Outra grande vantagem é que, ao se considerar controladores lineares nos parâmetros, a função de custo $J_{VR}(\bm{\theta})$ se torna quadrática, o que facilita sua minimização, permitindo achar seu mínimo global. A \ref{fig:JVR_JRM_plot} exemplifica esse caso. Enquanto $J_{RM}(\bm{\theta})$ pode apresenar mínimos locais que dificultam a localização do mínimo global (como representado em azul na figura), $J_{VR}(\bm{\theta})$, desde que linear nos parâmetros, resulta em uma função com somente um mínimo global bem definido (linha tracejada vermelha na figura).
+\begin{figure}[htpb]
+   \centering
+   \includegraphics{Figs/JVR_JRM_plot.eps}
+   \caption{Typical cost functions for $J_{VR}(\bm{\theta})$ (\ {\color{red} -\ -}\ ) and $J_{RM}(\bm{\theta})$ ({\ \color{blue} -- }).}
+   \label{fig:JVR_JRM_plot}
+\end{figure}
+
+Note que o teorema \ref{thr:teoremaVRF1} é válido caso a assumption \ref{ass:machedControl} seja satisfeita. Em um caso geral, a estrutura, ou classe de $C^\star$ é desconhecida, o que acaba levando à escolha de um uma estrutura para $C_\theta$ pertencendo a uma classe $\mathscr{C}$ tal que assumption \ref{ass:machedControl} não é satisfeita, i.e. $C^\star \notin \mathscr{C} $.
+Uma grande contribuição do VRFT é a escolha de filtros que, aplicados ao sinal amostrado $\tilde{u}$ e ao sinal predito $C_\theta$, aproximam o valor estimado de $\theta$ ao valor ótimo $\theta_0$. Este assunto é discutido com mais detalhes na seção \ref{sec:escolhaFiltro}.
+
+\section{Controller Parameter Identification}%
+\label{sec:controller_parameter_identification}
+\todo[inline]{Falar aqui a identificacao dos parametros do controlador, uso de mínimos quadrados, citar o uso de VIs para casos em que a medida é afetada pelo ruído.} 
+
+Considera-se novamente que \textit{todas} as hipóteses da seção \ref{sec:vrft_Init_Cons} são satisfeitas, e que o experimento de aquisição de dados e cálculo dos valores virtuais, conforme descrito no início do capítulo e ilustrado pela Figura \ref{fig:Figs-diagrama_VRFT-eps}, é aplicado de forma a se obter os dados necessários. Dessa forma, o vetor de parâmetros que minimiza  $J_{VR}(\bm{\theta})$, conforme \eqref{eq:JVR_reg}, pode ser estimado por 
+\begin{equation}
+   \bm{\theta} = \left[\sum_{k=1}^{N} \bm{\varphi}(k) \bm{\varphi}(k)^{\mathrm{T}}\right]^{-1} \sum_{k=1}^{N} \bm{\varphi}(k) \tilde{u}(k).
+\label{eq:VRFT_LS} 
+\end{equation}
+Note que \eqref{eq:VRFT_LS} é a mesma equação apresentada em \eqref{eq:LS}, porém a última é apresentada em forma matricial, e na primeira na forma de somatório.
+Portanto, a solução pode ser escrita em termos do algoritmo de mínimos quadrados ordinário (OLS) ou seus derivados.
+Atenta-se ao fato também que, neste capítulo, o vetor de parâmetros estimado $\hat{\bm{\theta}}$ de \eqref{eq:LS} é considerado apenas como $\bm{\theta}$ por motivos de simplificação de notação. 
+
+Quando a hipótese \ref{ass:noiseFree} não é satisfeita, isto é, os dados amostrados apresentam ruídos, o método dos OLS pode não ser adequado devido a possível polarização do estimador provocado por estes ruídos \citep{aguirre2015}.
+Uma abordagem comum utilizada para reduzir os efeitos dessa polarização, no âmbito do VRFT, é fazer uso do estimador de variáveis instrumentais, ou VI \citep{young1970}. Como, para fins desta qualificação, efeitos de ruídos nas medições ainda não foram analisados, assume-se que os estimadores usados são dados por estimadores OLS.
+
+Uma outra possibilidade para lidar com a polarização é usar o extended least squares estimator, or ELS \citep{aguirre2015,ljung1999} em lugar do OLS, que assim como o estimador VI tem a propriedade de reduzir a polarização (aos custos de um aumento de variância). Esta abordagem foi adotada por \citep{retesNARMAXModelIdentification2019} no que diz respeito a escolha de estrutura de sistemas identificados e pretende-se abordá-la para escolha de estrutura e identificação paramétrica neste trabalho. Porém ainda se apresenta em fase de estudo e será apresentada como proposta futura no Capítulo \ref{cap:Concl}.
+
+
+\section{The Unmatched Control and the Filter Selection}%
+\label{sec:filtro_caso_não_linear}
+Como discutido ao final da seção~\ref{sec:the_ideal_control_design_problem}, caso a assumption~\ref{ass:machedControl} não seja satisfeita, i.e. $C^\star \not\in \mathscr{C}$,  o Teorema~\ref{thr:teoremaVRF1} não mais se aplica. Note que esta é uma situação recorrente na prática, uma vez que quase sempre se tem poucas informações sobre o processo.
+
+Porém, \cite{campi2006} apresentam um filtro que, quando aplicado aos dados usados em $J_{VR}(\bm{\theta})$ produzem controladores bem sintonizados, mesmo quando o controlador pertence a uma classe $\mathscr{C}$ que não a mesma de $C^\star$, desde que esta classe não seja ``muito distante'', ou seja o controlador não deve ser muito sub-parametrizado com respeito ao objetivo de controle.
+
+Para atingir o objetivo mencionado assume-se um funcional de custo aumentado e filtrado dado por
+\begin{equation}
+   J_{VR}(\bm{\theta}^{+}) \triangleq \norm{F[C_{\bm{\theta}^{+}}[\tilde{e}]] - F[\tilde{u}]}^2
+\label{eq:JVRplus}
+\end{equation}
+onde $F$ representa o filtro mencionado e:
+\begin{align}
+   \bm{\theta}^+ &\triangleq  [\bm{\theta}^{T} \ \tilde{\theta} ]^T \quad \tilde{\theta} \in \mathbb{R} ; \\
+   C_{\bm{\theta}^+} &\triangleq C_{\theta}+\tilde{\bm{\theta}}\left(C^\star-C_\Delta\right)
+\end{align}
+sendo $C_\Delta=C_{\bm{\theta}}$ calculado para $\bm{\theta}=\bm{0}$ e pode-se aferir que:
+\begin{itemize}
+   \setlength\itemsep{0.1pt}
+   \renewcommand{\labelitemi}{--}
+   \item $C^\star$ é obtido para $\bm{\theta}_0^+ \triangleq [\bm{0}^T\ 1]^T$;
+   \item $\left\{C_{\theta}\right\}$ é obtido impondo $\tilde{\theta} = 0$.
+   \item $C_\Delta$ representa a parte de $C^\star$ que não pode ser explicada pela família de controladores escolhida.
+\end{itemize}
+
+Uma nova função de custo aumentada para o modelo de referência é definida como
+\begin{align}
+   J\left(\bm{\theta}^+\right) &\triangleq \left\|y_{\bm{\theta}^+}-M[\tilde{r}]\right\|^{2} \\
+   \text { with } y_{\bm{\theta}^+} &=P\left[C_{\theta}+\left[\tilde{r}-D y_{\bm{\theta}^+}\right]\right] .
+\end{align}
+
+O objetivo de controle ideal é minimizar $J_{MR}(\bm{\theta})$, ou
+\begin{equation}
+   \theta^+_0 = \argmin_{\theta^+ \in \mathbb{R}^{n_{\theta^+}}}{J_{MR}(\bm{\theta^+})}
+\label{eq:argmqp}
+\end{equation}
+
+\cite{campi2006} provam que o objetivo de minimizar $J_{MR}(\bm{\theta^+}$ pode ser alcançado com boa aproximação ao se selecionar um filtro que garanta a igualdade entre expansões em séries de Taylor até o termo de grau 2 para $J_{MR}(\bm{\theta^+})$ e $J_{VR}(\bm{\theta}^+)$. Fazendo essa expansão (vide section \ref{sec:prova_da_escolha_do_filtro_vrft}) é possível mostrar que deve-se ter 
+\begin{equation}
+   \left.\frac{\partial^{2} J_{\mathrm{VRFT}}\left(\bm{\theta}^+\right)}{\partial \bm{\theta}^{+2}}\right|_{\bm{\theta}_{0}^{+}}=\left.\frac{\partial^{2} J\left(\bm{\theta}^+\right)}{\partial \bm{\theta}^{+2}}\right|_{\bm{\theta}_{0}^{+}}.
+   \label{eq:condToF}
+\end{equation}
+Se esta igualdade é garantida, os mínimos de $J_{MR}(\bm{\theta^+}$ e $J_{VR}(\bm{\theta^+}$ serão próximos, e consequentemente os parâmetros que os minimizam. Para que isto ocorra, define-se o seguinte teorema:
+\begin{thm}[\cite{campi2006}] \label{thm:filtro_VRFT_nl}
+   Se 
+   \begin{equation}
+       F=(I-M D)\left(\left.\frac{\partial P[u]}{\partial u}\right|_{\tilde{u}}\right)
+       \label{eq:FiltroVRFTNL}
+   \end{equation}
+   então \eqref{eq:condToF} é satisfeita.
+\end{thm}
+
+A prova do teorema \ref{thm:filtro_VRFT_nl}, é apresentada na seção \ref{sec:prova_da_escolha_do_filtro_vrft} do Apêndice \ref{cap:AppA}.
+
+Um problema apresentado pelo filtro \eqref{eq:FiltroVRFTNL} é a dependência do conhecimento de um modelo para a planta. Possíveis soluções podem ser obtidas utilizando um modelo identificado aproximado, o que, de certa forma, faz com que o método perca a característica que o qualifica como um sistema DDC. Porém, a expressão $\left.(\partial P[u]/\partial u)\right|_{\tilde{u}}$ não é usada para projeto, apenas como um filtro para os dados usados na estimação paramétrica e uma identificação precisa não é necessária.
+Além do mais, de acordo com \cite{campi2006}, em muitos casos, desprezar a derivada do processo e rescrevendo a equação do filtro simplesmente como $F=(I-MD)$ resulta em bons resultados, apesar de não se ter nenhuma garantia.
+   
+Para uso do filtro basta que o sinal amostrado, $\tilde{u}$ e o sinal $C_{\bm{\theta}}[\tilde{e}]$ sejam filtrados da seguinte forma:
+\begin{align}
+   \tilde{u}_f &= F[\tilde{u}], \\
+   \tilde{C}_f &= F[C_{\bm{\theta}}[\tilde{e}]].
+\label{eq:}
+\end{align}
+Quando o controlador é linear nos parâmetros, tem-se
+\begin{equation}
+   F[C_{\bm{\theta}}[\tilde{e}]] = F[\Psi_C \bm{\theta}] = F[\Psi_C]\bm{\theta} \implies \tilde{C}_f = F[\Psi_C] \bm{\theta}.
+\end{equation}
+A partir destes dados tratados ($\tilde{u}_f$ e $\tilde{C}_f$), aplica-se o procedimento VRFT visando minimizar o índice filtrado
+\begin{equation}
+   J_{VR_f}(\bm{\theta}) = \norm{F[\Psi_C] \bm{\theta} - F[\tilde{u}]}^2
+\label{eq:JVRfiltrado}
+\end{equation}
+e o parâmetro que o minimiza pode ser encontrado resolvendo 
+\begin{equation}
+   F[\Psi_C]^{T}\left(F[\Psi_C] \theta-F[\tilde{u}]\right)=0 ,
+   \label{eq:OLSFiltered}
+\end{equation}
+em que $\Psi_c$ representa o vetor de dados de entrada do modelo, função de do erro virtual $\tilde{e}$, do sinal de entrada do processo $\tilde{u}$ e possivelmente de um vetor de resíduos.
+A equação \ref{eq:OLSFiltered} pode ser resolvida, por exemplo, pelo estimador OLS ou por estimadores não polarizados para casos ruidosos. A solução será o vetor $\hat{\bm{\theta}}$ de parâmetros estimados que faz com que a matriz de regressores fique não correlacionada com o erro residual do modelo ($F[\Psi_C]-F[\tilde{u}]$).
+
+\todo[inline]{Falar um pouco sobre o modelo de referência? (uma nova secao) Problema do atraso de transporte e o problema de se exigir mais do que se pode.}
+
+\section{Aplication Examples}%%
+\label{sec:aplication_examples}
+
+\begin{exmp}(Controller Parameter identification for a Linear System usinv VRFT procedure)
+   \label{exm:31}
+
+   Para exemplificar o procedimento VRFT, aprenta-se um caso simples, onde o intuito é identificar um controlador para um sistema linear de segunda ordem, de acordo com o procedimento VRFT. O modelo adotado é dado por um sistema ``artificial'', retirado de \cite{wei2008}, e descrito seguinte equação de diferenças, na forma de um modelo ARX:
+   \begin{equation}
+      y_k = -1.7y_{k-1} -0.8y_{k-2} + u_{k-1} + 0.81u_{k-2} + \eta_k,
+   \label{eq:sys_ex_1}
+   \end{equation}
+   onde $u_{k-i} \in \mathbb{R}$ e $y_{k-i}$ $\in \R$, representam, respectivamente, os sinais de entrada e saída para um atraso $i$ em relação a $k$;  $k$ é o índice temporal e $\eta_k$ representa o ruído no sinal de saída, que para fins deste exemplo, considera-se nulo, i.e. $\eta_k=0$.
+   Considera-se que o controlador deve ser tal que a saída do sistema controlado siga uma referência imposta por um modelo de referência dado por um sistema linear de primeira ordem, na forma:
+   Desta forma, o modelo de referência é escolhido como
+   \begin{equation}%
+      M(z) = \frac{1-A}{(z-A)z^{d-1}}
+   \label{eq:Mz}
+   \end{equation}
+   sendo $d$ o atraso de tempo puro desejado, $A=e^{-T_s/tau_M}$ uma grandeza relacionada com a constante de tempo desejada para o sistema em malha fechada, dada por $\tau_m$, e $T_s$ o período de amostragem utilizado no processo de amostragem (ou de decimação).
+   
+   
+   A partir da aplicação de um sinal de excitação  $\tilde{\bm{u}}=[\tilde{u}_1,\ \dots,\ \tilde{u}_N]^T$ na forma de degrau ao processo, de forma que $\tilde{u}_k = u_k$ em \eqref{eq:sys_ex_1}, observa-se sua resposta $\tilde{\bm{y}} = [y_1,\ \dots,\ y_N]^T$. A figura  mostra \ref{fig:u_y_til_VRFT} a evolução temporal destes sinais (gráfico superiores) (gráfico superiores) (gráfico superiores) (gráfico superiores) (gráfico superiores) (gráfico superiores) (gráfico superiores) (gráfico superiores) (gráfico superiores).%
+   % A partir dos dados colhidos, a referência virtual é  calculada por \eqref{eq:refvirt}
+   \begin{figure}[htpb]
+      \footnotesize
+      \centering
+      % \missingfigure{Sinais amostrados}
+      \input{./Matlab/figs/exp31_train_data4.tex}
+      \caption{Temporal evolution of the signals: input of process $\tilde{\bm{u}}$; output of process $\tilde{\bm{y}}$; the calculated virtual reference $\tilde{\bm{r}}$; and the calculated virtual error $\tilde{\bm{e}}$; considering the top to bottom graphs sequence.}
+      \label{fig:u_y_til_VRFT}
+   \end{figure}
+   % \begin{figure}[htpb]
+   %    \footnotesize
+   %    \centering
+   %    % \missingfigure{Sinais amostrados}
+   %    \input{./Matlab/figs/exp31_train_data1.tex}
+   %    \caption{Evolução temporal do sinal de excitação $\tilde{\bm{u}}$, e de saída $\tilde{\bm{y}}$, para identificação do controlador pela estratégia VRFT.}
+   %    \label{fig:u_y_til_VRFT}
+   % \end{figure}
+   O processo \eqref{eq:sys_ex_1} pode ser escrito na forma de função de transferência como
+   \begin{equation}
+      P(z) = \frac{b_{p 1}z + b_{p 2} }{z^2 + a_{p 1}z + a_{p 2}},
+      \label{eq:ex31.Pz}
+   \end{equation}
+   em que $a_{p 1}=1.7$, $a_{p 2}=0.8$, $b_{p 1} = 1$ e $b_{p 2}=0.81$ são os parâmetros do processo, conforme \eqref{eq:sys_ex_1}.
+
+   Form $\tilde{\bm{y}}$ collected, and the reference model \eqref{eq:Mz}, considering $d=1$,  the virtual  reference could be expressed as \eqref{eq:refvirt}, in the transfer function forma
+   \begin{equation}
+      \tilde{r}_k = M^{-1}(q) \tilde{y} = \frac{q-A}{1-A} \tilde{r}_k.
+   \label{eq:ex31rk}
+   \end{equation}
+   In \eqref{eq:ex31rk}, $q$ (time shift operator) is adopted instead of $z$ ($z$-transform variable) to emphasize that we are dealing with time responses. This procedure will be adopted throughout this text when needed.
+
+   Note that \eqref{eq:ex31rk} is a non causal system.
+   However, since $\tilde{\bm{y}}$ is available in advance, in batch, the calculation can be performed.
+   Com y, o erro virtual e pode ser facilmente calculado a partir de \eqref{eq:ev}, i.e.
+   \begin{equation*}
+      \tilde{e}_k = \tilde{r}_k - \tilde{y}_k 
+   \end{equation*}
+
+   Figure \ref{fig:u_y_til_VRFT} shows this \textit{virtual} values (2 bottom ones) calculated over the sampled data $\tilde{\bm{u}}$ and $\tilde{\bm{y}}$ (2 top ones).
+
+   Como o processo neste exemplo é considerado conhecido, o controlador ideal $C^\star(z)$ pode ser calculado conforme \eqref{eq:Cdz}, substituindo-se \eqref{eq:Mz} e \eqref{eq:ex31.Pz}, i.e.
+   \begin{align}
+      C^\star(z) &= \frac{M(z)}{P(z)\left(1-M(z)\right)} \\
+             &= \frac{(1 - A)z^2 + (Aa_{p1} - a_{p1})z - a_{p2} + Aa_{p2}}{b_{p1}z^2 + (b_{p2} - b_{p1})z - b_{p2}} \\
+             &= \frac{0.1813 z^2 + 0.3082 z + 0.145}{ z^2 - 0.19 z - 0.81}
+   \end{align}
+   que pode ser rescrita no domínio do tempo como:
+   \begin{align}
+      \label{eq:emp31uk}
+      u_k &= \frac{1 - A}{b_{p1}}e_k + \frac{Aa_{p1} - a_{p1}}{b_{p1}}e_{k-1} + \frac{Aa_{p2} - a_{p2}}{b_{p1}}e_{k-2} - (b_{p2} - b_{p1})u_{k-1} + b_{p2}u_{k-2} \nonumber\\
+          &=\begin{bmatrix} e_k & e_{k-1} & e_{k-2} & u_{k-1} & u_{k-2} \end{bmatrix}  \bm{\theta}^\star
+   \end{align}
+   % com parâmtros ideais dados por $\bm{\theta}^\star = [\theta^\star_1 \ \theta^\star_2 \ \theta^\star_3 \ \theta^\star_4 \ \theta^\star_5]^T$ $ = [0.181 \ 0.308 \  0.145 \  0.19 \ 0.81]^T $
+   with ideal parameters given by $\bm{\theta}^\star = [\theta^\star_1 \ \theta^\star_2 \ \theta^\star_3 \ \theta^\star_4 \ \theta^\star_5]^T$ $ = [0.181 \ 0.308 \  0.145 \  0.19 \ 0.81]^T $
+   
+
+
+
+   Caso não se conheça os parâmetros ideais, estes podem ser estimados utilizando os dados amostrados, $\tilde{\bm{u}}$ e $\tilde{\bm{y}}$ em lugar de $\bm{u}$ e $\bm{y}$ em \eqref{eq:emp31uk} e, montando-se uma matriz de regressores, por exemplo, dada por
+   \begin{equation*}
+      \bm{\Psi}^T=\begin{bmatrix} \bm{\varphi_1} & \bm{\varphi_1} & \dots & \bm{\varphi_k}  & \dots & \bm{\varphi_N} \end{bmatrix}
+   \end{equation*}
+   onde $\bm{\varphi}^T_k =\begin{bmatrix} \tilde{e}_{k} & \tilde{e}_{k-1} & \tilde{e}_{k-2} & \tilde{u}_{k-1} & \tilde{u}_{k-2} \end{bmatrix}$ é o vetor de regressores.
+   Por meio de técnicas de estimação de parâmetros como o método OLS, é possível estimar com boa aproximação.  
+   Caso o sinal de excitação seja persistentemente excitante, e não haja ruídos, ou este seja não correlacionado com o sinal de excitação e nem com seus valores passados, quando o número de amostras $N$ tende a infinito, i.e. $N \to \infty$, $\theta$ tende a $\bm{\theta}^\star$.
+   Neste exemplo, desconsidera-se o ruído e $\bm{\theta}$ é estimado por
+   \begin{equation*}
+      \hat{\bm{\theta}} = (\bm{\Psi}^T\bm{\Psi})^{-1}\bm{\Psi}\tilde{\bm{u}}
+   \label{eq:}
+   \end{equation*}
+   
+   Realizando o procedimento descrito para os dados apresentados, consideram-se os seguintes casos para projeto do controlador:
+   % a partir da matriz de regressores construída com o vetor de regressores apresentado obtém-se os seguintes os mesmos resultados encontrados pela solução analítica em \eqref{eq:emp31uk}, como era de se esperar uma vez que ruídos não são considerados e o estrutura considerada para o controlador pertence à mesma classe do controlador ideal $C^\star(q)$.
+   \begin{description}
+      \item[caso A] Matched Case: Considera-se um controlador em que o vetor de regressores possui mesma estrutura do controlador ideal, ou seja, $\mathscr{C}^{\star} \in \mathscr{C}_A$, em que $\mathscr{C}^{\star}$ é a classe do controlador ideal e $\mathscr{C}_{A}$, a classe do controlador do caso A;
+      \item[caso B] Unmatched Case: Considera-se um controlador subparametrizado, com vetor de regressores dado por $ \bm{\varphi}^T_A =\begin{bmatrix} e_k & e_{k-1} & e_{k-2} & u_{k-1} \end{bmatrix}$, i.e. $\mathscr{C}^\star \not\in \mathscr{C}_B $;
+      \item[caso C] PID Unmatched Case: Considera-se um controlador sub-parametrizado com vetor de regressores construído de acordo com a estrutura de um controlador PID, definido na forma 
+         \begin{align}
+            C_{C}(q) &= \left(K_p + K_i\frac{q}{q-1} + K_d\frac{q-1}{q}\right)\tilde{e}_k \nonumber \\
+                     &= \left(K_p + K_i\frac{q}{q-1} + K_d\frac{q-1}{q}\right)\left(\tilde{r}_k-\tilde{y}_k\right) \nonumber \\
+                     &= \left(K_p + K_i\frac{q}{q-1} + K_d\frac{q-1}{q}\right)\left(\frac{q-A}{1-A}-1\right)\tilde{y}_k \nonumber \\
+                     &= \left(K_p + K_i\frac{q}{q-1} + K_d\frac{q-1}{q}\right)\frac{q-1}{1-A}\tilde{y} \nonumber \\
+                     &= \begin{bmatrix} 
+                        \dfrac{\tilde{y}_{k+1}-\tilde{y}_k}{1-a} & 
+                        \dfrac{\tilde{y}_{k+1}}{1-a} &
+                        \dfrac{\tilde{y}_{k+1}-2*\tilde{y}_k+\tilde{y}_{k-1}}{1-a} 
+                     \end{bmatrix} 
+            \begin{bmatrix}  K_p & K_i & K_d  \end{bmatrix}^T   
+            \label{eq:} 
+         \end{align}
+         \todo{Colocar detalhes do processo de construcao do regressor no apêndice?}
+         O vetor de de regressores, neste caso, é descrito por
+         \begin{equation}
+            \bm{\varphi}^T_B = \begin{bmatrix} 
+               (\tilde{y}_{k+1}-\tilde{y}_k)/(1-a) &
+               (\tilde{y}_{k+1})/(1-a) &
+               (\tilde{y}_{k+1}-2*\tilde{y}_k+\tilde{y}_{k-1})/(1-a)
+            \end{bmatrix} 
+            \label{eq:}
+         \end{equation}
+   \end{description}
+   Note que, apesar do regressor no caso B possuir menos termos que o regressor do caso A, o controlador pertence a classe do controlador A, uma vez que pode ser escrito por
+   \begin{equation*}
+      C_C(z) = \frac{(Kd + Ki + Kp)z^2 + (- 2Kd - Kp)z + Kd}{z^2 - z}
+   \end{equation*}
+   porém a classe do controlador do caso A é mais ampla (classe de B está contida na classe de A).
+   Pelo mesmo procedimento de identificação  anterior são obtidos os seguintes parâmetros para os 3 casos:
+   \begin{align}
+      \label{eq:ex31_par3casos}
+      \bm{\theta}_A^T &= \begin{bmatrix}   0.168 & 0.166 & 0.039 & 0.988 \end{bmatrix} \nonumber \\
+      \bm{\theta}_B^T &= \begin{bmatrix}   0.168 & 0.166 & 0.039 & 0.988 \end{bmatrix} \nonumber \\
+      \bm{\theta}_C^T &= \begin{bmatrix}   -0.202 & 0.351 & 0.0229 \end{bmatrix} \nonumber 
+   \end{align}
+   
+   A Figura \ref{fig:exp31_time_resp} mostra a resposta temporal do sistema em malha fechada com os controladores obtidos para os 3 casos, juntamente com o sinal do modelo de referência. É considerado um sinal de referência quadrado e que uma perturbação de magnitude 0.5 é aplicada na saída, no instante $k=75$. A figura mostra também a resposta para um quarto caso a ser discutido a frente.
+   \begin{figure}[htpb]
+      \sbox0{\hwplotA} \sbox1{\hwplotB} \sbox2{\hwplotC} \sbox3{\hwplotD} \sbox4{\hwplotE}
+      \footnotesize
+      \centering
+      \hspace*{-1.2cm}
+      % \input{./Figs/plot_matlab2tikz.tex}
+      \input{./Matlab/figs/exp31_time_response.tex}
+      \caption{Resposta do sistema em malha fechada ao uma sinal de referência quadrado (gráfico superior) e erro absoluto (gráfico inferior) para os casos: caso A (\usebox1); caso B (\usebox2); caso C (\usebox3); e caso D (\usebox4). A resposta do modelo de referência é representada por  (\usebox0) no gráfico superior.}
+      \label{fig:exp31_time_resp}
+   \end{figure}
+
+   Nota-se que o Caso A, por possuir mesma estrutura e parâmetros idênticos ao controlador ideal, tem resposta idêntica ao modelo de referência (exceto, obviamente, durante os primeiros instantes do transitório após a aplicação da perturbação).
+   %
+   O caso B, por sua vez, apresenta algum erro de rastreamento, mesmo em regime permanente. Isto pode ser explicado pelo fato do modelo do controlador não ter sido capaz de identificar o efeito de integração. Este efeito pode ser observado quando a soma dos coeficiente dos termos em $\tilde{u}$ que compõem o regressor, resulta em 1. Neste caso, o termo $\tilde{u}_{k-1}$ (único regressor em $\tilde{u}$) é $0.988 \approx 1$, mas não exatamente 1.
+   %
+   O caso 3, devido a forma em que o regressor é construído, impõe-se a restrição que haja o integrador, o que permite que o controlador seja expresso com apenas 3 regressores. O resultado, como pode ser observado na Figur~\ref{fig:exp31_time_resp}, é a eliminação do de rastreamento, mesmo sob efeito de perturbação externa.
+
+   Ressalta-se aqui que, apesar do efeito de integração não ser identificado no caso B, isto pode ser imposto, por exemplo, com o uso de métodos como o mínimos quadrados com restrições, ou CLS, \cite{draper1998}. O caso D a seguir considera esta modificação aplicada no caso B, forçando o aparecimento de um polo em zero. A resposta temporal é também mostrado na Figura \ref{fig:exp31_time_resp}.
+
+   \todo{Olhar o pq desta referencia não querer aparece (draper1998).} 
+   \begin{description}
+      \item[case D] Considera-se neste caso, que o procediment CLS é adotado após a estimação dos parâmetros do caso B. Assume-se a restrição $c=S \bm{\theta}_B$, com $c=1$ e $S = [0\ 0\ 0 \ 1]^T$. O novo vetor de parâmetros $\bm{\theta}_D$ é calculado por \cite{draper1998}:
+         \begin{equation}
+            asdf
+         \end{equation}
+   \end{description}
+   \todo[inline,color=green]{parei aqui}
+
+   Como pode ser observado na Figura \ref{fig:exp31_time_resp}, o erro em regime permanente é eliminado, como esperado.
+   % ticklabel style = {font=\scriptsize},
+   % y tick label style={/pgf/number format/.cd,%
+   %           scaled y ticks = false,
+   %           precision = 3,
+   %           fixed,
+   %           fixed zerofill
+   %         },
+
+\end{exmp}
+
+\subsection{ Chapter's final considerations }%
+\label{sub:considerações_finais}
+%
+   Um benefício de se especificar o controlador como no caso C do exemplo \ref{exm:31},  é que se parte de um conhecimento a priori (sabe-se que o controlador deve ter um integrador, por exemplo). Para muitos casos, onde deseja-se sintonizar um controlador pré-existente, como controladores da família PID, isto pode ser muito útil. Este fato tem grande apelo em aplicações industriai.
+%
+   Porém existem casos em que uma resposta precisa é necessária. Principalmente para sistemas fortemente não lineares, em que um controlador com estrutura (que pode ser não linear) pré estabelecida  adequada pode ser difícil de se obter.
+   Neste sentido, o principal foco deste trabalho se dá na seleção desta estrutura adequada com nenhum ou algum conhecimento prévio. Como será visto adiante, no Capítulo \ref{cap:CCS}, um método de busca de estrutura do controlador por uma abordagem aleatorizada é proposto.
+   Neste caso, será necessário que um universo suficientemente grande de modelos possam ser gerados facilmente.
+   Neste sentido, representar estes modelos utilizando modelos do tipo NARX (ou NARMAX), como no caso B, ao invés de estruturas predefinidas, como no caso C.
+   Para aproveitar as informações conhecidas ou desejadas sobre o controlador, uma proposta deste trabalho é incluir essas informações no processo de identificação de forma posteriori, utilizando, por exemplo, o estimador CLS, conforme mostrado no caso D do exemplo.
+%
+   Como será visto, o método VRFT será uma das principais ferramentas utilizadas para o ferramental proposto no capítulo \ref{cap:CCS}.
+
+% % \begin{figure}[H]
+%    \centering
+%    % \input{/home/joao/DADOS/GDRIVE/DOUTORADO/GIT/RaCSS/DADOS/s.sis2aordem.VRFT.RaMSS/plot1.tex}
+%    % \input{Figs/Originals/myPlot.tex}
+%    % \input{Figs/s.heater.var.dissip.VRFT_output.mf.tex}
+%    \caption{}
+%    \label{fig:}
+% \end{figure}

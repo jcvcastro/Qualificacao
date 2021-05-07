@@ -1,0 +1,329 @@
+% \section{Control perfomance criteria}
+
+% Como o objetivo deste trabalho é lidar com identificação e escolha de estruturas com o auxílio de estratégias VRFT, a serem aboradadas no capítulo \ref{cap:VRFT}, alguns conceitos necessários são apresentados nesta seção.
+%
+% Um elemento fundamental para projeto e análise de controladores na teoriade controle baseada em otimização, como é o caso do VRFT, é o conceito de \textit{desempenho de controle}. Na forma geral, este conceito pode ser expresso como a solução de um problema definido como
+% \begin{equation}
+%    \min_{\bm{\theta}} J(\bm{\theta}),
+% \end{equation}
+% onde $\vtheta \in \bm{R}$ é um vetor de $N$ parâmetros adotado como variável decisão e $J(\vtheta)$ é uma \textit{função de custo}\footnote{Outros termos também são conhecidos na literatura, como \textit{índice (ou função) de desempenho}, ou ainda, \textit{função objetivo}.}. Quanto menor o valor de $J$, melhor o desempenho segundo o critério adotado. Dependendo do objetivo de controle ou até mesmo por questões de garantias analíticas de estabilidade, diferentes funções de custo podem ser adotadas. Uma abordagem muito comum é escolher uma função de custo baseada na  norma-2 quadrática média\footnote{A norma-2 de um sinal discreto, ou vetor, $x(k)$ é definida como $||x(k)|| \triangleq \sqrt{ \sum_{k=1}^{N} [x(k)]^{2} }$. Elevando esse valor ao quadrado temos a norma-2 quadrática, que representa a energia do sinal que, dividida pelo número de amostras, como em \eqref{eq:H2}, resulta em sua energia média.}
+% na forma
+% \begin{equation}
+%    ||x(k)||^{2} =\frac{1}{N}\sum_{k=1}^{N} \left[ x(k) \right]^{2} \triangleq \bar{\E} \left[ x(k) \right]^{2}
+%    \label{eq:H2}
+% \end{equation}
+% em que $x(k)$ representa uma função genérica, $N$, o número de amostras e $\bar{\E}\left[ \cdot \right] $, um operador definido como
+% \begin{equation}
+%    \bar{\E}[x(k)] \triangleq \frac{1}{N}\sum_{k=1}^{N} [x(k)],
+% \end{equation}
+% que representa o cálculo da média amostral, e será usado no decorrer do texto em substituição ao somatório, por conveniência.
+%
+% O critério apresentado em \eqref{eq:H2} é conhecido como \textit{critério de desempenho} $H_2$ e é o que se adota neste trabalho e, para fins de objetividade, será o único abortado neste texto.
+%
+% O critério  $H_2$, para fins de controle, é definido de acordo com o objetivo de controle. Estes objetivos, em geral, são adotados como: (1) rastreamento de referência, (2) rejeição de ruídos e (3) economia de esforço de controle. Critérios mistos adotando mais de um destes objetivos, podem também ser definidos, como é o caso do (4) composite performance criteria. As próximas seções tratam destes critérios com um pouco mais de detalhes.
+
+\section{Control System Setup and Notations}%
+\label{sec:system_setup_}
+
+Nesta seção apresenta-se o sistema em malha fechada considerado, definindo as equações para seus componentes e introduzindo a notação utilizada ao longo do texto. Como pretende-se lidar com sistemas não lineares, adota-se a notação apresentada em \cite{campi2006}. Quando lidando com sistemas lineares, porém, esta notação pode parecer mais pesada que o necessário e uma notação mais usual pode ser adotada. Essas notações, são apresentadas no escopo do sistema de controle considerado e são detalhadas nas próximas subseções.
+
+\subsection{The control system}%
+\label{sub:o_sistema_de_controle}
+
+Considera-se um sistema de controle clássico do tipo SISO de um grau de liberdade, que pode ou não se encontrar sobre efeito de ruídos no sinal de saída. A Figura \ref{fig:diagrama_MF} apresenta o diagrama de blocos deste sistema, onde $C(q, \bm{\theta}, e)$ representa o Controlador, função do vetor de parâmetros $\bm{\theta}$ e $P(q,u)$, o modelo do processo, ou planta, que pode ser ou não conhecido. Os sinais $r(k)$,
+\todo{Corrigir aqui. Usar somente P e C no diagrama e corrigir neste parágrafo} 
+$u(k)$, $\nu(t)$, $e(k)$, $y(k)$, e $y_\nu(k)$ são, respectivamente, os sinais de referência, controle, ruído, erro rastreamento, saída do processo e, por último, saída com ruído (ou sinal medido).
+
+\begin{figure}[htpb] 
+   \centering
+   \includegraphics[width=0.8\textwidth]{Figs/diagrama_mf.eps}
+   \todo[inline]{Mudar $e(k), u(k), y(k)$ e $y_{\nu}$, para $e_\theta(k), u_\theta(k), y_{\theta\nu}(k)$? Terei que mudar no texto também. Vide \ref{ass:noiseFree}.} 
+   \caption{Sistema de controle.}
+   \label{fig:diagrama_MF}
+\end{figure}
+
+\subsection{The process}%
+\label{sec:TheProcess}
+
+O processo, ou planta, $P$ é um processo não-linear discreto no tempo do tipo SISO, com dinâmica não linear descrita como
+\begin{equation}
+   y(k)=p\left(y(k-1), \ldots, y(k-n_{P y}), u(k-1), \ldots, u(k-n_{P u})\right),
+   \label{eq:yknl}
+\end{equation}
+onde $p$ é uma função representando o processo, $n_{P y}$ é o máximo atraso na saída, $n_{P u}$ é o máximo atraso na entrada e $k$ o índice temporal.
+
+Por simplificação, é considerado que o atraso de tempo puro de $u$ para $y$ em $P$ é 1, mas o procedimento pode ser estendido sem problemas para atrasos maiores.
+
+Considera-se $P$ como um mapa não-linear que opera de $\mathbb{R}^{N}$ para $\mathbb{R}^{N}$. Quando sujeito às condições iniciais $i.c.= (y(0), \ldots, y(1-n_{P y}), u(-1), \ldots, u(1-n_{P u}) )$ e a um sinal de entrada no intervalo $[0, N-1]$ definido como $u(0{:}N-1) \triangleq [u(0) \cdots u(N-1)]^{T}$, $P$ gera uma saída dada por
+\begin{equation}
+   y(1{:}N) = P[u(0{:}N-1), \text { i.c. }].
+\label{eq:Pnl}
+\end{equation}
+
+Adotam-se as seguintes hipóteses:
+\begin{assum}[ Process smoothness ]\label{ass:psuave}
+   A função $p$ que representa o processo é suave.
+\end{assum}
+\begin{assum}[ Uniqueness of the solution ]\label{ass:invert}
+   Para quaisquer condições iniciais dadas, se $u_{1}(0{:}N-1) \neq u_{2}(0{:} N-1)$, então $P\left[u_{1}(0{:} N-1), i . c .\right] \neq P\left[u_{2}(0{:} N-1), i . c\right]$.
+\end{assum}
+
+A hipótese~\ref{ass:psuave} garante a invertibilidade do mapa $P$. A invertibilidade de $P$ para um sinal de entrada definido no intervalo $\left[ 0{:}N-1 \right]$
+implica na invertibilidade do mapa em um intervalo $[0{:}T]$, com $T\le N-1$ \citep{campi2004}. 
+% COMTEMP \todo{Ref.\ aqui --olhar \citep{campi2006}.} 
+
+% COMTEMP \todo[inline]{Acabar aqui.} 
+
+\subsection{The controller}%
+\label{sub:o_controlador}
+
+O controlador considerado, assim como o processo, é representado por um modelo não-linear (que pode também ser linear). Para fins de identificação dos parâmetros pelo método VRFT, assunto abordado no capítulo \ref{cap:VRFT}, assume-se que uma estrutura (ou classe) é previamente escolhida. Este controlador pode ser descrito como
+\begin{equation}
+   u(k)=c\left(u(k-1), \ldots, u(k-n_{C u}), e(k), \ldots, e(k-n_{C e})\right),
+\label{eq:uknl}
+\end{equation}
+em que $n_{Cu}$ e $n_{Ce}$ são os máximos atrasos no sinal de controle (saída do controlador e no sinal de erro de rastreamento (entrada do controlador).
+
+Assim como para o processo, o controlador é sujeito às condições iniciais $i.c.= u(-1), \ldots, u(-n_{C u}), e(-1), \ldots, e(-n_{C e})$
+e quando alimentado com o sinal de erro $e(0{:}N-1)$, gera o sinal de controle $u(0{:}N-1)$, que é representado por
+\begin{equation}
+   u(0{:}N-1)=C[e(0{:}N-1), i.c.].
+\label{eq:Cnl}
+\end{equation}
+
+Neste trabalho, um dos objetivos é selecionar um controlador adequado dada uma classe fixa de controladores pelo método VRFT, conforme abordado no capítulo \ref{cap:VRFT}. Essa classe é formada por todos controladores parametrizados por
+\begin{equation}
+   u(k)=c\left(u(k-1), \ldots, u(k-n_{C u}), e(k), \ldots, e(k-n_{C e}); \bm{\theta}\right),
+\label{eq:uknl_par}
+\end{equation}
+sendo $\bm{\theta} \in \mathbb{R}^{n_\theta}$ um vetor de $n_{\theta}$ parâmetros. O controlador parametrizado por $\bm{\theta}$ será aqui indicado por $C_{\theta}$, e o sinal de controle \eqref{eq:uknl} fica na forma 
+\begin{equation}
+   u_{\theta}(0{:}N-1)=C_{\theta}[e(0{:}N-1), i.c.],
+\label{eq:utheta}
+\end{equation}
+com
+\begin{equation}
+   e(0{:} N-1)\triangleq r(0{:} N-1)-y(0{:} N-1)
+\label{eq:erro}
+\end{equation}
+representando o erro de rastreamento.
+
+A seguinte hipótese é assumida para o controlador:
+\begin{assum}
+   % O controlador $c(k)$ é uma função escalar \textit{suave} do vetor de parâmetros $\bm{\theta}$, de $u(k-1:k-n_{Cu})$  e de $e(k-0:k-n_{Ce})$, ou de forma simplificada
+   O controlador $c$ é representado por uma função escalar parametrizada como em \eqref{eq:uknl_par}, e assumido suave, ou de forma simplificada
+   \begin{equation}
+      c:\mathbb{R}^{n_{Cu}+n_{Ce}+1+n_{\theta}} \mapsto \mathbb{R} \text{ é suave}.
+      \label{eq:assumcon}
+   \end{equation}
+\end{assum}
+
+
+
+\subsection{The feedback system}%
+\label{sub:o_sistema_realimentado}
+
+As interconexões do sistema em malha fechada apresentado na Figura \ref{fig:diagrama_MF}, juntamente com as equações do processo \eqref{eq:Pnl} e do controlador \eqref{eq:Cnl} resultam na relação
+\begin{align}
+   y(1: N) &=P[u(0{:} N-1), i . c .] \nonumber \\
+   &=P[C[e(0{:} N-1), i . c .], i . c .]
+   \label{eq:CLSnl}
+\end{align}
+
+\subsection{Notation simplification}%
+\label{sub:simplificações_nas_notações}
+
+Por simplificações nas notações, considera-se as condições iniciais da planta e do controlador nulas. Tal requerimento não é necessário, porém só leva  a complicações desnecessárias, principalmente na notação. Além do mais, se as N é grande o suficiente, as condições iniciais influenciam pouco para casos estáveis.
+Além disso, os argumentos temporais são omitidos, resultando no uso dos símbolos: $u$ para representar $u(0{:}N-1)$, $r$ para $r(0{:}N-1)$, $e$ para $e(0{:}N-1)$ e  $y$ para $r(1{:}N)$. Note o avanço temporal de $y$ em relação às outras variáveis. Desta forma, representa-se  $y(0{:}N)$ é representado por $Dy$, sendo $D$ uma matriz nilpotente de deslocamento em atraso definida como
+\begin{equation}
+   D \triangleq \begin{bmatrix} 
+      0 & 0 & \dots & 0 & 0 \\
+      1 & 0 & \dots & 0 & 0 \\
+      0 & 1 & \dots & 0 & 0 \\
+      \vdots & \vdots & \ddots & \vdots & \vdots \\
+      0 & 0 & \dots & 1 & 0 \\
+   \end{bmatrix} 
+\label{eq:}
+\end{equation}
+
+Com isso, \eqref{eq:CLSnl} pode ser rescrita como
+\begin{equation}
+   y = P[C[r-Dy]]
+   \label{eq:ymf}
+\end{equation}
+Ou, utilizando o controlador parametrizado de \eqref{eq:utheta},
+\begin{equation}
+   y_{\theta} = P[C_{\theta}[r-Dy_{\theta}]]
+   \label{eq:ytheta}
+\end{equation}
+
+
+\subsection{The control objective}%
+\label{sub:the_reference_model}
+
+Um elemento fundamental para projeto e análise de controladores na teoriade controle baseada em otimização, como é o caso do VRFT, é o conceito de \textit{desempenho de controle}. Na forma geral, este conceito pode ser expresso como a solução de um problema definido como
+\begin{equation}
+   \min_{\bm{\theta}} J(\bm{\theta}),
+\end{equation}
+onde $\vtheta \in \mathbb{R}$ é um vetor de $n_{\theta}$ parâmetros adotado como variável decisão e $J(\bm{\theta})$ é uma \textit{função de custo}\footnote{Outros termos também são conhecidos na literatura, como \textit{índice (ou função) de desempenho}, ou ainda, \textit{função objetivo}.}. Quanto menor o valor de $J(\bm{\theta})$, melhor o desempenho segundo algum critério adotado. Dependendo do objetivo de controle, ou até mesmo por questões de garantias analíticas de estabilidade, diferentes funções de custo podem ser adotadas. Uma abordagem muito comum é escolher uma função de custo baseada na  norma-2 quadrática média\footnote{A norma-2 de um sinal discreto, ou vetor, $x(t)$ é definida como $||x(t)|| \triangleq \sqrt{ \sum_{t=1}^{N} [x(t)]^{2} }$. Elevando esse valor ao quadrado temos a norma-2 quadrática, que representa a energia do sinal que, dividida pelo número de amostras, como em \eqref{eq:H2}, resulta em sua energia média.}
+na forma
+\begin{equation}
+   ||x(k)||^{2} =\frac{1}{N}\sum_{k=1}^{N} \left[ x(k) \right]^{2} \triangleq \bar{\E} \left[ x(k) \right]^{2}
+   \label{eq:H2}
+\end{equation}
+em que $x(k)$ representa uma função genérica, $N$, o número de amostras e $\bar{\E}\left[ \cdot \right] $, um operador definido como
+\begin{equation}
+   \bar{\E}[x(k)] \triangleq \frac{1}{N}\sum_{k=1}^{N} [x(k)],
+\end{equation}
+que representa o cálculo da média amostral, e será usado no decorrer do texto em substituição ao somatório, por conveniência.
+
+O critério apresentado em \eqref{eq:H2} é conhecido como \textit{critério de desempenho} $H_2$ e é o que se adota neste trabalho e, para fins de objetividade, será o único abortado neste texto.
+
+O critério  $H_2$, para fins de controle, é definido de acordo com o objetivo de controle. Estes objetivos, em geral, são adotados como: (1) rastreamento de referência, (2) rejeição de ruídos e (3) economia de esforço de controle. Critérios mistos adotando mais de um destes objetivos, podem também ser definidos, como é o caso do (4) composite performance criteria. As próximas seções tratam destes critérios com um pouco mais de detalhes.
+
+
+\subsubsection{The Reference Tracking Objective}%
+\label{sub:the_reference_tracking_objective}
+Um dos principais objetivos do controle em malha fechada é fazer com que o sinal controlado siga um sinal de referência desejado, de modo que sejam o mais próximo possível. Desprezando-se o efeito do ruído na saída, e considerando um controlador parametrizado, a resposta do sistema em malha fechada é dada por \eqref{eq:ytheta}.
+
+Esse objetivo pode ser traduzido como a minimização de uma função custo dada pela norma-2 do erro de rastreamento, na forma
+\begin{equation}
+   % J(\bm{\theta}) = \bar{\E}\left[ r(t) - y_r(t,\bm{\theta}) \right].
+   J_r^N(\bm{\theta}) \triangleq || r - y_\theta ||^2 .
+   \label{eq:Jr}
+\end{equation}
+% onde o operador $\bar{\E}\left[ \cdot \right] $ (operador de média amostral), é definido como
+% \begin{equation}
+% \bar{\E}[\cdot] \triangleq \frac{1}{N}\sum_{k=1}^{N} [\cdot]^{2},
+% \end{equation}
+% e será usado no decorrer do texto em substituição ao somatório por conveniência.
+
+\subsubsection{The Reference Model Objective}%
+\label{sub:The Reference Model Objective}
+
+Um fato bem conhecido na comunidade de controle é que na prática é impossível fazer com que a saída siga perfeitamente o sinal de referência durante todo o tempo, ou seja \eqref{eq:Jr} nunca será zero.
+Para contornar esse fato uma saída é relaxar o objetivo de rastreamento por outro que satisfaça pré-requisitos desejados (como tempo de acomodação, instante de pico, sobressalto máximo, dentre outros), mas que seja menos exigente que a referência original.
+
+Esse novo objetivo é traduzido para um modelo conhecido como \textit{modelo de referência} representado aqui por um mapa de $\mathbb{R}^{N}$ para $\mathbb{R}^{N}$, que mapeia um sinal de referência, digamos, $\tilde{r}$ para um sinal de saída $\tilde{y}$ com um comportamento desejado\footnote{o símbolo \ $\tilde{}$ \ enfatiza que estes sinais são para o modelo de referência.}.
+\begin{equation}
+   M:\tilde{r} \in \mathbb{R}^N \mapsto \tilde{y} \in \mathbb{R}^N
+\label{eq:Mmap}
+\end{equation}
+Este mapa, a princípio pode ser um modelo não linear, desde que seja suave e invertível. Porém, em geral, por conveniência, é escolhido como um modelo linear, mas ainda sim deve ser invertível. Defini-se a seguinte hipótese:
+\begin{assum}[Invertibilidade do modelo de referência]
+   $M$ é triangular inferior e invertível.
+\end{assum}
+O fato de $M$ ser adotado como triangular inferior garante que será causal, com atraso puro maior ou igual a 1.
+Um exemplo de escolha típica para $M$, para o caso linear, é o filtro
+\begin{equation}
+   M(q)=\frac{b_{1} q^{-1}+\cdots+b_{n_{M r}} q^{-n_{M r}}}{1+a_{1} q^{-1}+\cdots+a_{n_{M y}} q^{-n_{M y}}}
+\label{eq:Mq}
+\end{equation}
+sendo $n_{Mr}$ e $n_{My}$ os máximos atrasos pra a referência e para a saída, respectivamente, e $q$ um operador de atraso. No domínio do tempo, \eqref{eq:Mq} corresponde a 
+\begin{align}
+   \label{eq:ytMr}
+   \tilde{y}(k)=-a_{1} \tilde{y}(k-1)-\cdots &-a_{n_{M y}} \tilde{y}\left(k-n_{M y}\right) +b_{1} \tilde{r}(k-1)+\cdots+b_{n_{M r}} \tilde{r}\left(k-n_{M r}\right)
+\end{align}
+
+Uma vez definido o modelo de referência que traduz o comportamento desejado em malha fechada, o novo objetivo de controle é traduzido como
+
+   % e será, neste texto, referido como $M(z)$, quando na forma de função de transferência (linear) ou $M(q)$ quando na forma de modelos temporais (linear ou não linear), ou simplesmente $M$ quando na forma apresentada na section \ref{sec:}. Neste sentido, uma nova função de custo é definida como
+\begin{equation}
+   J_{RM}^N(\bm{\theta}) \triangleq \left\lVert y_\theta - \tilde{y} \right\lVert^{2} = \left\lVert P[C_\theta[\tilde{r}-Dy_\theta]] - M[\tilde{r}] \right\lVert^{2}
+   % J_{RM}^N(\bm{\theta}) \triangleq \bar{\E}\left[ y_r(k,\bm{\theta}) - y_{RM}(k) \right]^{2} = \bar{\E}\left[ T(q,\bm{\theta},r(k)) - M(q,r(k)) \right]^{2}
+   \label{eq:Jy}
+\end{equation}
+sendo $\tilde{y} = M[\tilde{r}]$ o sinal de saída do modelo de referência desejado, quando sobre efeito de um sinal de referência $r$. Tal critério é conhecido como \textit{critério do modelo de referência}.
+
+
+\subsubsection{The Noise Rejection Objective}%
+\label{sub:the_noise_rejection_objective}
+
+Outro objetivo comum em sistemas de controle é minimizar o efeito do ruído no sinal de saída. O sinal de saída devido somente a atuação do sinal de ruído no processo pode ser escrito como
+\begin{equation}
+   y_{\theta\nu}(\bm{\theta}) \triangleq S_\theta[\nu] = \nu-P[C_\theta[Dy_{\theta\nu}],
+\end{equation}
+em que $\nu \triangleq \nu(0{:}N)$ representa o sinal de ruído e $S_{\theta}$ um mapa de ruído para a saída do processo, ou seja $M:\nu \mapsto y_{\theta\nu}$, que, para o caso linear, é também conhecido como função sensibilidade. Quando analisada a magnitude deste sinal em função de alguma norma, tem-se o critério de desempenho de rejeição de ruído $J_\nu^N(\bm{\theta})$ que, utilizando a norma-2, é dado por
+\begin{equation}
+   J_\nu^N(\bm{\theta}) \triangleq \norm{ y_{\theta\nu} }^2 = \norm{ S_\theta[\nu] }^2.
+   \label{eq:Jnoise}
+\end{equation}
+
+Assim como no caso do rastreamento, não é possível a eliminação completa do efeito do ruído e um relaxamento neste critério é desejável, pelos mesmos motivos. Neste caso é definida uma função sensibilidade desejada $S_{M}$\footnote{O índice $M$ é utilizado para manter a analogia com o índice utilizado pelo modelo de referência para o caso de rastreamento.} e adota-se o critério
+\begin{equation}
+   J_{RM\nu}^N(\bm{\theta}) \triangleq  \norm{S_\theta[\nu] - S_M[\nu]}^{2}.
+   \label{eq:JeRM}
+\end{equation}
+
+
+
+
+
+\subsubsection{The Economy of Control Effort Objective}%
+\label{sub:the_economy_of_control_effot_objective}
+
+Um objetivo comum no projeto de controladores, principalmente na área de controle ótimo, é a minimização do esforço de controle. Para minimizar o sinal de controle o seguinte índice pode ser definido:
+\begin{equation}
+   J_u^N(\bm{\theta}) \triangleq \norm{ u(k) }^{2},
+   \label{eq:Ju}
+\end{equation}
+sendo $u(k)$ o sinal de controle. Porém este índice não deve ser usado sozinho, uma vez que $J_u^N(\bm{\theta}) = 0$ implicaria em $u \equiv 0$. Portanto o que se faz é utilizar-se de uma combinação deste índice, com outros, por exemplo, com o objetivo de rastreamento de referência, resultando em 
+\begin{equation}
+   J_\lambda^N = J_{RM}^N(\bm{\theta}) + \lambda J_u^N(\bm{\theta})
+   \label{eq:Jl}
+\end{equation}
+em que $\lambda \in \mathbb{R}$ representa um parâmetro de ajuste.
+Ao se utilizar de controladores baseados em modelo de referência, como o caso do VRFT a ser visto no \ref{cap:VRFT}, um efeito de economia de esforço de controle pode ser obtido ao se escolher um modelo de referência adequado. Portanto, neste trabalho a inclusão do índice \eqref{eq:Ju} na função de custo é desconsiderado.
+
+
+
+\subsubsection{The Composite Performance Objective}%
+\label{sub:the_composite_performance_objective}
+
+Outro objetivo, mais realista que o de rastreamento de referência, é o \textit{composite performance}, que objetiva tanto reduzir o erro de rastreamento quanto rejeitar efeitos do ruído na saída. Este critério é dado por
+\begin{equation}
+   J_T^N(\bm{\theta}) \triangleq \norm{ y_{\theta\nu} - \tilde{y} }^2,
+   \label{eq:JT}
+\end{equation}
+em que, diferentemente de $\tilde{y}$ em \eqref{eq:Jy}, o sinal $y_{\theta\nu}= P[C_\theta[r-y_\theta]] + S[\nu]$ depende do ruído. O critério final será a soma dos dois critérios anteriores, uma vez que a referência e o ruído são sinais independentes estatisticamente e pode ser escrito como
+
+\begin{equation}
+   J_T^N(\bm{\theta}) = \norm{ P[C_\theta[r-Dy_\theta]] - M[r] }^{2} + \norm{ S[\nu] }^2.
+   \label{eq:}
+\end{equation}
+
+
+
+
+
+
+\section{The Ideal Controller}%
+\label{sec:ideal_controller}
+% COMTEMP \todo{Tirar o ``Matched Control??''.}
+
+Considerando o sistema realimentado apresentado em \eqref{eq:ymf}, e assumindo a invertibilidade de $P$ e que $M$ é triangular inferior, resolvendo \eqref{eq:ymf} para $C$, é possível calcular o controlador ideal, que resulta nos parâmetros ótimos para $C_\theta$, desde que $C_\theta$ tenha mesma estrutura (ou pertença à mesma classe) do controlador ideal. Este controlador ideal é definido como:
+\begin{equation}
+   C_0 \triangleq P^{-1}(I-MD)^{-1}M,
+\label{eq:}
+\end{equation}
+onde $I$ é a matriz identidade e $C^{i}$ é o controlador ideal.
+
+Quando o $C_0$ é usado na malha fechada, o mapa de $r$ para $y$ é dado por $M$, ou seja, $y=M[r]$
+
+Para o caso linear SISO (Single Input Single Output), se o modelo do processo é conhecido e considerando que este é de 
+% \todo{[DONE] Falar aqui (citar) do trabalho da Lucíola no sentido de lidar com fase não mínima. Talvez citar Stogestad também.}
+fase mínima, o controlador ideal $C_0$ pode ser escrito na forma de função de transferência como
+\begin{equation}
+   C_0(z) = \frac{M(z)}{P(z)\left(1-M(z)\right)},
+   \label{eq:Cdz}
+\end{equation}
+em que $P(z)$ e $M(z)$ representam respectivamente as funções de transferência do processo e do modelo de referência.
+
+Note que, se o processo é de fase não mínima, devido a zeros fora do círculo unitário no plano-$z$, a inversa de $P(z)$ em \eqref{eq:Cdz} resulta em instabilidade do sistema. Soluções para este problema têm sido apresentadas há décadas para projetos MBC, como por exemplo regras para sintonia de PID, como a desenvolvida por \cite{skogestad2003}.
+Uma abordagem no mais recente, no âmbito do DDC, é apresentada por \cite{campestrini2011}.
+% COMTEMP \todo{Colocar um pouco mais sobre esteartigo aqui.} 
+
+
+% COMTEMP \todo[inline]{Colocar aqui a respeito do caso não linear, como em \cite[p. 19]{campi2006}, mas antes introduzir notação.}
+
+

@@ -1,0 +1,74 @@
+% \documentclass[a4paper]{article}
+\documentclass[
+  border={0pt 0pt 0pt 0pt} % left bottom right top
+]{standalone}
+
+%--------------------------------------------------------------------
+% \usepackage[left=1.5cm,right=3.5cm,top=4cm,bottom=2.5cm]{geometry}
+%--------------------------------------------------------------------
+% Pacotes usados {{
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts,amstext,textcomp}         % permite simbolos matematicos
+\usepackage{bm}                                                % negrito em letras gregas
+\usepackage{mathrsfs}                                          % permite o uso de letras trabalhadas
+\usepackage{amsthm}
+\usepackage{pgf}
+\usepackage{graphicx}
+\usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
+\usepackage{color}
+\usepackage{xcolor}
+\definecolor{myOrange}{rgb}{1,0.5,0}
+% \definecolor{myOrange}{rgb}{1,0.5,0}
+\usepackage{booktabs}                                          % Tabelas com qualidade de publicao
+\usepackage{indentfirst}
+\usepackage{rotating}
+\usepackage{braket}
+\usepackage[ruled,vlined]{algorithm2e}                         % Para algoritmos (melhor que o outro)
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{makeidx}
+\usepackage{setspace}
+\usepackage[colorlinks,citecolor=blue]{hyperref}               % tirar [colorlinks] para imprimir
+% \usepackage{autonum}                                         % Mostra numeracao somente em eq citadas
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}                               % Mostra numeracao somente em eq citadas
+\usepackage{ae}
+\usepackage[below]{placeins}
+\usepackage{flafter}
+\usepackage{pxfonts}
+% \usepackage{subfigure}
+\usepackage{appendix}
+\usepackage{listings}                                          % para cdigo fonte
+\usepackage[symbol]{footmisc}                                  % Mudando marcadores do footnote
+% Tikz
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{shapes,arrows,calc,automata,positioning}
+\usetikzlibrary{plotmarks}    % marcas nos graficos
+\usetikzlibrary{arrows.meta}  % estilos de setas
+
+\usepgfplotslibrary{patchplots}
+
+\usepackage{soul}                                              % para highlighth (todonotes)
+\usepackage{natbib}                                            % para usar citep, etc...
+\usepackage{subfig}                                            % para subfiguras
+
+\pgfplotsset{compat=newest}
+%% the following commands are needed for some matlab2tikz features
+\usepackage{grffile}   % Permite usar carc. esp. em nomes de arq
+\usepackage{amsmath}   % Enhance-ments for improving mathematical formulas
+
+
+
+\begin{document}
+
+  % \begin{figure}[htpb]
+    \footnotesize
+    \centering
+    \input{figura_temp.tex}
+    % \caption{}
+    % \label{fig:exp51_itercon_ruido}
+  % \end{figure}
+
+\end{document}

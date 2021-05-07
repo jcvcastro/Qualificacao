@@ -1,0 +1,205 @@
+% -*- TeX-master: "Qualificacao.tex" -*-
+%!TEX root = Qualificacao.tex
+
+\chapter{VRFT Complements}\label{cap:AppA}
+
+\section{Proof. for Theorem \ref{thr:teoremaVRF1} for linear case}%
+\label{sec:proof_linear}
+
+Para o caso linear, uma forma de demostrar tal resultado é rescrevendo \eqref{eq:JVR_reg} como
+%
+\begin{align}
+   \label{eq:JVRlin}
+   J_{V R}(\bm{\theta}) &=\norm{\left(\bm{\theta}_0-\bm{\theta}\right)^T \bm{\varphi}(k)}^{2} \nonumber\\
+   &=\norm{\left(\bm{\theta}_{0}-\bm{\theta}\right)^T C_\theta(q) \frac{1-M(q)}{M(q)} P(q) \tilde{u}(k)}^{2} \nonumber\\
+   &=\norm{\left(\bm{\theta}_{0}-\bm{\theta}\right)^T C_\theta(q) \frac{1}{C_0(q)} P(q) \tilde{u}(k)}^{2}
+\end{align}
+onde foi usado o fato que $\tilde{u}(k)=C_0\tilde{e}(k)=\bm{\varphi}^T(k)\bm{\theta}_0 = \bm{\theta}_0^T\bm{\varphi}$ e que 
+
+\begin{equation}
+   \varphi(k)=C_\theta(q) \tilde{e}(k)=C_\theta(q) \frac{1-M(q)}{M(q)} \tilde{y}(k),
+\end{equation}
+sendo $\tilde{y}=P(q)\tilde{u}(k)$.
+
+Aplicando o teorema de Parserval \cite{ljung1999}, em \eqref{eq:JVRlin} e rearranjando os termos, pode-se rescrevê-la como
+\begin{equation}
+   J_{VR}(\bm{\theta}) = (\bm{\theta} - \bm{\theta}_0)^TA_{VR}(\bm{\theta}-\bm{\theta}_0),
+\label{eq:J_AVR}
+\end{equation}
+onde 
+\begin{equation}
+   A_{VR} = \frac{1}{2\pi}\int_{-\pi}^{{\pi}} {\frac{1}{|C_0(e^{j\omega})|^2} C_\theta(e^{j\omega})C_\theta(e^{j\omega})C_\theta^{*}(e^{j\omega}) \Phi_u(e^{j\omega})} \: d{w} 
+\label{eq:AVR}
+\end{equation}
+Desde que $C_0(z)$ não tenha zeros no círculo unitário, nota-se que $J_{VR}(\bm{\theta}_0) =0 $ se $\bm{\theta}=\bm{\theta}_0$, e será a única solução que resulta em um mínimo desde que $A_{VR} \neq 0$.
+Considerando o espectro do sinal de entrada $\tilde{u}(k)$ como discreto, i.e.
+\begin{equation}
+   \Phi_u(e^{j\omega}) = \sum_{k=1}^{q} \lambda_k\delta(\omega-\omega_k)
+\end{equation}
+sendo $\lambda_k$ um valor real positivo e $\delta(\cdot)$ a função delta de Dirac, de forma que
+\begin{equation}
+   A_{VR} = \frac{1}{2\pi}\sum_{k=1}^{q} {\frac{1}{|C_0(e^{j\omega})|^2} C_\theta(e^{j\omega})C_\theta(e^{j\omega})C_\theta^{*}(e^{j\omega}) \lambda_k} 
+\end{equation}
+Como $C_\theta(e^{j\omega})$ e sua conjugada transposta são matrizes definidas positivas, $A_{VR}$ será uma soma ponderada de matrizes definidas positivas. O posto desta soma é dada por $\min(q,p)$ onde $p$ é a ordem de $A_{VR}$. Portanto, caso o espectro do sinal de entrada $\Phi_u(e^{j\omega}) \ge p$, i.e., seja suficientemente rico de ordem $q\ge p$ (definition \ref{def:SRq}), ou o vetor de regressores seja persistentemente excitante (definition \ref{def:PoE}), $A_{VR}$ é definida positiva e $\bm{\theta}= \bm{\theta}_0$ é a única solução ótima \citep{bazanella2012}.
+
+
+\section{ Proof of the VRFT filter choice  (Theorem \ref{thm:filtro_VRFT_nl})}%
+\label{sec:prova_da_escolha_do_filtro_vrft}
+
+Note que
+\begin{equation}
+\tilde{u}=C_{\theta_{0}^{+}}[\tilde{e}]
+\label{eq:uTil}
+\end{equation}
+uma vez que
+\begin{align}
+   \tilde{u}&=P^{-1}[\tilde{y}]=P^{-1}\left[(I-M D)^{-1}(I-M D) \tilde{y}\right] \nonumber\\
+            &= P^{-1}\left[(I-M D)^{-1}(M \tilde{r}-M D \tilde{y})\right]=P^{-1}\left[(I-M D)^{-1} M \tilde{e}\right] = C^{0}[\tilde{e}] \nonumber\\
+            &=C_{\theta_{0}^{+}}[\tilde{e}].
+\end{align}
+
+De forma semelhante
+\begin{equation}
+   \tilde{y}=y_{\theta_{0}^{+}}
+\label{eq:yqp}
+\end{equation}
+uma vez que, $\tilde{y}=P[\tilde{u}]$ a partir de \eqref{eq:uTil}, assumindo $\tilde{e}=\tilde{r}-D \tilde{y}$,  tem-se que $\tilde{y}=P\left[C_{\theta_{0}^{+}}[\tilde{e}]\right]=$$P\left[C_{\theta_{0}^{+}}[\tilde{r}-D \tilde{y}]\right]$. Como
+$y_{\theta_{0}^{+}}=P\left[C_{\theta_{0}^{+}}\left[\tilde{\tilde{r}}-D y_{\theta_{0}^{+}}\right]\right]$, 
+$\tilde{y}$ e $y_{\theta_{0}^{+}}$ corresponde ao mesmo $\tilde{r}$ no mapa $r \mapsto y$ dado por $y=P\left[C_{\theta_{0}^{+}}[r-D y]\right]$.
+% $\tilde{y}$ e $y_{\theta_{0}^{+}}$ corresponde ao mesmo $\tilde{r}$ in the $r$ to $y$ map given by $y=P\left[C_{\theta_{0}^{+}}[r-D y]\right]$
+Uma vez que tal mapa, dado um $r$ há somente um $y$ correspondente, conclui-se \eqref{eq:yqp}.
+De \eqref{eq:yqp} é possível concluir que 
+\begin{equation}
+   \tilde{r}-D y_{\theta_{0}^{+}}=\tilde{e},
+\label{eq:eTil}
+\end{equation}
+que, em \eqref{eq:uTil}, resulta em
+\begin{equation}
+\tilde{u}=C_{\theta_{0}^{+}}\left[\tilde{r}-D y_{\theta_{0}^{+}}\right].
+\label{eq:uTil_2}
+\end{equation}
+
+% Parei aqui...
+
+Por simplicidade e maior clareza no desenvolvimento, adota-se a seguinte notação:
+\begin{align}
+   x_{\theta^{+}} &\triangleq F\left[C_{\theta^{+}}[\tilde{e}]\right]-F[\tilde{u}] \label{eq:x} \\
+   w_{\theta^{+}} &\triangleq y_{\theta^{+}}-\tilde{y} \label{eq:w} \\
+   \frac{\partial g}{\partial \theta^{+}} &\triangleq 
+   \begin{bmatrix} 
+      \partial g_1/\partial \theta^{+}_1 & \dots & \partial g_1/\partial \theta^{+}_j & \dots & \partial g_1/\partial \theta^{+}_{n_{\theta +}} \\
+      \vdots &  & \vdots & & \vdots \\
+      \partial g_i/\partial \theta^{+}_1 & \dots & \partial g_i/\partial \theta^{+}_j & \dots & \partial g_i/\partial \theta^{+}_{n_{\theta +}} \\
+      \vdots & & \vdots & & \vdots \\
+      \partial g_N/\partial \theta^{+}_1 & \dots & \partial g_N/\partial \theta^{+}_j & \dots & \partial g_N/\partial \theta^{+}_{n_{\theta +}}
+   \end{bmatrix} \label{eq:partg}
+\end{align}
+Sendo \eqref{eq:partg} (em que $g$ é uma função genérica) definida tal que o $(i,j)$-ésimo elemento é $\partial g(i) /\partial \theta^{+}_j$, de modo que as colunas $(j)$ correspondem às derivadas de $g$ em relação a diferentes parâmetros e as linhas $(i)$ correspondem à evolução temporal.
+
+Usando \eqref{eq:x} e \eqref{eq:w}, as função de custo \eqref{eq:JVR} e \eqref{eq:Jy} são rescritas como
+$$
+J_{\mathrm{VR}}\left(\theta^{+}\right)=\left\|x_{\theta^{+}}\right\|^{2} \qquad J\left(\theta^{+}\right)=\left\|w_{\theta^{+}}\right\|^{2}
+$$
+Calculando a primeira e segunda derivadas de $J_{\mathrm{VR}}\left(\theta^{+}\right)$ com respeito ao vetor de parâmetros $\theta^+$, para aproximação por séries de Taylor:
+\begin{align}
+   \frac{\partial J_{\mathrm{VR}}\left(\theta^{+}\right)}{\partial \theta^{+}} &=\frac{\partial x_{\theta^{+}}^{T} x_{\theta^{+}}}{\partial \theta^{+}} = 2 x_{\theta^{+}}^{T}\left(\frac{\partial x_{\theta^{+}}}{\partial \theta^{+}}\right), \\
+\frac{\partial^{2} J_{\mathrm{VR}}\left(\theta^{+}\right)}{\partial \theta^{+2}}&= 2 x_{\theta^{+}}^{T}\left(\frac{\partial^{2} x_{\theta^{+}}}{\partial \theta^{+2}}\right)
++2\left(\frac{\partial x_{\theta^{+}}}{\partial \theta^{+}}\right)^{T}\left(\frac{\partial x_{\theta^{+}}}{\partial \theta^{+}}\right). 
+\end{align}
+Utilizando \eqref{eq:x} e \eqref{eq:uTil} e calculando as derivadas para o ponto de equilíbrio $\theta^{+}_0$, resulta em
+\begin{align}
+\left.J_{\mathrm{VR}}\left(\theta^{+}\right)\right|_{\theta_{0}^{+}}
+& =\left.\frac{\partial J_{\mathrm{VR}}\left(\theta^{+}\right)}{\partial \theta^{+}}\right|_{\theta_{0}^{+}} =0 \label{eq:JVRTaylor_1}\\
+   \left.\frac{\partial^{2} J_{\mathrm{VRFT}}\left(\theta^{+}\right)}{\partial \theta^{+2}}\right|_{\theta_{0}^{+}} &= 2\left(\left.\frac{\partial x_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}\right)^{T}\left(\left.\frac{\partial x_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}\right) \label{eq:JVRTaylor_2}
+\end{align}
+
+Fazendo o mesmo procedimento para $J\left(\theta^{+}\right)=\left\|w_{\theta^{+}}\right\|^{2}$:
+\begin{align}
+\frac{\partial J\left(\theta^{+}\right)}{\partial \theta^{+}} 
+   &=\frac{\partial w_{\theta^{+}}^{T} w_{\theta^{+}}}{\partial \theta^{+}}=2 w_{\theta^{+}}^{T}\left(\frac{\partial w_{\theta^{+}}}{\partial \theta^{+}}\right), \\
+\frac{\partial^{2} J\left(\theta^{+}\right)}{\partial \theta^{+2}}&= 2 x_{\theta^{+}}^{T}\left(\frac{\partial^{2} w_{\theta^{+}}}{\partial \theta^{+2}}\right) 
++2\left(\frac{\partial w_{\theta^{+}}}{\partial \theta^{+}}\right)^{T}\left(\frac{\partial w_{\theta^{+}}}{\partial \theta^{+}}\right).
+\label{eq:}
+\end{align}
+Usando \eqref{eq:w} e \eqref{eq:yqp}:
+\begin{align}
+\left.J\left(\theta^{+}\right)\right|_{\theta_{0}^{+}}                                                                      
+&=\left.\frac{\partial J\left(\theta^{+}\right)}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}=0 \label{eq:JyTaylor_1} \\
+   \left.\frac{\partial^{2} J\left(\theta^{+}\right)}{\partial \theta^{+2}}\right|_{\theta_{0}^{+}} &= 2\left(\left.\frac{\partial w_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}\right)^{T}\left(\left.\frac{\partial w_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}\right) . \label{eq:JyTaylor_2}
+\end{align}
+
+Somando os termos de \eqref{eq:JVRTaylor_1} a \eqref{eq:JVRTaylor_2}, e os \eqref{eq:JyTaylor_1} e \eqref{eq:JyTaylor_2}, tem-se, respectivamente uma aproximação de segunda ordem por séries de Taylor. E para que o objetivo do filtro \eqref{eq:FiltroVRFTNL} seja alcançado, ou seja $ J_{\mathrm{VR}}\left(\theta^{+}\right) \approx J\left(\theta^{+}\right)$, comparando \eqref{eq:JVRTaylor_2} com \eqref{eq:JyTaylor_2}, deve-se ter  
+\begin{equation}
+   \left.\frac{\partial x_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}=\left.\frac{\partial w_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}
+   \label{eq:FilterObjective}
+\end{equation}
+
+Usando a notação 
+
+\begin{equation}
+   \frac{\partial P[u]}{\partial u} \triangleq 
+   \begin{bmatrix} 
+      \partial P[u]_1/\partial u_0 & \dots & \partial P[u]_1/\partial u_{(j-1)} & \dots & \partial P[u]_1/\partial u_{(N-1)} \\
+      \vdots &  & \vdots & & \vdots \\ 
+      \partial P[u]_i/\partial u_0 & \dots & \partial P[u]_i/\partial u_{(j-1)} & \dots & \partial P[u]_i/\partial u_{(N-1)} \\
+      \vdots & & \vdots & & \vdots \\ 
+      \partial P[u]_N/\partial u_0 & \dots & \partial P[u]_N/\partial u_{(j-1)} & \dots & \partial P[u]_N/\partial u_{(N-1)}
+   \end{bmatrix}  
+   \label{eq:PuDu}
+\end{equation}
+e resolvendo o lado esquerdo de \eqref{eq:FilterObjective}, considerando que o filtro $F$ é linear, chega-se a
+\begin{equation}
+   \left.\frac{\partial x_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}=\left.\frac{\partial F\left[C_{\theta^{+}}[\tilde{e}]\right]}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}=F\left(\left.\frac{\partial C_{\theta^{+}}[\tilde{e}]}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}\right)
+\label{eq:28}
+\end{equation}
+
+Como $C_{\theta_0^+} = \tilde{u}$, ver \eqref{eq:uTil}, o lado direito de \eqref{eq:FilterObjective} é calculado como
+\begin{align}
+\left.\left.\frac{\partial P[u]}{\partial u}\right|_{\tilde{u}} \frac{\partial C_{\theta_{0}^{+}}[e]}{\partial e}\right|_{\tilde{e}} &=\left.\frac{\partial P\left[C_{\theta_{0}^{+}}[e]\right]}{\partial e}\right|_{\tilde{e}} \nonumber\\
+&=\left.\frac{\partial(I-M D)^{-1} M[e]}{\partial e}\right|_{\tilde{e}} \nonumber\\
+&=(I-M D)^{-1} M .
+\label{eq:29}
+\end{align}
+
+Aplicando a regra da cadeia, em $(\partial y_{\theta_0^+}/\partial \theta^+)$:
+\begin{align}
+\left.\frac{\partial y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}=&\left.\frac{\partial P\left[C_{\theta^{+}}\left[\tilde{r}-D y_{\theta^{+}}\right]\right]}{\partial \theta^{+}}\right|_{\theta_{0}^{+}} \\
+=&\left.\frac{\partial P[u]}{\partial u}\right|_{C_{\theta_{0}^{+}}\left[\tilde{r}-D y_{\theta_{0}^{+}}\right]} 
+   \left\{\left.\left.\frac{\partial C_{\theta^{+}}\left[\tilde{r}-D y_{\theta_{0}^{+}}\right]}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}{-\left.\frac{\partial C_{\theta_{0}^{+}}[e]}{\partial e}\right|_{\tilde{r}-D y_{\theta_{0}^{+}}}} \frac{\partial D y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}\right\}
+\end{align}
+%
+Usando \eqref{eq:eTil} e \eqref{eq:uTil_2},
+\begin{equation}
+   \left.\frac{\partial y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}=\left.\frac{\partial P[u]}{\partial u}\right|_{\tilde{u}}\left\{\left.\frac{\partial C_{\theta^{+}}[\tilde{e}]}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}\right.
+   \left.-\left.\left.\frac{\partial C_{\theta_{0}^{+}}[e]}{\partial e}\right|_{\tilde{e}} \frac{\partial D y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}\right\}
+\end{equation}
+
+
+e então
+\begin{equation}
+   \left.\left.\frac{\partial P[u]}{\partial u}\right|_{\tilde{u}} \frac{\partial C_{\theta^{+}}[\tilde{e}]}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}
+   =
+   \left.\frac{\partial y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}+\left.\left.\left.\frac{\partial P[u]}{\partial u}\right|_{\tilde{u}} \frac{\partial C_{\theta_{0}^{+}}[e]}{\partial e}\right|_{\tilde{e}} \frac{\partial D y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}.
+\end{equation}
+
+Substituindo em \eqref{eq:29} resulta em
+\begin{equation}
+   \left.\frac{\partial y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}+(I-M D)^{-1} M \frac{\partial D y_{\theta^{+}}}{\partial \theta^{+}} \left.\right|_{\theta_{0}^{+}}
+   =\left.\left.\frac{\partial P[u]}{\partial u}\right|_{\tilde{u}} \frac{\partial C_{\theta^{+}}[\tilde{e}]}{\partial \theta^{+}}\right|_{\theta_{0}^{+}},
+\end{equation}
+que, multiplicando por $(I-MD)$, nos dá
+\begin{equation}
+   \left.\frac{\partial y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}-\left.M D \frac{\partial y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}+\left.M \frac{\partial D y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}
+   =\left.\left.(I-M D) \frac{\partial P[u]}{\partial u}\right|_{\tilde{u}} \frac{\partial C_{\theta^{+}}[\tilde{e}]}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}
+\end{equation}
+Por fim, o termo do lado direito de \eqref{eq:FilterObjective}, pode ser escrito como
+\begin{equation}
+   \left.\frac{\partial w_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}} =\left.\frac{\partial y_{\theta^{+}}}{\partial \theta^{+}}\right|_{\theta_{0}^{+}} 
+   =\left.\left.(I-M D) \frac{\partial P[u]}{\partial u}\right|_{\tilde{u}} \frac{\partial C_{\theta^{+}}[\tilde{e}]}{\partial \theta^{+}}\right|_{\theta_{0}^{+}}
+\end{equation}
+que, comparando com \eqref{eq:28}, conclui-se que
+\begin{equation}
+   F=(I-M D)\left(\left.\frac{\partial P[u]}{\partial u}\right|_{\tilde{u}}\right) .
+\label{eq:FiltroFinal}
+\end{equation}
+

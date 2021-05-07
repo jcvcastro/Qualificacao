@@ -1,8 +1,7 @@
 % PPGEE - UFMG
 %-------------------------------------------------------------------
 
-% Definies gerais do documento 
-
+% \documentclass[12pt,a4paper,titlepage,draft]{book} \documentclass[12pt,a4paper,titlepage]{book}
 \documentclass[12pt,a4paper,titlepage]{book}
 % \documentclass[12pt,a4paper,titlepage,final]{book}
 % \documentclass[12pt,a4paper,titlepage,brazil,portugues]{book}
@@ -22,6 +21,8 @@
 \usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 \usepackage{color}
 \usepackage{xcolor}
+\definecolor{myOrange}{rgb}{1,0.5,0}
+% \definecolor{myOrange}{rgb}{1,0.5,0}
 \usepackage{booktabs}                                          % Tabelas com qualidade de publicao
 \usepackage{indentfirst}
 \usepackage{rotating}
@@ -32,6 +33,9 @@
 \usepackage{makeidx}
 \usepackage{setspace}
 \usepackage[colorlinks,citecolor=blue]{hyperref}               % tirar [colorlinks] para imprimir
+% \usepackage{autonum}                                         % Mostra numeracao somente em eq citadas
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}                               % Mostra numeracao somente em eq citadas
 \usepackage{ae}
 \usepackage[below]{placeins}
 \usepackage{flafter}
@@ -40,11 +44,30 @@
 \usepackage{appendix}
 \usepackage{listings}                                          % para cdigo fonte
 \usepackage[symbol]{footmisc}                                  % Mudando marcadores do footnote
+
+% Tikz
 \usepackage{tikz}
-      \usetikzlibrary{shapes,arrows,calc,automata,positioning}
+\usepackage{pgfplots}
+\usetikzlibrary{shapes,arrows,calc,automata,positioning}
+\usetikzlibrary{plotmarks}    % marcas nos graficos
+\usetikzlibrary{arrows.meta}  % estilos de setas
+
+% \usetikzlibrary{external}
+% \usepgfplotslibrary{external}
+% % \tikzexternalize[prefix=tikz/]
+% \tikzexternalize[optimize=false,prefix=Figs/]
+% \tikzset{external/force remake=false}
+\usepgfplotslibrary{patchplots}
+
 \usepackage{soul}                                              % para highlighth (todonotes)
 \usepackage{natbib}                                            % para usar citep, etc...
-\usepackage{subfig}                                            % para usar citep, etc...
+\usepackage{subfig}                                            % para subfiguras
+
+\pgfplotsset{compat=newest}
+%% the following commands are needed for some matlab2tikz features
+\usepackage{grffile}   % Permite usar carc. esp. em nomes de arq
+\usepackage{amsmath}   % Enhance-ments for improving mathematical formulas
+
 \usepackage[
       textsize=scriptsize,
       colorinlistoftodos,
@@ -98,7 +121,6 @@
 % Para nao sobrar espaos em branco estranhos
 % \widowpenalty=1000 \clubpenalty=1000
 % \newcommand{\gepeto}[1]{\vspace*{12pt}\begin{singlespace}\hspace{2cm}\begin{small}\parbox{12cm}{#1}\end{small}\end{singlespace}\vspace*{20pt}}
-
 
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[section]
@@ -174,7 +196,6 @@
     \vskip 70\p@
  }
 }
-% }}}
 
 %--------------------------------------------------------------------
 %Variacao da altura da linha
@@ -193,7 +214,6 @@
 %Criar o index
 \makeindex
 
-%--------------------------------------------------------------------
 %Devido ao fancyheading
 \headheight 14.7pt
 
@@ -202,125 +222,139 @@
 % \DeclareMathSymbol{,}{\mathord}{letters}{"3B}
 % \DeclareMathSymbol{.}{\mathpunct}{letters}{"3A}
 
+% }}}
 \input{novoscomandos.tex}
-
+% \graphicspath{{Figs/}}
 
 \begin{document}
 
+
+% {{{ DEFINICAO DE CORES
+\newcommand{\blacksolidline}{\raisebox{2pt}{\tikz{\draw[black,solid,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\blackdottedline}{\raisebox{2pt}{\tikz{\draw[black,dotted,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\blackdashdotline}{\raisebox{2pt}{\tikz{\draw[black,dashdotted,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\bluesolidline}{\raisebox{2pt}{\tikz{\draw[blue,solid,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\bluedashedline}{\raisebox{2pt}{\tikz{\draw[blue,dashed,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\reddashedline}{\raisebox{2pt}{\tikz{\draw[red,dashed,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\redsolidline}{\raisebox{2pt}{\tikz{\draw[red,solid,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\greendashdottedline}{\raisebox{2pt}{\tikz{\draw[black!50!green,dashdotted,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\magentadottedline}{\raisebox{2pt}{\tikz{\draw[magenta,dotted,line width=1pt](0,0) -- (8mm,0);}}}
+% }}} FIM DE DEFINICAO DE CORES  ================================================
+
 % {{{ ELEMENTOS PRE-TEXTUAIS
 
+% %--------------------------------------------------------------------
+% %Pagina em algarismos romanos
+\pagenumbering{roman}
+% % \selectlanguage{brazil}
+% \selectlanguage{english}
+%
+%--------------------------------------------------------------------
+%Capa
+\input{cover.tex}
+\clearpage
+\thispagestyle{empty}
+\cleardoublepage
+%--------------------------------------------------------------------
+%
 % % %--------------------------------------------------------------------
-% % %Pagina em algarismos romanos
-% \pagenumbering{roman}
-% % % \selectlanguage{brazil}
-% % \selectlanguage{english}
-% %
-% %--------------------------------------------------------------------
-% %Capa
-% \input{cover.tex}
-% \clearpage
-% \thispagestyle{empty}
-% \cleardoublepage
-% %--------------------------------------------------------------------
-% %
-% % % %--------------------------------------------------------------------
-% % % %Dedicatoria
-% % % \input{dedicatoria.tex}
-% % % \clearpage
-% % % \thispagestyle{empty}
-% % % \cleardoublepage
-% % % %--------------------------------------------------------------------
-% %
-% %
-% % % %--------------------------------------------------------------------
-% % % %Agradecimentos
-% % % \input{agradecimentos.tex}
-% % % \clearpage
-% % % \thispagestyle{empty}
-% % % \cleardoublepage
-% % % %--------------------------------------------------------------------
-% %
-% %
-% % % %--------------------------------------------------------------------
-% % % %Epigrafe
-% % % \input{epigrafe.tex}
-% % % \clearpage
-% % % \thispagestyle{empty}
-% % % \cleardoublepage
-% % % %--------------------------------------------------------------------
-% %
-% %
-% % % %%--------------------------------------------------------------------
-% %Sumario
-% \pagestyle{myheadings}
-% \begin{spacing}{1.5}
-% \tableofcontents
-% \end{spacing}
-% \clearpage
-% \thispagestyle{empty}
-% \cleardoublepage
-% %
-% %
-% % % %%--------------------------------------------------------------------
-% %Resumo
-% \begin{spacing}{1}
-% \input{resumo.tex}
-% \clearpage
-% \thispagestyle{empty}
-% \cleardoublepage
-% % % %%--------------------------------------------------------------------
-% %
-% %
-% % % %%--------------------------------------------------------------------
-% %Abstract
-% \input{abstract.tex}
-% \clearpage
-% \thispagestyle{empty}
-% \cleardoublepage
-% \end{spacing}
-% % % %%--------------------------------------------------------------------
-% %
-% % %%--------------------------------------------------------------------
-% % %Lista de figuras
-% \begin{sloppypar}
-% \listoffigures
-% \end{sloppypar}
-% \addcontentsline{toc}{chapter}{Lista of Figures}
-% \clearpage
-% \thispagestyle{empty}
-% \cleardoublepage
-% % %%--------------------------------------------------------------------
-% %
-% % %%Lista de Tabelas
-% \begin{spacing}{1}
-% % \listoftables
-% % \addcontentsline{toc}{chapter}{List of Tables}
+% % %Dedicatoria
+% % \input{dedicatoria.tex}
 % % \clearpage
 % % \thispagestyle{empty}
 % % \cleardoublepage
-% % %
-% %%--------------------------------------------------------------------
-% %%Simbolos
-%   \input{symbols.tex}
-%   \clearpage
-%   \thispagestyle{empty}
-%   \cleardoublepage
-% %%--------------------------------------------------------------------
-% %
-% % %%%Abreviaturas
-% %%--------------------------------------------------------------------
-%   \input{abreviations.tex}
-%   \clearpage \thispagestyle{empty}
-%   \cleardoublepage
-% \end{spacing}
 % % %--------------------------------------------------------------------
-% %
-% % %Comecando os capitulos
+%
+%
 % % %--------------------------------------------------------------------
+% % %Agradecimentos
+% % \input{agradecimentos.tex}
+% % \clearpage
+% % \thispagestyle{empty}
+% % \cleardoublepage
+% % %--------------------------------------------------------------------
+%
+%
+% % %--------------------------------------------------------------------
+% % %Epigrafe
+% % \input{epigrafe.tex}
+% % \clearpage
+% % \thispagestyle{empty}
+% % \cleardoublepage
+% % %--------------------------------------------------------------------
+%
+%
+% % %%--------------------------------------------------------------------
+%Sumario
+\pagestyle{myheadings}
+\begin{spacing}{1.5}
+\tableofcontents
+\end{spacing}
+\clearpage
+\thispagestyle{empty}
+\cleardoublepage
+%
+%
+% % %%--------------------------------------------------------------------
+%Resumo
+\begin{spacing}{1}
+\input{resumo.tex}
+\clearpage
+\thispagestyle{empty}
+\cleardoublepage
+% % %%--------------------------------------------------------------------
+%
+%
+% % %%--------------------------------------------------------------------
+%Abstract
+\input{abstract.tex}
+\clearpage
+\thispagestyle{empty}
+\cleardoublepage
+\end{spacing}
+% % %%--------------------------------------------------------------------
+%
+% %%--------------------------------------------------------------------
+% %Lista de figuras
+\begin{sloppypar}
+\listoffigures
+\end{sloppypar}
+\addcontentsline{toc}{chapter}{Lista of Figures}
+\clearpage
+\thispagestyle{empty}
+\cleardoublepage
+% %%--------------------------------------------------------------------
+%
+% %%Lista de Tabelas
+\begin{spacing}{1}
+% \listoftables
+% \addcontentsline{toc}{chapter}{List of Tables}
 % \clearpage
-% \pagestyle{myheadings}
-% \pagenumbering{arabic}
-% % %--------------------------------------------------------------------
+% \thispagestyle{empty}
+% \cleardoublepage
+% %
+%%--------------------------------------------------------------------
+%%Simbolos
+  \input{symbols.tex}
+  \clearpage
+  \thispagestyle{empty}
+  \cleardoublepage
+%%--------------------------------------------------------------------
+%
+% %%%Abreviaturas
+%%--------------------------------------------------------------------
+  \input{abreviations.tex}
+  \clearpage \thispagestyle{empty}
+  \cleardoublepage
+\end{spacing}
+% %--------------------------------------------------------------------
+%
+% %Comecando os capitulos
+% %--------------------------------------------------------------------
+\clearpage
+\pagestyle{myheadings}
+\pagenumbering{arabic}
+% %--------------------------------------------------------------------
 
 % }}} FIM DE ELEMENTOS PRE-TEXTUAIS  ================================================
 
@@ -341,56 +375,50 @@
      }
 % }}} ------------------------------------------------------------------
 
-% {{{ Captulo 1 - Introducao 
-\input{chapter1_INTRO.tex}
+% {{{ Captulo 1 - Introducao
+\input{docs/chapter1.tex}
 \clearpage
 \thispagestyle{empty}
 \cleardoublepage
 % }}} ------------------------------------------------------------------
 
 % {{{ Captulo 2 - Conceitos Básicos (Identificação de Sistemas)
-\input{chapter2_BC.tex}
+\input{docs/chapter2.tex}
 \clearpage
 \thispagestyle{empty}
 \cleardoublepage
 % }}} ------------------------------------------------------------------
 
-% % {{{ Captulo 3 - VRFT
- \input{chapter3_VRFT.tex}
+% {{{ Captulo 3 - VRFT
+ \input{docs/chapter3.tex}
  \clearpage
  \thispagestyle{empty}
  \cleardoublepage
-% % }}} ------------------------------------------------------------------
+% }}} ------------------------------------------------------------------
 
 % {{{ Captulo 4 - Reinforcement Learning
-\input{RL.tex}
-% \input{chapter4_RL.tex}
-  \clearpage
-  \thispagestyle{empty}
-  \cleardoublepage
-% % }}} ------------------------------------------------------------------
-
-% {{{ Capitulo 5 - Resultados Simulados
-\input{chapter5.tex}
-  \clearpage
-  \thispagestyle{empty}
-  \cleardoublepage
-% }}} ------------------------------------------------------------------
-
-% {{{ Capitulo 6 - Conclusoes
-  \input{chapter6.tex}
-  \clearpage
-  \thispagestyle{empty}
-  \cleardoublepage
-
-% }}} ------------------------------------------------------------------
-% {{{ Captulo 6 - Resultados Experimentais
-  % \input{capitulo6.tex}
+% \input{docs/chapter4.tex}
+% % \input{chapter4_RL.tex}
   % \clearpage
   % \thispagestyle{empty}
   % \cleardoublepage
+% % }}} ------------------------------------------------------------------
+
+
+% {{{ Capitulo 5 - Resultados Simulados
+\input{docs/chapter5.tex}
+  \clearpage
+  \thispagestyle{empty}
+  \cleardoublepage
 % }}} ------------------------------------------------------------------
 
+% % {{{ Capitulo 6 - Conclusoes
+\input{docs/chapter6.tex}
+  \clearpage
+  \thispagestyle{empty}
+  \cleardoublepage
+
+% % }}} ------------------------------------------------------------------
 
 % {{{ Bibliografia
 
@@ -413,19 +441,19 @@
 
 % }}} ------------------------------------------------------------------
 
-% Todo's
-% \listoftodos
 
-% %Apendices
-% \appendix
-% \include{apendiceA}
-% \clearpage
-% \thispagestyle{empty}
-% \cleardoublepage
+  % {{{ Apendices
+\appendix
+\include{appendix}
+\clearpage
+\thispagestyle{empty}
+\cleardoublepage
 % % \chapter{Algebra Linear}
+%
 % \include{apendiceB}
 % \clearpage
 % \thispagestyle{empty}
+%
 % \cleardoublepage
 % \include{apendiceC}
 % \clearpage
@@ -433,11 +461,15 @@
 % \cleardoublepage
 %
 % \chapter{Demonstracoes}
- %\appendix
+%\appendix
 %\include{apendiceB}
 %\include{MQ}
 %\include{Grubbs}
 
+% }}}
+
+% Todo's
+% \listoftodos
 %--------------------------------------------------------------------
 \end{document}
 

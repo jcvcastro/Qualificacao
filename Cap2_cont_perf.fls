@@ -1,8 +1,0 @@
-PWD /home/joao/DADOS/GDRIVE/DOUTORADO/GIT/Texto_PT2/Texto_PT2
-INPUT /usr/share/texmf-dist/web2c/texmf.cnf
-INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT Cap2_cont_perf.tex
-OUTPUT Cap2_cont_perf.log
-INPUT /usr/share/texmf-dist/fonts/map/fontname/texfonts.map
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmti10.tfm

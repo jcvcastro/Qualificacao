@@ -1,4 +1,66 @@
 
+
+@article{baldacchino2012,
+  title = {Structure Detection and Parameter Estimation for {{NARX}} Models in a Unified {{EM}} Framework},
+  author = {Baldacchino, Tara and Anderson, Sean R. and Kadirkamanathan, Visakan},
+  year = {2012},
+  month = may,
+  volume = {48},
+  pages = {857--865},
+  issn = {0005-1098},
+  doi = {10.1016/j.automatica.2012.02.021},
+  abstract = {In this paper, we consider structure detection and parameter estimation of the nonlinear auto-regressive with exogenous inputs (NARX) model, using the EM (expectation\textendash maximisation) algorithm. The parameter estimation step uses particle smoothing to obtain the necessary expectations in the E-step and the parameters are then estimated in closed form in the M-step. The model structure detection is performed using an F-test, which makes use of the parameter information matrix (inverse of the covariance matrix), obtained from an augmentation of the EM algorithm. The steps for obtaining the information matrix are robust, guaranteeing a positive semi-definite information matrix to use in the structure detection step. For the case of unknown model orders, a method is proposed using the stochastic complexity (SC) information criterion for selecting between candidate models. The SC is composed of the information matrix (representing model complexity) and a likelihood estimate (representing model accuracy), which are both generated as byproducts of the augmented EM algorithm. Numerical results demonstrate that the EM approach performs well in comparison to a standard alternative based on orthogonal least squares, and also avoids the need to estimate a noise model for the case of measurement noise corrupted output signals.},
+  file = {/home/joao/DADOS/GDRIVE/Artigos/2012_Baldacchino et_al_Structure detection and parameter estimation for NARX models in a unified EM.pdf;/home/joao/Zotero/storage/QKKZRN7J/S0005109812000726.html},
+  journal = {Automatica},
+  keywords = {Expectation–maximisation,NARX,Nonlinear system identification,Particle filter,Structure detection},
+  language = {en},
+  number = {5}
+}
+
+@article{baldacchino2013,
+  title = {Computational System Identification for {{Bayesian NARMAX}} Modelling},
+  author = {Baldacchino, Tara and Anderson, Sean R. and Kadirkamanathan, Visakan},
+  year = {2013},
+  month = sep,
+  volume = {49},
+  pages = {2641--2651},
+  issn = {0005-1098},
+  doi = {10.1016/j.automatica.2013.05.023},
+  abstract = {In this contribution we derive a computational Bayesian approach to NARMAX model identification. The identification algorithm exploits continuing advances in computational processing power to numerically obtain posterior distributions for both model structure and parameters via sampling methods. The main advantage of this approach over other NARMAX identification algorithms is that for the first time model uncertainty is characterised as a byproduct of the identification procedure. The algorithm is based on the reversible jump Markov chain Monte Carlo (RJMCMC) procedure. Key features of the approach are (i) sampling of unselected model terms for testing for inclusion in the model (the birth move), which encourages global searching of the model term space, (ii) sampling of previously selected model terms for testing for exclusion from the model\textemdash a naturally incorporated pruning step (the death move), which leads to model parsimony, and (iii) estimation of model and parameter distributions, which are naturally generated in the Bayesian framework. We present a numerical example to demonstrate the algorithm and a comparison with a forward regression method: the results show that the RJMCMC approach is competitive and gives useful additional information regarding uncertainty in both model parameters and structure.},
+  file = {/home/joao/DADOS/GDRIVE/Artigos/2013_Baldacchino et_al_Computational system identification for Bayesian NARMAX modelling.pdf;/home/joao/Zotero/storage/UQ7XTW2C/S0005109813003063.html},
+  journal = {Automatica},
+  keywords = {Bayesian,Model selection,NARMAX,System identification},
+  language = {en},
+  number = {9}
+}
+
+
+@book{draper1998,
+  title = {Applied Regression Analysis},
+  author = {Draper, Norman Richard and Smith, Harry},
+  year = {1998},
+  edition = {3rd ed},
+  publisher = {{Wiley}},
+  address = {{New York}},
+  isbn = {978-0-471-17082-2},
+  keywords = {Regression analysis},
+  series = {Wiley Series in Probability and Statistics}
+}
+
+@article{wei2008a,
+  title = {Model Structure Selection Using an Integrated Forward Orthogonal Search Algorithm Assisted by Squared Correlation and Mutual Information},
+  author = {Wei, Hua-Liang and Billings, Stephen A},
+  year = {2008},
+  volume = {3},
+  pages = {341--356},
+  doi = {10.1504/IJMIC.2008.020543},
+  abstract = {Model structure selection plays a key role in non-linear system identification. The first step in non-linear system identification is to determine which model terms should be included in the model. Once significant model terms have been determined, a model selection criterion can then be applied to select a suitable model subset. The well known Orthogonal Least Squares (OLS) type algorithms are one of the most efficient and commonly used techniques for model structure selection. However, it has been observed that the OLS type algorithms may occasionally select incorrect model terms or yield a redundant model subset in the presence of particular noise structures or input signals. A very efficient Integrated Forward Orthogonal Search (IFOS) algorithm, which is assisted by the squared correlation and mutual information, and which incorporates a Generalised Cross-Validation (GCV) criterion and hypothesis tests, is introduced to overcome these limitations in model structure selection.},
+  file = {/home/joao/Zotero/storage/QGB8US82/Wei and Billings - Model structure selection using an integrated forw.pdf},
+  journal = {International Jornal of Modelling, Identification and Control},
+  language = {en},
+  number = {4}
+}
+
 @article{2014,
   title = {Tuning {{Nonlinear Controllers}} with the {{Virtual Reference Approach}}},
   year = {2014},
@@ -224,6 +286,7 @@
   edition = {Fourth},
   address = {{Belo Horizonte}},
   isbn = {978-85-423-0079-6},
+  publisher = {{Editora UFMG}},
   keywords = {PT,PT2}
 }
 
@@ -7666,4 +7729,19 @@
   address = {{Brescia, Italy}},
   institution = {{Uinv. Brescia}},
   type = {Int. Rep.}
+}
+
+@article{young1970,
+  title = {An Instrumental Variable Method for Real-Time Identification of a Noisy Process},
+  author = {Young, P.C.},
+  year = {1970},
+  month = mar,
+  volume = {6},
+  pages = {271--287},
+  issn = {00051098},
+  doi = {10.1016/0005-1098(70)90098-1},
+  file = {/home/joao/Zotero/storage/8R4V9U4G/1970_Young_An instrumental variable method for real-time identification of a noisy process.pdf},
+  journal = {Automatica},
+  language = {en},
+  number = {2}
 }
