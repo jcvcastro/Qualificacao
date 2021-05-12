@@ -1,0 +1,11 @@
+# Fdb version 3
+["pdflatex"] 1620498240 "ex51.tex" "build/ex51.pdf" "ex51" 1620498240
+  "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1616952564 3524 cb3e574dea2d1052e39280babc910dc8 ""
+  "/usr/share/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1616952564 1328 c834bbb027764024c09d3d2bf908b5f0 ""
+  "/usr/share/texmf-dist/web2c/texmf.cnf" 1616952564 33301 a3134070eacafb10b1f371612ce2650d ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1618803955 2635854 f0089f42514ceb4d9d1078ebddc52354 ""
+  "build/ex51.aux" 1620497602 8 a94a2480d3289e625eea47cd1b285758 ""
+  "ex51.tex" 1620498217 7020 8102a7f30d890b05b45be21f6cc82a96 ""
+  (generated)
+  "build/ex51.log"
+  "build/ex51.pdf"

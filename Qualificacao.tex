@@ -1,13 +1,18 @@
 % PPGEE - UFMG
 %-------------------------------------------------------------------
+% % Editando:
+%     \documentclass[12pt,a4paper,titlepage]{book}
+%     \usepackage[left=1.5cm,right=3.5cm,top=4cm,bottom=2.5cm]{geometry}
+% Final:
+    \documentclass[12pt,a4paper,titlepage,final]{book}
+    \usepackage[left=2.5cm,right=2.5cm,top=4cm,bottom=2.5cm]{geometry}
+% Rascunho:
+    % \documentclass[12pt,a4paper,titlepage,draft]{book} \documentclass[12pt,a4paper,titlepage]{book}
+    % \usepackage[left=1.5cm,right=3.5cm,top=4cm,bottom=2.5cm]{geometry}
 
-% \documentclass[12pt,a4paper,titlepage,draft]{book} \documentclass[12pt,a4paper,titlepage]{book}
-\documentclass[12pt,a4paper,titlepage]{book}
-% \documentclass[12pt,a4paper,titlepage,final]{book}
+
 % \documentclass[12pt,a4paper,titlepage,brazil,portugues]{book}
 %--------------------------------------------------------------------
-% \usepackage[left=2.5cm,right=2.5cm,top=4cm,bottom=2.5cm]{geometry}
-\usepackage[left=1.5cm,right=3.5cm,top=4cm,bottom=2.5cm]{geometry}
 %--------------------------------------------------------------------
 % Pacotes usados {{
 \usepackage[utf8]{inputenc}
@@ -230,13 +235,16 @@
 
 
 % {{{ DEFINICAO DE CORES
+\newcommand{\blacksolidlinethin}{\raisebox{2pt}{\tikz{\draw[black,solid,line width=0.5pt](0,0) -- (8mm,0);}}}
 \newcommand{\blacksolidline}{\raisebox{2pt}{\tikz{\draw[black,solid,line width=1pt](0,0) -- (8mm,0);}}}
 \newcommand{\blackdottedline}{\raisebox{2pt}{\tikz{\draw[black,dotted,line width=1pt](0,0) -- (8mm,0);}}}
 \newcommand{\blackdashdotline}{\raisebox{2pt}{\tikz{\draw[black,dashdotted,line width=1pt](0,0) -- (8mm,0);}}}
 \newcommand{\bluesolidline}{\raisebox{2pt}{\tikz{\draw[blue,solid,line width=1pt](0,0) -- (8mm,0);}}}
 \newcommand{\bluedashedline}{\raisebox{2pt}{\tikz{\draw[blue,dashed,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\bluedashdotedline}{\raisebox{2pt}{\tikz{\draw[blue,dashdotted,line width=1pt](0,0) -- (8mm,0);}}}
 \newcommand{\reddashedline}{\raisebox{2pt}{\tikz{\draw[red,dashed,line width=1pt](0,0) -- (8mm,0);}}}
 \newcommand{\redsolidline}{\raisebox{2pt}{\tikz{\draw[red,solid,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\reddottedline}{\raisebox{2pt}{\tikz{\draw[red,dotted,line width=1pt](0,0) -- (8mm,0);}}}
 \newcommand{\greendashdottedline}{\raisebox{2pt}{\tikz{\draw[black!50!green,dashdotted,line width=1pt](0,0) -- (8mm,0);}}}
 \newcommand{\magentadottedline}{\raisebox{2pt}{\tikz{\draw[magenta,dotted,line width=1pt](0,0) -- (8mm,0);}}}
 % }}} FIM DE DEFINICAO DE CORES  ================================================

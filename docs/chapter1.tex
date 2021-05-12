@@ -19,19 +19,16 @@ From this time until the beginning of the 20th century, control designs were bas
 
 In the 30s and 50s the so-called Classical Control Theory originates, expressing itself basically in the frequency domain and in the $s$-plane, with models given by transfer functions, based on methods developed mainly by Nyquist, Bode, Nichols and Evans.
 
-In the 1960s, a new control theory approach arises, using parametric models and state space representation. this approaches gives rise to the so-called Modern Control Theory and its main branches, such as systems identification, adaptive control, robust control, optimal control and stochastic control, which have been widely studied and developed until today, but still with many challenging topics, both in theoretical and practical aspects \citep{hou2013}.
+In the 1960s, a new control theory approach arises, using parametric models and state space representation. this approaches gives rise to the so-called Modern Control Theory and its main branches, such as systems identification, adaptive control, robust control, optimal control and stochastic control, which have been widely studied and developed until today, but still with many challenging topics, both in theoretical and practical aspects. % \citep{hou2013}.
 
-In both approaches, the classical control theory, mainly based on the use of transfer functions and linear systems, as in the modern control theory, mainly based on state space representations of linear and non-linear systems, a mathematical model of the process to be controlled is required
-% COMTEMP \todo{colocar referencia para trabalhos relevantes do tipo, para a footnote.}\footnote{with some exceptions like the cases where the controller is designed directly from the frequency response obtained experimentally.}.
+In both approaches, the classical control theory, mainly based on the use of transfer functions and linear systems, as in the modern control theory, mainly based on state space representations of linear and non-linear systems, a mathematical model of the process to be controlled is required\footnote{with some exceptions like the cases where the controller is designed directly from the frequency response obtained experimentally.}.
+\todo{colocar referencia para trabalhos relevantes do tipo, para a footnote.}
 Such model can be obtained via phenomenological modeling, or via systems identification methods. In the former case, the model is obtained using known laws from specific fields of science resulting in equations that represent it. In the latter case, using input-output data collected from the process and using systems identification techniques, models that represent the process are obtained, with a certain degree of reliability.
 
 Several methodologies for identifying linear and non-linear models are available in the literature \citep{aguirre2015, ljung1999}.
 
 Models obtained using first principles or even by systems identification can result in high order models, with a high degree of non-linearity, which makes difficult or even impractical their use for control purposes.
-
 % For cases where the order of the model is high, an order reduction step must often be included in the \citep{skogestad1997} control project.
-
-
 Furthermore, modelling processes can be an arduous task and sometimes even impracticable, requiring steps to validate and determine the structure of the model. \todo{colocar referencias aqui...}
 
 For this reason, traditional model-based control methods (MBC) are unpractical in some cases. Besides, several processes generate and store large amounts of data and the use of this data for controller design would be very convenient \citep{hou2013}.
@@ -57,38 +54,79 @@ Data-driven control includes all control theories and methods in which the contr
 Therefore, the DDC is different from the MBC in essence, since the controller design does not make direct or indirect use of the process model.  
 Although at first, they look like adaptive control methods, DDC methods differ from these in that, at first, they do not need any model information, and parameter settings depend on large batches of data, instead of only a few samples of the input-output signals. % \citep{bazanella2012}.
 
+% Outra tópico que vem ganhando atenção na comunidade de controle e identificação de sistemas é o uso de metodologias baseadas em abordagens ao estilo Monte Carlo para a escolha de estrutura adequada ou até mesmo para identificação de parâmetros de modelos de processo. A seção seguinde fala um pouco a respeito do estudo deste problema na comunidade acadêmica nos últimos anos e o capítulo \ref{cap:CCS} apresenta um método de escolha de parâmetros que é de grande intersse nesta pesquisa.
+Another topic that has been increasing attention in the systems identification and control community is the use of methodologies based on Monte Carlo-style approaches for choosing the appropriate structure or even for identifying process model parameters. The following section talks a little about the study of this problem in the academic community in recent years and the chapter \ref{cap:CCS} presents a method of choosing parameters that is of great interest in this research.
+
+% A fim de unir o que tem se desenvolvido no sentido de identificação de sistemas a procedimentos de projeto de controladores DDC, onde se visa muitas vezes identificar modelos para controladores, esta pesquisa tem caminhado para o desenvolvimento de procedimentos que auxiliem na seleção de estrutura para os modelos de controladores durante um projeto de controle no estilo DDC.
+In order to unite what has been developed in the sense of systems identification to design procedures of DDC controllers, where it is often intended to identify models for controllers, this research has been moving towards the development of procedures that assist in the selection of structure for the controller models during a DDC-style control project.
+
+% A próxima seção faz um apanhado do estado da arte no que diz respeito aos procedimentos DDC, assim como aos procedimentos de seleção de estrutura de modelos nos últimos anos.
+The next section provides an overview of the state of the art with regard to DDC procedures, as well as model structure selection procedures in recent years.
+
+\section{Objectives}%
+\label{sec:objectives}
+
+% Como levantado ao final da última seção, o principal objetivo desta pesquisa é estudar a respeito da seleção de estruturas em um procedimento do tipo DDC. Para atingir este objetivo, faz-se uso de duas abordagens recentes na área de controle e identificação de sistemas.
+As mentioned at the end of the last section, the main objective of this research is to study the controller structure selection in a procedure of the DDC type. To achieve this objective, two recent approaches in control and systems identification area are used.
+% A primeira diz respeito ao projeto de controladores pelo procedimento VRFT, desenvolvido por \cite{campi2002} para casos lineares e estendido para casos não lineares em \cite{campi2006}. Nessa abordagem, o controlador é identificado por procedimentos comuns na área de identificação de sistemas a partir de dados colhidos em batelada do processo a se controlar.
+The first concerns the design of controllers by the VRFT procedure, developed by \cite{campi2002} for linear cases and extended to non-linear cases in \cite{campi2006}. In this approach, the controller is identified by common procedures systems identification community, based on batches of data collected of the process to be controlled.
+% A outra abordagem, é uma abordagem de seleção de estruturas para identificação de modelos, proposta por \cite{falsone2014}, onde um procedimento aleatorizado é usado de forma a tentar selecionar o melhor modelo para representar um modelo sobre o qual se deseja identificar os parâmetros.
+The other is a model structure selection (MSS) approach for model identification, proposed by \cite{falsone2014}, where a randomized procedure is used in order to try to select the best structue to represent a model on which the parameters are to be identified.
+the intention is to study
+% Nesta pesquisa estuda-se o uso desta abordagem aleatorizada para escolha de modelos no âmbito do projeto de controladores DDC, mais especificamente, no estilo VRFT.
+In this research, the intention is to study the use of this randomized approach for choosing models within the scope of the DDC controller project, more specifically, in the VRFT style.
+
+% Outro objetivos, ainda que secundários são, ou serão analisados durante o processo, dentre eles, o uso de informação auxiliar, ou seu análogo, no sentido de garantir aspectos relevantes ao controle, como por exemplo limitações de ganho devido a saturação de atuadores, ou imposição de efeito integrativo no controlador para redução de erros em regime permanente, ou até mesmo aspectos relativos a robustez.
+Other objective, although a secondary one are to investigate the use of auxiliary information, or its analogue, in order to guarantee aspects relevant to control, such as gain limitations due to actuator saturation, or imposition of an integrative effect on the controller to reduce errors on a permanent basis, or even aspects related to robustness.  
+
+% Um objetivo secundário a longo prazo da pesquisa diz respeito também ao uso de técnicas de aprendizado por reforço, abordagem que tem tido crescentes avanços na comunidade de controle (vide Seção \ref{sec:state_of_the_art}) de forma a tornar o framework proposto nesta pesquisa aplicável a sistemas de controle em tempo real.
+Another secondary objective, that may be investigated, is the use of reinforcement learning techniques, an approach that has had increasing advances in the control community in order to make the framework proposed in this research applicable to real-time control systems.
+
+
+
+	% Apesar de já terem sido desenvolvidas técnicas para incorporar informação auxiliar no processo de identificação, por exemplo via restrições e otimização multiobjetivo \citep{barroso2006}, todas estas restrições dizem respeito à planta.
+	% Neste sentido surgem questões como: de que forma estas técnicas podem ser usadas na abordagem DDC?
+	% %
+	% % Seria possível encontrar um análogo da informação auxiliar, obtida para métodos tradicionais a partir de informações da planta, para uso em estratégias DDC, que não têm modelo da planta disponível, por exemplo, a partir restrições para garantir aspectos relevantes ao controle como limitações de ganho devido a saturação de atuadores, ou ate mesmo relativos a robustez?
+	% %
+	% Seria possível encontrar um análogo da informação auxiliar, usada em métodos tradicionais, para estratégias DDC, em que não há informação da planta?
+	% Poderia esta ser definida, por exemplo, a partir restrições que garantam aspectos relevantes ao controle, como limitações de ganho devido a saturação de atuadores, ou até mesmo relativos a robustez?
+
+\section{Motivation}%
+\label{sec:motivation}
+
+
+% O método VRFT, abordado com maiores detalhes no Capítulo \ref{cap:VRFT}, tem grande apelo na comunidade acadêmica por se tratar de uma abordagem DDC, e como tal, não precisa de um modelo da planta, ou processo, para projeto do controlador. A filosofia básica é: ao invés de se gastar esforços identificando um modelo para planta, que por mais acurado seja, muitas vezes deve ser simplificado para uso apropriado no projeto do controlador, por que não já tentar identificar diretamente o modelo do controlador a partir de dados colhidos em batelada (ou não) de ensaios com a processo que, posteriormente tratados permitam tal identificação?
+The VRFT method, discussed in more detail in Chapter \ref{cap:VRFT}, has great appeal in the academic community because it is a DDC approach, and as such, it does not need a plant, or process, model for controller design. The basic philosophy is: instead of spending effort identifying an accurate model for the plant, that often needs to be simplified for proper use in the controller design, why not try to directly identify the controller model from data collected from the process input and output that, later processed, allow such identification?
+
+% O procedimento VRFT mostra que isto é possível principalmente em casos em que a estrutura do controlador o qual deseja-se sintonizar é uma estrutura específica, que resolve o problema do matched control (tratado com detalhes na Seção \ref{sec:the_ideal_control_design_problem}). Para casos que isto não é possível, o que ocorre na prática, uma vez que não se conhece o modelo da planta, e aferir a estrutura ideal para o controlador passa a ser muitas vezes inviável, o método proposto por \cite{campi2002,campi2006}, propõe o uso de filtros que aproximam os resultados esperados, desde que o modelo escolhido para o controlador não seja muito sub-paramentrizado. Esta solução é atrativa principalmente para procedimentos de sintonia de controladores previamente disponíveis. Um exemplo disso são controladores da família PID, largamente utilizado nas indústrias, onde deseja-se sintonizar parâmetros para este controlador previamente existente.
+The VRFT procedure shows that this is possible, mainly in cases where the structure of the controller to be tunned, is a specific structure, which solves the matched control problem (more detail in Section \ref{sec:the_ideal_control_design_problem}). In cases where this is not possible, which occurs more frequently in practice, since the plant model is not known, the method proposed by \cite{campi2002, campi2006} proposes the use of filters that approximate the expected results, as long as the structure chosen for the controller is not too under parametrized. This solution is attractive for tuning procedure of  previously available controllers. An example are controllers from the PID family, widely used in industries, where it is desired to tune parameters for a previously existing controller in a CLP bock, for instance.
+
+% Porém, há casos em que tais controladores não são suficientes para garantir o comportamento com o nível de acurácia desejada, ou até mesmo garantir estabilidade. Desta forma, modelos mais complexos para o controlador devem ser estudados, como por exemplo, modelos não-lineares. Porém tentar achar uma estrutura para o controlador que garanta um comportamento próximo o suficiente da estrutura ideal desconhecida  é uma tarefa árdua.
+However, there are cases in which such controllers are not sufficient to guarantee the behavior with the desired level of accuracy, or even to guarantee stability. Thus, more complex structures for the controller should be studied, such as, for example, non-linear models. However, trying to find a adequate structure for the controller that guarantees a behavior close enough to a desired reference model can be an arduous task.
+
+% Neste sentido o presente trabalho visa o desenvolvimento de uma metodologia que auxilie na escolha da estrutura deste controlador através de uma abordagem aleatorizada. Desta forma, ao invés de se fixar a estrutura do controlador e ajustar seus parâmetros, seleciona-se primeiramente uma estrutura mais adequada para que o controlador possa ser sintonizado, garantindo assim maior grau de liberdade e um comportamento do sistema em malha fechada mais próximo do desejado.
+In this sense, the present work aims at the development of a methodology that helps in the choice of the structure of the controller, using a randomized approach. In this way, instead of fixing the controller structure and adjusting its parameters, a more suitable structure is selected first so that the controller can be tuned, thus guaranteeing a greater degree of freedom and a closed-loop system behavior closer to the wanted.
+
+% Portanto, deseja-se desenvolver um framework capaz auxiliar na seleção da estrutura destes controladores a partir de técnicas recentes de seleção de estruturas utilizadas no âmbito da identificação de sistemas. Até o momento, o autor não identificou na literatura nenhum trabalho que lide diretamente com este problema, apenas trabalhos para seleção de estrutura de processos (como apresentado na seção \ref{sec:state_of_the_art}).
+It is intended to develop a framework capable of assisting in the controller structure selection based on recent techniques for MSS used in the scope of systems identification. So far, the author has not identified any work in the literature that deals directly with this problem. Only works for the selection of process structure (as presented in the section \ref{sec:state_of_the_art}) are founded.
+% Desta forma, acredita-se que o procedimento final pode ser de grande valia para o projeto de controladores em uma abordagem DDC.
+Thus, it is believed that the final results can be of great value for the design of controllers in a DDC approach.
+
+
+
+
+\section{State of the art}%
+\label{sec:state_of_the_art}
+
 
 Some conceptually distinct approaches using DDC appear in the literature in the last years, among them\footnote{it was chosen here to mention some techniques that the author found most relevant to this proposal, however others can be found in the literature \citep{spall1992, safonov1995, karimi2007, huang2008, schaal1994, shi2000}}:
-\emph{Virtual Reference Feedback Tuning} (VRFT), Iterative Feedback Tuning (IFT), \emph{Frequency Domain Tuning} (FDT), \emph{Correlation Based Tuning} (CbT), originally presented by \cite{campi2002}, \cite{hjalmarsson1994}, \cite{kammer2000} and \cite{karimi2002}, respectively.
+\emph{Virtual Reference Feedback Tuning} (VRFT), Iterative Feedback Tuning (IFT), \emph{Optimal Controller Identification} (OCI) \citep{campestrini2017}, \emph{Correlation Based Tuning} (CbT), originally presented by \cite{campi2002}, \cite{hjalmarsson1994}, \cite{kammer2000} and \cite{karimi2002}, respectively.
 
-Since the input and output data of a plant contains information about its dynamics, as long as it is properly excited, it may seem unnecessary to apply the identification theory to obtain a mathematical model of the plant for controller design \citep{ikeda2001}.
-In addition, having obtained a model faithful to the plant, it may be necessary to reduce its order in the design of the controller.
-In this sense, in several practical control cases in which a mathematical model describing the plant is not available, or is too complex or the uncertainty in the model is too great for the use of MBC strategies, it is very convenient to obtain the controller from measurements obtained directly from the plant.
-
-According to \cite{campi2002}, this problem has attracted the attention of control engineers since the work published by \cite{ziegler1942} and several extensions have been proposed since then. However, around the 1990s, new approaches to controller design without the use of models for plants began to appear in the literature, which later came to be called control based on data \emph{(DDC - from English, data-driven control)}.
-%
-\cite{hou2013} claim that the term \emph{data-driven} was first proposed in computer science and only recently entered the vocabulary of the control community and, to date, there are some DDC methods, however they are characterized by different names, such as `` \emph{data-driven control} '', `` \emph{data-based control} '', `` \emph{modeless control} '', among others. \cite{hou2013} propose the following definition for DDC, based on 3 other definitions found on the Internet:
-
-\begin{defn}[Data-Driven Control]\citep{hou2013}
-Data-driven control includes all control theories and methods in which the controller is designed by directly using on-line or off-line I/O data of the controlled system or knowledge from the data processing but not any explicit information from mathematical model of the controlled process, and whose stability, convergence, and robustness can be guaranteed by rigorous mathematical analysis under certain reasonable assumptions.
-\end{defn}
-
-
-Therefore, the DDC is different from the MBC in essence, since the controller design does not make direct or indirect use of the process model.  
-Although at first, they look like adaptive control methods, DDC methods differ from these in that, at first, they do not need any model information, and parameter settings depend, in general, on large batches of data, instead of only a few samples of the input-output signals. % \citep{bazanella2012}.
-
-	% \todo{Uma perspectiva do desenvolvimento do assunto na comunidade acadêmica pode ser obtida por uma busca
-	%     % \footnote{os resultados obtidos foram refinados pelas seguintes categorias do Web of Science: ``\emph{automation control systems}'' e ``\emph{engineering electrical electronic}'', que se mostraram as mais significativas.}
-	%     pelo número de publicações na base de dados do \cite{webofscience}, utilizando o termo ``\emph{data-driven control}'' e pela combinação de termos ``\emph{data-driven} or \emph{data-based control} or \emph{modeless control} or \emph{model-less control}'', e seu resultado é apresentado na Figura~\ref{Fig_1}.
-	%     Percebe-se um crescente aumento no número de publicações e citações ao longo dos anos.
-	% }
-
-Some conceptually distinct approaches using DDC appear in the literature in the last years, among them\footnote{it was chosen here to mention some techniques that the author found most relevant to this proposal, however others can be found in the literature \citep{sadegh1998, safonov1995, karimi2007, huang2008, schaal1994, shi2000}}:
-\emph{Virtual Reference Feedback Tuning} (VRFT), Iterative Feedback Tuning (IFT), \emph{Frequency Domain Tuning} (FDT), \emph{Correlation Based Tuning} (CbT), originally presented by \cite{campi2002}, \cite{hjalmarsson1994}, \cite{kammer2000} and \cite{karimi2002}, respectively.
 Most of these methodologies use the concept of optimization from the minimization of a cost function, in general, measured in terms of the $H_2$ norm of a signal. 
 Several DDC methods available in the literature do this optimization in an iterative way, among them, the IFT, CbT, ILC, ADP. 
-Others do so in batches, such as the VRFT and \textit{Noniterative data-driven model reference control} methods. 
-% COMTEMP \todo{Falar um pouco, ou pelo menos citar o \textit{Noniterative data-driven model reference control}} 
+Others do so in batches, such as the VRFT, OCI and \textit{Noniterative data-driven model reference control} methods. 
+\todo{Falar um pouco, ou pelo menos citar o \textit{Noniterative data-driven model reference control}} 
 
 In iterative cases, the minimization of the cost function is done, typically, by gradient descent methodologies, from input-output data collected in a batch way \citep{bazanella2008a}.
 One drawback of these methodologies is the lack of conditions that guarantee convergence to a global minimum for the cost function in many cases.
@@ -96,12 +134,75 @@ One drawback of these methodologies is the lack of conditions that guarantee con
 Extensions to improve the convergence properties and even reduce the number of required in-process experiments have been the subject of studies in last years \citep{huusom2009}.
 
 In non-iterative cases, convergence to a global minimum is generally not an issue. 
-The VRTF method, presented by \cite{guardabassi2000a, campi2002} to deals with the design of SISO systems and results in a linear controller is an example.
+
+The VRTF method, presented by \cite{guardabassi2000a, campi2002} and the OCI, presented by \cite{campestrini2012} and anhanced by \cite{campestrini2017}, to deal with the design of linear SISO systems and than extended to deal with multivariable \citep{dasilvaMultivariableVirtualReference2018, huffDataDrivenControlDesign2019}  and nonlinear systems \citep{campi2006}, are examples of this non-iterative cases. 
+
 In order to solve the problem of convergence to a global minimum of a $ H_2 $ performance criterion, the VRFT focus on making the cost function be optimized sufficiently ``well behaved'' making optimization converge properly.
 
 At first, given ideal conditions, convergence to the global minimum is not a problem when using the VRFT method, as it is a batch method. 
 In addition, VRFT has no initialization problems and does not access the plant several times for experimentation, in contrast to iterative methods, allowing to maintaining the normal process operation. 
-Extensions for non-linear controllers designs have been proposed since then \citep{campi2006a, jeng2014a, jeng2018a}.
+Extensions for non-linear controllers designs have been proposed since then \citep{campi2006, jeng2014a, jeng2018a}.
+
+%%% ======================================================================================
+	% Devido às suas características atrativas o VRFT tem sido usado como uma das principais metodologias neste trabalho.
+	Due to its attractive characteristics, the VRFT has been used as one of the main methodologies in this work.
+	% Esta abordagem formula o problema de sintonia do controlador como um problema de identificação via a introdução de um sinal virtual de referência.
+	This approach formulates the controller tuning problem as an identification problem via the introduction of a virtual reference signal.
+	% O objetivo de controle é minimizar um funcional de custo dado pela norma $H_2$ da diferença entre função de transferência em malha fechada e um modelo de referência, ambos multiplicados pelo sinal de referência $r$.
+	The control objective is to minimize a cost function given by the $H_2$ norm of the difference between a closed loop transfer function output and a reference model output, to the same reference signal $r$.
+	% O problema em achar o mínimo é que não há modelo disponível, impedindo o cálculo do modelo em malha fechada.
+	The problem of finding the minimum is that there is no model available.
+	% Visando contornar este problema, o conceito de sinais virtuais é usado.
+	In order to get around this problem, the concept of virtual signals is used.
+	% Estes sinais, dados por $e^{vir}$ (erro virtual) e $u^{vir}$ (sinal de controle virtual), são criados a partir do sinal de saída da planta  e do modelo de referência inverso, possibilitando o uso de um novo funcional de custo dado por $J_{vir}=||C(\theta,z^{-1})e^{vir}-u^{vir}||$, em que $C(\theta,z^{-1})$ representa o modelo do controlador cujos parâmetros $\theta$ devem ser identificados por otimização.
+	These signals, given by $e^{vir}$ (virtual error) and $u^{vir}$ (virtual control signal), are created from the output signal of the plant and the inverse reference model, enabling the use of a new cost function given by $J_{vir}=||C(\theta,z^{-1})e^{vir}-u^{vir}||$, in that $C(\theta,z^{-1})$ represents the controller model whose parameters $\theta$ must be identified by optimization.
+	%
+	% \cite{campi2002} mostram que ao minimizar $J_{vir}$, minimiza-se o primeiro critério sob certas condições. A minimização do novo funcional pode ser feita por técnicas de estimadores de mínimos quadrados (MQ), variáveis instrumentais (VI), dentre outras \citep{aguirre2015}. \cite{bazanella2012} mostram exemplos do uso de variáveis instrumentais para resolver o problema de polarização dos parâmetros identificados para casos de sinais ruidosos.
+	\cite{campi2002} show that by minimizing $J_{vir}$, the first criterion is minimized under certain conditions. The minimization of the new functional can be done by techniques like least squares estimators (MQ), instrumental variables (VI), among others \citep{aguirre2015}. \cite{bazanella2012} show examples of the use of instrumental variables to solve the problem of polarization of the parameters identified for cases of noisy signals.
+
+	%
+	% Até o momento, com base na literatura, encontrou-se técnicas que estendem a abordagem VRFT para casos não lineares \citep{previdi2004a,campi2006,wang2011a,bazanella2014a,yan2016a,radac2018b}. Mas de acordo com \cite{jeng2018a}, diferentemente do VRFT linear, estas versões estendidas para sistemas não lineares ou não são em batelada, ou suas soluções não podem ser determinadas por métodos MQ, perdendo uma vantagem considerável do VRFT. Porém \cite{jeng2015a} mostram que o VRFT pode ser estendido para o controle de sistemas não lineares do tipo Hammerstein e Wiener de forma que é mantido a característica não iterativa do VRFT. Três anos depois, \cite{jeng2018a} apresentam um método onde somente a não linearidade estática (ou sua inversa), representada por séries $B$\emph{-spline}, é estimada simultaneamente com o controlador sem a necessidade de otimização não linear ou procedimentos iterativos.
+	So far it is possible to find extensions of the VRFT method for application to non-linear systems in the literature \citep{previdi2004a, campi2006, wang2011a, bazanella2014a, yan2016a, radac2018b}.
+	But unlike VRFT linear, these extended versions for non-linear systems are either not batched, or their solutions cannot be determined by LS methods, losing a considerable advantage of VRFT \citep{jeng2018a}.
+	However, \cite{jeng2015a} show that VRFT can be extended to control non-linear systems of the Hammerstein and Wiener type so that the non-iterative characteristic of VRFT is maintained and presents a method where only static nonlinearity (or its inverse), represented by $B$\emph{-spline} series, is estimated simultaneously with the controller without the need for nonlinear optimization or procedures iterative. 
+	A drawback is that this approach is applied only to systems that can be represented by Hammerstein and Wiener models.
+
+	% Em suma, o que se vê na literatura são abordagens em que sempre uma estrutura para o controlador é previamente definida e posteriormente o abordagem VRFT é apicada.
+	In general, the available methodologies in the literature are approaches in which a structure for the controller is previously defined and later the VRFT approach is applied.
+	% Uma pergunta que surge é: não seria vantajosa uma metodologia que auxiliasse na escolha da melhor estrutura para o controlador no intuito de atingir o objetivo imposto pelo modelo de referência? Esta pergunta remete a um problema já não muito recente na área de identificação de sistemas, que já vem sendo estudado desde o século passado, que é o problema de seleção de estruturas do modelo a ser identificado.
+	A question that arises is: wouldn't it be advantageous to have a methodology that helps in choosing the best structure for the controller in order to achieve the objective imposed by the reference model? This question refers to a problem that is not very recent in the systems identification area, which has been studied since the last century: the model structure selection (MSS) problem, where aim is to select the best structure to the model to be identified.
+	% Os primeiros estudos nesse sentido se baseiam em índices de informação que tentam quantificar o quanto de informação a inclusão de novos termos (regressoes) ao modelo em relação ao aumento da complexidade (número de termos) do modelo.
+	The first studies in this sense are based on information indices that try to quantify how much information the inclusion of new terms (regressors) brings to the model in relation to the increase in complexity (number of terms) of the model.
+	% Os índices mais conhecidos são o Akaike’s Criterion (AIC) \citep{akaike1974}, o Bayesian Information Criterion (BIC) \citep{schwarz1978} e o Final Prediction Error \citep{kashyap1977}.
+	The most known indexes are the Akaike's Information Criterion (AIC) \citet{akaike1974}, the Bayesian Information Criterion (BIC) \citep{schwarz1978} and the Final Prediction Error \citep {kashyap1977}.
+
+	% Outras abordagens para seleção de estruturas baseadas em princípios diferentes das anteriores surgem a partir do uso de informações como a Error Reduction Ratio (ERR) \citep{billings1989}.
+	Other approaches for selecting structures based on different principles from the previous ones arise from the use of information such as the Error Reduction Ratio (ERR) \citep{billings1989}.
+	% Metodologias com abordagens parecidas com a ERR tem surgido, como o caso da técnica Simulation Error Reduction Ratio (SRR) \citep{piroddi2003} e a ERR$_2$ \citep{alves2012}.
+	Methodologies similar to ERR have emerged, such as the case of the Simulation Error Reduction Ratio (SRR) \citep{piroddi2003} and ERR$_2$ \citep{alves2012} method.
+
+	% Mais recentemente, métodos baseados em abordagens ao estilo Monte Carlo tem sido propostos.
+	More recently, methods based on Monte Carlo-style approaches have been proposed.
+	% Um deles é o procedimento RJMCMC proposto por \cite{baldacchino2013} que emprega uma abordagem bayesiana que, a partir de dados amostrado, deriva distribuições para a estrutura do modelo assim como para seus parâmetros.
+	One of them is the RJMCMC procedure proposed by \cite{baldacchino2013} which uses a Bayesian approach that, based on sampled data, derives distributions for the model structure as well as for its parameters.
+	% Outro é o método proposto por \citep{falsone2014,falsone2015}, em que a seleção de estrutura para o modelo é feita por uma abordagem aleatorizada, em que regressores candidatos são ranqueados por probabilidades de serem os melhores candidatos, a cada iteração do método.
+	Another is the method proposed by \citep{falsone2014, falsone2015}, in which the MSS is made by a randomized approach, in which candidate regressors are ranked by probabilities of being the best candidates, at each iteration of the method.
+	% O processo é feito de tal forma que um número muito menor de modelos precise ser analisado ao se comparar com uma estratégia puramente ``Monte Carlo''.
+	The process is done in such a way that a much smaller number of models need to be analyzed when comparing with a purely  ``Monte Carlo'' strategy.
+
+	% Nesse sentido, este trabalho pretende estender este problema de seleção de estruturas, já comum no meio de identificação de sistemas, para seleção de estruturas de controladores, tarefa a qual parece não estar sendo muito estudada até então.
+	In this sense, this work intends to extend this problem of MSS, already common in the means of system identification, for the controllers structure selection, a task which seems not to have been much studied until then.
+	
+	Outra pergunta que surge é: seria possível o uso de técnicas de estimação do tipo MQ com restrições para modelos não lineares NARX (do inglês \emph{Nonlinear model with eXogenous inputs}) ou MQ estendido para modelos NARMAX (do inglês \emph{Nonlinear AutoRegressive Moving Average model with eXogenous inputs}) neste tipo de abordagem?
+	% porém pouca coisa se encontrou a respeito do uso de estimadores não lineares com restrições para casos em que tem-se um prévio conhecimento do modelo (por exemplo para sistemas não lineares que apresentam comportamento histerético como o tratado em \cite{Martins2016}),  configurando um problema do tipo ``caixa cinza''. \todo[color=red]{falar a respeito dos trabalhos...}\cite{Jeng2014,Jeng2015,Jeng2018} apresentam trabalhos neste sentido, mas foram os únicos encontrados pelo autor até o momento. Portanto o uso de técnicas identificação não lineares baseadas em MQ com restrições é um ponto importante a ser investigado.
+	% Até o momento, com base na literatura, encontrou-se técnicas que estendem a abordagem VRFT para casos não lineares \cite{Previdi2004,campi2006,Wang2011,Yan2016,Radac2018}, porém pouca coisa se encontrou a respeito do uso de estimadores não lineares com restrições para casos em que tem-se um prévio conhecimento do modelo (por exemplo para sistemas não lineares que apresentam comportamento histerético como o tratado em \cite{Martins2016}),  configurando um problema do tipo ``caixa cinza''. \todo[color=red]{falar a respeito dos trabalhos...}\cite{Jeng2014,ISI:000366889700127,Jeng2018} apresentam trabalhos neste sentido, mas foram os únicos encontrados pelo autor até o momento. Portanto o uso de técnicas identificação não lineares baseadas em MQ com restrições é um ponto importante a ser investigado.
+	Apesar de já terem sido desenvolvidas técnicas para incorporar informação auxiliar no processo de identificação, por exemplo via restrições e otimização multiobjetivo \citep{barroso2006}, todas estas restrições dizem respeito à planta.
+	Neste sentido surgem questões como: de que forma estas técnicas podem ser usadas na abordagem DDC?
+
+
+	%
+
+
 
 
 \todo[inline]{Vou terminar aqui ainda. Levar para o lado da seleção de estrutura. Se for preciso, resumo um pouco o texto anterior.} 

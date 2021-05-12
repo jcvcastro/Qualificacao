@@ -1,5 +1,0 @@
-PWD /home/joao/DADOS/GDRIVE/DOUTORADO/GIT/Qualificacao/Figs/Cap5
-INPUT /usr/share/texmf-dist/web2c/texmf.cnf
-INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT ex51_resp_temporal_mf_editado.tex
-OUTPUT build/ex51_resp_temporal_mf_editado.log

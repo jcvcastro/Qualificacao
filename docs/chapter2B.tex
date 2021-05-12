@@ -25,14 +25,17 @@
 \section{Control System Setup and Notations}%
 \label{sec:system_setup_}
 
-Nesta seção apresenta-se o sistema em malha fechada considerado, definindo as equações para seus componentes e introduzindo a notação utilizada ao longo do texto. Como pretende-se lidar com sistemas não lineares, adota-se a notação apresentada em \cite{campi2006}. Quando lidando com sistemas lineares, porém, esta notação pode parecer mais pesada que o necessário e uma notação mais usual pode ser adotada. Essas notações, são apresentadas no escopo do sistema de controle considerado e são detalhadas nas próximas subseções.
+% Nesta seção apresenta-se o sistema em malha fechada considerado, definindo as equações para seus componentes e introduzindo a notação utilizada ao longo do texto. Como pretende-se lidar com sistemas não lineares, adota-se a notação apresentada em \cite{campi2006}. Quando lidando com sistemas lineares, porém, esta notação pode parecer mais pesada que o necessário e uma notação mais usual pode ser adotada. Essas notações, são apresentadas no escopo do sistema de controle considerado e são detalhadas nas próximas subseções.
+In this section, we present the closed-loop system considered, defining the equations for its components and introducing the notation used throughout the text. As it is intended to deal with non-linear systems, the notation presented in \cite{campi2006} is adopted. When dealing with linear systems, however, this notation may appear to be heavier than necessary and a more usual notation may be adopted. These notations are presented within the scope of the control system considered and are detailed in the next subsections.
 
-\subsection{The control system}%
+\subsection{The control system}
 \label{sub:o_sistema_de_controle}
 
-Considera-se um sistema de controle clássico do tipo SISO de um grau de liberdade, que pode ou não se encontrar sobre efeito de ruídos no sinal de saída. A Figura \ref{fig:diagrama_MF} apresenta o diagrama de blocos deste sistema, onde $C(q, \bm{\theta}, e)$ representa o Controlador, função do vetor de parâmetros $\bm{\theta}$ e $P(q,u)$, o modelo do processo, ou planta, que pode ser ou não conhecido. Os sinais $r(k)$,
+% Considera-se um sistema de controle clássico do tipo SISO de um grau de liberdade, que pode ou não se encontrar sobre efeito de ruídos no sinal de saída. A Figura \ref{fig:diagrama_MF} apresenta o diagrama de blocos deste sistema, onde $C(q, \bm{\theta}, e)$ representa o Controlador, função do vetor de parâmetros $\bm{\theta}$ e $P(q,u)$, o modelo do processo, ou planta, que pode ser ou não conhecido. Os sinais $r(k)$,
+It is considered a classic control system of the SISO type with a degree of freedom, which may or may not be under the effect of noise in the output signal. Figure \ref{fig:diagram_MF} shows the block diagram of this system, where $C(q, \bm{\theta}, e)$ represents the controller, a function of the vector of parameters $\bm{\theta}$ and $P(q,u)$, the process model, or plant, which may or may not be known. $r(k)$ 
 \todo{Corrigir aqui. Usar somente P e C no diagrama e corrigir neste parágrafo} 
-$u(k)$, $\nu(t)$, $e(k)$, $y(k)$, e $y_\nu(k)$ são, respectivamente, os sinais de referência, controle, ruído, erro rastreamento, saída do processo e, por último, saída com ruído (ou sinal medido).
+% $u(k)$, $\nu(t)$, $e(k)$, $y(k)$, e $y_\nu(k)$ são, respectivamente, os sinais de referência, controle, ruído, erro rastreamento, saída do processo e, por último, saída com ruído (ou sinal medido).
+ $u(k)$, $\nu(t)$, $e(k)$, $y(k)$, and $y_\nu(k)$ are, respectively, the reference, control, noise, tracking error, process output and, finally, noise output signals.
 
 \begin{figure}[htpb] 
    \centering
@@ -45,31 +48,40 @@ $u(k)$, $\nu(t)$, $e(k)$, $y(k)$, e $y_\nu(k)$ são, respectivamente, os sinais 
 \subsection{The process}%
 \label{sec:TheProcess}
 
-O processo, ou planta, $P$ é um processo não-linear discreto no tempo do tipo SISO, com dinâmica não linear descrita como
+% O processo, ou planta, $P$ é um processo não-linear discreto no tempo do tipo SISO, com dinâmica não linear descrita como
+The process, or plant, $P$ is a discrete non-linear time process of the SISO type, with nonlinear dynamics described as
 \begin{equation}
    y(k)=p\left(y(k-1), \ldots, y(k-n_{P y}), u(k-1), \ldots, u(k-n_{P u})\right),
    \label{eq:yknl}
 \end{equation}
-onde $p$ é uma função representando o processo, $n_{P y}$ é o máximo atraso na saída, $n_{P u}$ é o máximo atraso na entrada e $k$ o índice temporal.
+% onde $p$ é uma função representando o processo, $n_{P y}$ é o máximo atraso na saída, $n_{P u}$ é o máximo atraso na entrada e $k$ o índice temporal.
+where $p$ is a function representing the process, $n_{P y}$ is the maximum delay in the output, $n_{P u}$ is the maximum delay in the input and $k$ the temporal index.
 
-Por simplificação, é considerado que o atraso de tempo puro de $u$ para $y$ em $P$ é 1, mas o procedimento pode ser estendido sem problemas para atrasos maiores.
+% Por simplificação, é considerado que o atraso de tempo puro de $u$ para $y$ em $P$ é 1, mas o procedimento pode ser estendido sem problemas para atrasos maiores.
+For simplicity, the pure time delay from $u$ to $y$ in $P$ is considered to be 1, but the procedure can be extended without problems for longer delays.
 
-Considera-se $P$ como um mapa não-linear que opera de $\mathbb{R}^{N}$ para $\mathbb{R}^{N}$. Quando sujeito às condições iniciais $i.c.= (y(0), \ldots, y(1-n_{P y}), u(-1), \ldots, u(1-n_{P u}) )$ e a um sinal de entrada no intervalo $[0, N-1]$ definido como $u(0{:}N-1) \triangleq [u(0) \cdots u(N-1)]^{T}$, $P$ gera uma saída dada por
+% Considera-se $P$ como um mapa não-linear que opera de $\mathbb{R}^{N}$ para $\mathbb{R}^{N}$. Quando sujeito às condições iniciais $i.c.= (y(0), \ldots, y(1-n_{P y}), u(-1), \ldots, u(1-n_{P u}) )$ e a um sinal de entrada no intervalo $[0, N-1]$ definido como $u(0{:}N-1) \triangleq [u(0) \cdots u(N-1)]^{T}$, $P$ gera uma saída dada por
+  $P$ is considered a non-linear map that operates from $\mathbb{R}^{N}$ to $\mathbb{R}^{N}$. When subject to the initial conditions $i.c.= (y(0), \ldots, y(1-n_{P y}), u(-1), \ldots, u(1-n_{P u}) )$ and an input signal in the range $[0, N-1]$, defined as $u(0{:}N-1) \triangleq [u(0) \cdots u(N-1)]^{T}$, $P$ generates an output given by
 \begin{equation}
    y(1{:}N) = P[u(0{:}N-1), \text { i.c. }].
 \label{eq:Pnl}
 \end{equation}
 
-Adotam-se as seguintes hipóteses:
+The following hypotheses are adopted:
 \begin{assum}[ Process smoothness ]\label{ass:psuave}
-   A função $p$ que representa o processo é suave.
+   % A função $p$ que representa o processo é suave.
+   The function $p$ that represents the process is smooth.
 \end{assum}
 \begin{assum}[ Uniqueness of the solution ]\label{ass:invert}
-   Para quaisquer condições iniciais dadas, se $u_{1}(0{:}N-1) \neq u_{2}(0{:} N-1)$, então $P\left[u_{1}(0{:} N-1), i . c .\right] \neq P\left[u_{2}(0{:} N-1), i . c\right]$.
+   % Para quaisquer condições iniciais dadas, se $u_{1}(0{:}N-1) \neq u_{2}(0{:} N-1)$, então $P\left[u_{1}(0{:} N-1), i . c .\right] \neq P\left[u_{2}(0{:} N-1), i . c\right]$.
+   For any initial conditions given, if
+   $u_{1}(0{:}N-1) \neq u_{2}(0{:} N-1)$, so $P\left[u_{1}(0{:} N-1), i . c .\right] \neq P\left[u_{2}(0{:} N-1), i . c\right]$.
 \end{assum}
 
-A hipótese~\ref{ass:psuave} garante a invertibilidade do mapa $P$. A invertibilidade de $P$ para um sinal de entrada definido no intervalo $\left[ 0{:}N-1 \right]$
-implica na invertibilidade do mapa em um intervalo $[0{:}T]$, com $T\le N-1$ \citep{campi2004}. 
+% A hipótese~\ref{ass:psuave} garante a invertibilidade do mapa $P$. A invertibilidade de $P$ para um sinal de entrada definido no intervalo $\left[ 0{:}N-1 \right]$
+% implica na invertibilidade do mapa em um intervalo $[0{:}T]$, com $T\le N-1$ \citep{campi2004}.
+The Assumption~\ref{ass:psuave} guarantees the invertibility of the $P$ map. The invertibility of $P$ for an input signal defined in the range $\left[ 0{:}N-1 \right]$
+implies in the invertibility of the map in a range $[0{:}T]$, with $T\le N-1$ \citep{campi2004}.
 % COMTEMP \todo{Ref.\ aqui --olhar \citep{campi2006}.} 
 
 % COMTEMP \todo[inline]{Acabar aqui.} 
@@ -77,43 +89,50 @@ implica na invertibilidade do mapa em um intervalo $[0{:}T]$, com $T\le N-1$ \ci
 \subsection{The controller}%
 \label{sub:o_controlador}
 
-O controlador considerado, assim como o processo, é representado por um modelo não-linear (que pode também ser linear). Para fins de identificação dos parâmetros pelo método VRFT, assunto abordado no capítulo \ref{cap:VRFT}, assume-se que uma estrutura (ou classe) é previamente escolhida. Este controlador pode ser descrito como
+% O controlador considerado, assim como o processo, é representado por um modelo não-linear (que pode também ser linear). Para fins de identificação dos parâmetros pelo método VRFT, assunto abordado no capítulo \ref{cap:VRFT}, assume-se que uma estrutura (ou classe) é previamente escolhida. Este controlador pode ser descrito como
+The controller considered, as well as the process, is represented by a non-linear model (which can also be linear). For the purpose of identifying the parameters by the VRFT method, subject addressed in the chapter \ref{cap:VRFT}, it is assumed that a structure (or class) is previously chosen. This controller can be described as
 \begin{equation}
    u(k)=c\left(u(k-1), \ldots, u(k-n_{C u}), e(k), \ldots, e(k-n_{C e})\right),
 \label{eq:uknl}
 \end{equation}
-em que $n_{Cu}$ e $n_{Ce}$ são os máximos atrasos no sinal de controle (saída do controlador e no sinal de erro de rastreamento (entrada do controlador).
+% em que $n_{Cu}$ e $n_{Ce}$ são os máximos atrasos no sinal de controle (saída do controlador e no sinal de erro de rastreamento (entrada do controlador).
+where $n_{Cu}$ and $n_{Ce}$ are the maximum delays in the control signal (controller output and tracking error signal (controller input).
 
-Assim como para o processo, o controlador é sujeito às condições iniciais $i.c.= u(-1), \ldots, u(-n_{C u}), e(-1), \ldots, e(-n_{C e})$
-e quando alimentado com o sinal de erro $e(0{:}N-1)$, gera o sinal de controle $u(0{:}N-1)$, que é representado por
+% Assim como para o processo, o controlador é sujeito às condições iniciais $i.c.= u(-1), \ldots, u(-n_{C u}), e(-1), \ldots, e(-n_{C e})$
+As for the process, the controller is subject to the initial conditions $$i.c.= u(-1), \ldots, u(-n_{C u}), e(-1), \ldots, e(-n_{C e})$$
+% e quando alimentado com o sinal de erro $e(0{:}N-1)$, gera o sinal de controle $u(0{:}N-1)$, que é representado por
+and when fed with the error signal $e(0{:}N-1)$, it generates the control signal $u(0{:}N-1)$, which is represented by
 \begin{equation}
    u(0{:}N-1)=C[e(0{:}N-1), i.c.].
 \label{eq:Cnl}
 \end{equation}
 
-Neste trabalho, um dos objetivos é selecionar um controlador adequado dada uma classe fixa de controladores pelo método VRFT, conforme abordado no capítulo \ref{cap:VRFT}. Essa classe é formada por todos controladores parametrizados por
+% Neste trabalho, um dos objetivos é selecionar um controlador adequado dada uma classe fixa de controladores pelo método VRFT, conforme abordado no capítulo \ref{cap:VRFT}. Essa classe é formada por todos controladores parametrizados por
+In this work, one of the objectives is to select a suitable controller given a fixed class of controllers by the VRFT method, as discussed in the chapter \ref{cap:VRFT}. This class is formed by all controllers parameterized by
 \begin{equation}
    u(k)=c\left(u(k-1), \ldots, u(k-n_{C u}), e(k), \ldots, e(k-n_{C e}); \bm{\theta}\right),
 \label{eq:uknl_par}
 \end{equation}
-sendo $\bm{\theta} \in \mathbb{R}^{n_\theta}$ um vetor de $n_{\theta}$ parâmetros. O controlador parametrizado por $\bm{\theta}$ será aqui indicado por $C_{\theta}$, e o sinal de controle \eqref{eq:uknl} fica na forma 
+% sendo $\bm{\theta} \in \mathbb{R}^{n_\theta}$ um vetor de $n_{\theta}$ parâmetros. O controlador parametrizado por $\bm{\theta}$ será aqui indicado por $C_{\theta}$, e o sinal de controle \eqref{eq:uknl} fica na forma
+being $\bm{\theta} \in \mathbb{R}^{n_\theta}$ a vector of $n_{\theta}$ parameters. The controller parameterized by $\bm{\theta}$ will be indicated here by $C_{\theta}$, and the control signal \eqref{eq:uknl} is in the form
 \begin{equation}
    u_{\theta}(0{:}N-1)=C_{\theta}[e(0{:}N-1), i.c.],
 \label{eq:utheta}
 \end{equation}
-com
+with
 \begin{equation}
-   e(0{:} N-1)\triangleq r(0{:} N-1)-y(0{:} N-1)
+   e(0{:} N-1)\triangleq r(0{:} N-1)-y(0{:} N-1),
 \label{eq:erro}
 \end{equation}
-representando o erro de rastreamento.
+representing the tracking error.
 
-A seguinte hipótese é assumida para o controlador:
+The following assumption is assumed for the controller:
 \begin{assum}
    % O controlador $c(k)$ é uma função escalar \textit{suave} do vetor de parâmetros $\bm{\theta}$, de $u(k-1:k-n_{Cu})$  e de $e(k-0:k-n_{Ce})$, ou de forma simplificada
-   O controlador $c$ é representado por uma função escalar parametrizada como em \eqref{eq:uknl_par}, e assumido suave, ou de forma simplificada
+   % O controlador $c$ é representado por uma função escalar parametrizada como em \eqref{eq:uknl_par}, e assumido suave, ou de forma simplificada
+   The $c$ controller is represented by a scalar function parameterized as in \eqref{eq:uknl_par}, and assumed to be smooth, or in a simplified way
    \begin{equation}
-      c:\mathbb{R}^{n_{Cu}+n_{Ce}+1+n_{\theta}} \mapsto \mathbb{R} \text{ é suave}.
+      c:\mathbb{R}^{n_{Cu}+n_{Ce}+1+n_{\theta}} \mapsto \mathbb{R} \text{ is smooth}.
       \label{eq:assumcon}
    \end{equation}
 \end{assum}
@@ -123,7 +142,8 @@ A seguinte hipótese é assumida para o controlador:
 \subsection{The feedback system}%
 \label{sub:o_sistema_realimentado}
 
-As interconexões do sistema em malha fechada apresentado na Figura \ref{fig:diagrama_MF}, juntamente com as equações do processo \eqref{eq:Pnl} e do controlador \eqref{eq:Cnl} resultam na relação
+% As interconexões do sistema em malha fechada apresentado na Figura \ref{fig:diagrama_MF}, juntamente com as equações do processo \eqref{eq:Pnl} e do controlador \eqref{eq:Cnl} resultam na relação
+The interconnections of the closed-loop system shown in Figure \ref{fig:diagrama_MF}, together with the equations of the process \eqref{eq:Pnl} and the controller \eqref{eq:Cnl} result in the relationship
 \begin{align}
    y(1: N) &=P[u(0{:} N-1), i . c .] \nonumber \\
    &=P[C[e(0{:} N-1), i . c .], i . c .]
@@ -133,8 +153,10 @@ As interconexões do sistema em malha fechada apresentado na Figura \ref{fig:dia
 \subsection{Notation simplification}%
 \label{sub:simplificações_nas_notações}
 
-Por simplificações nas notações, considera-se as condições iniciais da planta e do controlador nulas. Tal requerimento não é necessário, porém só leva  a complicações desnecessárias, principalmente na notação. Além do mais, se as N é grande o suficiente, as condições iniciais influenciam pouco para casos estáveis.
-Além disso, os argumentos temporais são omitidos, resultando no uso dos símbolos: $u$ para representar $u(0{:}N-1)$, $r$ para $r(0{:}N-1)$, $e$ para $e(0{:}N-1)$ e  $y$ para $r(1{:}N)$. Note o avanço temporal de $y$ em relação às outras variáveis. Desta forma, representa-se  $y(0{:}N)$ é representado por $Dy$, sendo $D$ uma matriz nilpotente de deslocamento em atraso definida como
+% Por simplificações nas notações, considera-se as condições iniciais da planta e do controlador nulas. Tal requerimento não é necessário, porém só leva  a complicações desnecessárias, principalmente na notação. Além do mais, se as N é grande o suficiente, as condições iniciais influenciam pouco para casos estáveis.
+For simplifications in the notations, the initial conditions of the plant and the controller are considered null. Such a requirement is not necessary, but it only leads to unnecessary complications, especially in the notation. Furthermore, if the N is large enough, the initial conditions have little influence on stable cases.
+% Além disso, os argumentos temporais são omitidos, resultando no uso dos símbolos: $u$ para representar $u(0{:}N-1)$, $r$ para $r(0{:}N-1)$, $e$ para $e(0{:}N-1)$ e  $y$ para $r(1{:}N)$. Note o avanço temporal de $y$ em relação às outras variáveis. Desta forma, representa-se  $y(0{:}N)$ é representado por $Dy$, sendo $D$ uma matriz nilpotente de deslocamento em atraso definida como
+In addition, time arguments are omitted, resulting in the use of the symbols: $u$ to represent $u(0{:}N-1)$, $r$ for $r(0{:}N-1)$, $e$ for $e(0{:}N-1)$ and $y$ for $r(1{:}N)$. Note the time advance of $y$ in relation to the other variables. In this way, $y(0{:}N)$ is represented by $Dy$, with $D$ being a nilpotent delay displacement matrix defined as
 \begin{equation}
    D \triangleq \begin{bmatrix} 
       0 & 0 & \dots & 0 & 0 \\
@@ -146,12 +168,14 @@ Além disso, os argumentos temporais são omitidos, resultando no uso dos símbo
 \label{eq:}
 \end{equation}
 
-Com isso, \eqref{eq:CLSnl} pode ser rescrita como
+% Com isso, \eqref{eq:CLSnl} pode ser rescrita como
+With that, \eqref{eq:CLSnl} can be written as
 \begin{equation}
    y = P[C[r-Dy]]
    \label{eq:ymf}
 \end{equation}
-Ou, utilizando o controlador parametrizado de \eqref{eq:utheta},
+% Ou, utilizando o controlador parametrizado de \eqref{eq:utheta},
+Or, using the  parametrized controller \eqref{eq:utheta},
 \begin{equation}
    y_{\theta} = P[C_{\theta}[r-Dy_{\theta}]]
    \label{eq:ytheta}
@@ -161,10 +185,12 @@ Ou, utilizando o controlador parametrizado de \eqref{eq:utheta},
 \subsection{The control objective}%
 \label{sub:the_reference_model}
 
-Um elemento fundamental para projeto e análise de controladores na teoriade controle baseada em otimização, como é o caso do VRFT, é o conceito de \textit{desempenho de controle}. Na forma geral, este conceito pode ser expresso como a solução de um problema definido como
+% Um elemento fundamental para projeto e análise de controladores na teoriade controle baseada em otimização, como é o caso do VRFT, é o conceito de \textit{desempenho de controle}. Na forma geral, este conceito pode ser expresso como a solução de um problema definido como
+A fundamental element for controller design and analysis in optimization-based control theory, as is the case with VRFT, is the concept of \textit{control performance}. In general, this concept can be expressed as the solution to a problem defined as
 \begin{equation}
    \min_{\bm{\theta}} J(\bm{\theta}),
 \end{equation}
+% onde $\vtheta \in \mathbb{R}$ é um vetor de $n_{\theta}$ parâmetros adotado como variável decisão e $J(\bm{\theta})$ é uma \textit{função de custo}\footnote{Outros termos também são conhecidos na literatura, como \textit{índice (ou função) de desempenho}, ou ainda, \textit{função objetivo}.}. Quanto menor o valor de $J(\bm{\theta})$, melhor o desempenho segundo algum critério adotado. Dependendo do objetivo de controle, ou até mesmo por questões de garantias analíticas de estabilidade, diferentes funções de custo podem ser adotadas. Uma abordagem muito comum é escolher uma função de custo baseada na  norma-2 quadrática média\footnote{A norma-2 de um sinal discreto, ou vetor, $x(t)$ é definida como $||x(t)|| \triangleq \sqrt{ \sum_{t=1}^{N} [x(t)]^{2} }$. Elevando esse valor ao quadrado temos a norma-2 quadrática, que representa a energia do sinal que, dividida pelo número de amostras, como em \eqref{eq:H2}, resulta em sua energia média.}
 onde $\vtheta \in \mathbb{R}$ é um vetor de $n_{\theta}$ parâmetros adotado como variável decisão e $J(\bm{\theta})$ é uma \textit{função de custo}\footnote{Outros termos também são conhecidos na literatura, como \textit{índice (ou função) de desempenho}, ou ainda, \textit{função objetivo}.}. Quanto menor o valor de $J(\bm{\theta})$, melhor o desempenho segundo algum critério adotado. Dependendo do objetivo de controle, ou até mesmo por questões de garantias analíticas de estabilidade, diferentes funções de custo podem ser adotadas. Uma abordagem muito comum é escolher uma função de custo baseada na  norma-2 quadrática média\footnote{A norma-2 de um sinal discreto, ou vetor, $x(t)$ é definida como $||x(t)|| \triangleq \sqrt{ \sum_{t=1}^{N} [x(t)]^{2} }$. Elevando esse valor ao quadrado temos a norma-2 quadrática, que representa a energia do sinal que, dividida pelo número de amostras, como em \eqref{eq:H2}, resulta em sua energia média.}
 na forma
 \begin{equation}

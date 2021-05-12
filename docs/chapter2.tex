@@ -1,8 +1,12 @@
 % -*- TeX-master: "Qualificacao.tex" -*-
 %!TEX root = Qualificacao.tex
 
-\chapter{Basic concepts in system identification}
+\chapter{Basic concepts}
 \label{cap:cap2} \vspace{-1cm}
+
+\section{Basic concepts in system identification}%
+\label{sec:bas_ident}
+
 
 % \begin{flushright}
 % \begin{minipage}{0.7\linewidth}
@@ -27,18 +31,18 @@ Over the years, with the increase in the computer's processing power as well as 
 From a few decades ago, the task of modeling nonlinear systems has been studied, where some great works stand out \citep{billings1980,leontaritis1985,leontaritis1985a,korenberg1988,billings1989,chen1990,chen1992,aguirre1995,aguirre2000,zhu2005}.
 The system identification process basically consists of the following steps: (1) Data collection; (2) Choice of model type; (3) Structure selection; (4) Estimation of parameters; (5) model validation. The following sections briefly address each of these steps.
 
-\section{Data Collection and pre-processing} \label{sec:collection}
+\subsection{Data Collection and Pre-processing} \label{sec:collection}
 The first step in the identification of systems models is the data collection. In this process, some care must be taken regarding the sampling interval considered when collecting signals, from the system to be identified.  Care should also be taken when choosing the signal used to excite the process, when possible.
 The input signals must be designed in such a way as to excite the dynamics of the system in the frequency range of interest, through the choice of signals with adequate spectral powers. In this case it is said that the signal must be \textit{persistently exciting}. Signals such as filtered white noise or binary pseudo-random signals (PRBS) are commonly used in practice.
 
 The proper choice of the amplitude of the input signal is also a factor that deserves caution. For example, the signal should not be such as to cause the process response to exceed certain thresholds, close to an operating point, which guarantee a behavior close to linear in the case of the identification of linear models. Likewise, when the identification is of a non-linear model, the amplitude must be such that it explores the non-linear characteristics of the process.
 Problems such as oversampling, outliers, or cases in which the excitation signals cannot be previously chosen, can be resolved or mitigated by prior treatment of the data, a process known as pre-processing.
 
-\section{Choice of Model Class} \label{sec:choose model}
+\subsection{Choice of Model Class} \label{sec:choose model}
 
 There are several model classes that can be used to describe the input-output relationship of a process. These classes have different structures that are more or less suitable for a particular application. For example, for non-linear systems, the structure of the model must be complex enough to represent the non-linearities of interest. Among the several usual classes in the representation of models, the following stand out: base radial functions \citep{broomhead1988}, neural networks \citep{haykin1994}, wavelets \citep{strang1989}, Volterra series \citep{billings1980}, polynomials and rationals functions \citep{billings1989}.
 
-\section{Structure Selection}\label{sec:estr_selection}
+\subsection{Structure Selection}\label{sec:estr_selection}
 
 Once the class of a model is defined, choosing its structure (i.e., number, degree, time lags, of terms in a NARX polynomial model) becomes the next task, before identifying its parameters.
 This can be a difficult task, since we want to find a model with the lowest possible variance and polarization (bias), and these two quantities are contradictory.
@@ -54,7 +58,7 @@ The AIC, was introduced by \cite{akaike1974}, and is defined as
    \label{eq:AIC},
 \end{equation}
 where $N$ is the number of sampled data, $\sigma^2_{\text{erro}}(n_\theta)$ the variance of the residue and $n_\theta = \text{dim}[\hat {\theta}]$ the number of parameters of the model.
-Bccording to \cite{aguirre2015}, \eqref{eq:AIC} can be analyzed by the following: ``Bs terms are included in the model, the number of degrees of freedom $n_d$ increases, allowing a more accurate adjustment to the data. Thus, $\sigma^2_{\text{erro}}(n_\theta)$ decreases as $n_d$ increases \dots'',
+According to \cite{aguirre2015}, \eqref{eq:AIC} can be analyzed by the following: ``as terms are included in the model, the number of degrees of freedom $n_d$ increases, allowing a more accurate adjustment to the data. Thus, $\sigma^2_{\text{erro}}(n_\theta)$ decreases as $n_d$ increases \dots'',
 but ``\dots after a certain moment, the decrease in the variance of the residuals resulting from the inclusion of a new term is insignificant and would not justify the inclusion of the respective term ''.
 In short, the first term of \eqref{eq:AIC} quantifies the decrease in the variance of the residuals due to the inclusion of a term, whereas the second term penalizes the inclusion of each term.
 
@@ -91,23 +95,27 @@ More recent techniques, many of which are based on Monte Carlo approaches, have 
 
 
 
-\section{Parameter Estimation}%
+\subsection{Parameter Estimation}%
 \label{sec:parest}
 % COMTEMP \todo{Aqui está parecendo que a estimação é feita exclusivamente por mínimos quadrados. Deixar claro que não. Citar outras. Criar uma seção para mínimos quadrados.} 
 \todo[inline,color=green]{Acabar de traduzir daqui!} 
 
-No processo de identificação de sistemas dinâmicos, mais especificamente utilizando estimação paramétrica, uma vez que os dados são colhidos, pré-processados e a classe do modelo e sua estrutura são escolhidos, o problema passa ser o de se determinar os melhores parâmetros para este modelo. A este processo dá-se o nome de estimação de parâmetros. O objetivo é encontrar uma função paramétrica $\hat{f}(\vvarphi_{k},\hat{\vtheta}) :  \R^{n_{\hat{\theta}}} \mapsto \R$ que se aproxime da função ideal e em geral, desconhecida, $f(\vvarphi_{k}) : \R^{n_\theta} \mapsto \R$ por meios de dados de treinamento amostrados. Desta forma
+% No processo de identificação de sistemas dinâmicos, mais especificamente utilizando estimação paramétrica, uma vez que os dados são colhidos, pré-processados e a classe do modelo e sua estrutura são escolhidos, o problema passa ser o de se determinar os melhores parâmetros para este modelo. A este processo dá-se o nome de estimação de parâmetros. O objetivo é encontrar uma função paramétrica $\hat{f}(\vvarphi_{k},\hat{\vtheta}) :  \R^{n_{\hat{\theta}}} \mapsto \R$ que se aproxime da função ideal e em geral, desconhecida, $f(\vvarphi_{k}) : \R^{n_\theta} \mapsto \R$ por meios de dados de treinamento amostrados. Desta forma
+In the process of identifying dynamic systems models, more specifically using parametric estimation, once the data is collected, pre-processed and the class of the model and its structure are chosen, the problem is to determine the best parameters for this model . This process is called parameter estimation. The objective is to find a parametric function $\hat{f}(\vvarphi_{k},\hat{\vtheta}) :  \R^{n_{\hat{\theta}}} \mapsto \R$ which is close to the ideal and generally unknown function, $f(\vvarphi_{k}) : \R^{n_\theta} \mapsto \R$ using sampled training data. Thus
 \begin{equation}
    y_k = f(\vvarphi_{k}) \approx \hat{f}(\vvarphi_{k},\hat{\vtheta}),
 \end{equation}
-em que $\vvarphi_{k-1} \in \R^{n_{\hat{\theta}}}$ é o vetor de regressores, formado por combinações lineares ou não lineares da saída $y_{k-1},\  \dots ,\ y_{k-n_y}$ (e.g. modelos FIR) e/ou entrada $u_{k-1},\  \dots ,\ u_{k-n_u}$ (e.g., modelos ARX, ou NARX) e até mesmo do resíduo $\xi_{k},\  \dots ,\ \xi_{k-n_\xi-1}$ (e.g., modelos ARMA, NARMAX); $\hat{\vtheta} \in \R^n_\theta$, é um vetor de parâmetros estimados; $y_k \in \R$, o sinal amostrado no instante $k$; e $n_{\hat{\theta}},\ n_y,\ n_u$  representam respectivamente: o número de parâmetros e os máximos atrasos na saída e na entrada. 
+% em que $\vvarphi_{k-1} \in \R^{n_{\hat{\theta}}}$ é o vetor de regressores, formado por combinações lineares ou não lineares da saída $y_{k-1},\  \dots ,\ y_{k-n_y}$ (e.g. modelos FIR) e/ou entrada $u_{k-1},\  \dots ,\ u_{k-n_u}$ (e.g., modelos ARX, ou NARX) e até mesmo do resíduo $\xi_{k},\  \dots ,\ \xi_{k-n_\xi-1}$ (e.g., modelos ARMA, NARMAX); $\hat{\vtheta} \in \R^n_\theta$, é um vetor de parâmetros estimados; $y_k \in \R$, o sinal amostrado no instante $k$; e $n_{\hat{\theta}},\ n_y,\ n_u$  representam respectivamente: o número de parâmetros e os máximos atrasos na saída e na entrada.
+where $\vvarphi_{k-1} \in \R^{n_{\hat{\theta}}}$ is the vector of regressors, formed by linear or nonlinear combinations of the output $y_{k-1},\  \dots ,\ y_{k-n_y}$ (e.g. FIR models) and/or input $u_{k-1},\  \dots ,\ u_{k-n_u}$ (e.g., ARX models, or ARMAX) and even of the residues $\xi_{k},\  \dots ,\ \xi_{k-n_\xi-1}$(e.g., ARMA and NARMAX models); $\hat{\vtheta} \in \R^{n_\theta}$ is a vector of estimated parameters; $y_k \in \R$, the signal sampled at time $k$; and $n_{\hat{\theta}},\ n_y,\ n_u$ represent respectively: the number of parameters and the maximum delays at the output and at the input.
 
-Considerando que a função ideal $f(\vvarphi_{k})$ possa ser escrita na forma paramétrica 
+% Considerando que a função ideal $f(\vvarphi_{k})$ possa ser escrita na forma paramétrica
+Considering that the ideal function $f(\vvarphi_{k})$ can be written in parametric form
 \begin{equation}
    y_k = f(\vvarphi_{k},\vtheta),
    \label{eq:yk}
 \end{equation}
-em que $\bm{\theta} \in \mathbb{R}^{n_\theta}$  é o vetor de parâmetros ideal, 
+% em que $\bm{\theta} \in \mathbb{R}^{n_\theta}$  é o vetor de parâmetros ideal,
+where $\bm{\theta} \in \mathbb{R}^{n_\theta}$ is the ideal parameter vector,
 % em que $\bm{\theta} \in \mathbb{R}^{n_\theta}$  é o vetor de parâmetros ideal, esta função define um conjunto de equações, ou restrições, que pode ser reescrita, para várias observações do escalar $y$, da seguinte forma:
 % \begin{align}
 % \label{eq:restricoes}
@@ -119,73 +127,90 @@ em que $\bm{\theta} \in \mathbb{R}^{n_\theta}$  é o vetor de parâmetros ideal,
 % sendo $y_k$ a $k$-ésima observação de $y$, e $\vvarphi_{k}= \begin{bmatrix} \varphi_{k-1,k}^T & \varphi_{k-2,k} & \dots & \varphi_{k-n_\theta,k} \end{bmatrix}$\todo[color=orange]{\textbf{LAA: } Corrigir isso aqui conforme comentários do aguirre. Olhar a difinição de $\Psi$ também.} a $k$-ésima observação dos $n_\theta$ regressores no instante, ou amostra, $k$.
 %
 % Assumindo que $f$ é linear nos parâmetros $\vtheta$ e que tanto $f$ quanto $\vtheta$ não mudam de uma restrição para a outra em~\eqref{eq:restricoes}, pode-se escrever \eqref{eq:yk} na seguinte forma matricial
-e assumindo que $f$ é linear nos parâmetros e que tanto $f$ quanto $\vtheta$ não mudam em relação ao tempo $k$, pode-se escrever \eqref{eq:yk} na seguinte forma matricial
+% e que tanto $f$ quanto $\vtheta$ não mudam em relação ao tempo $k$, pode-se escrever \eqref{eq:yk} na seguinte forma matricial
+and that both $f$ and $\vtheta$ do not change in relation to time $k$, you can write \eqref{eq:yk} in the following matrix form
 \begin{equation}
    \label{eq:yMatrix}
    \vy = \Psi\bm{\theta},
 \end{equation}
-em que $\Psi = \begin{bmatrix} \vvarphi_{k} & \vvarphi_{k-1} & \dots & \vvarphi_ {k-N+1} \end{bmatrix}^T$ e $\vy = \begin{bmatrix} y_k & y_{k-1} & \dots & y_{k-N+1} \end{bmatrix}^T$.
+where $\Psi = \begin{bmatrix} \vvarphi_{k} & \vvarphi_{k-1} & \dots & \vvarphi_ {k-N+1} \end{bmatrix}^T$ and $\vy = \begin{bmatrix} y_k & y_{k-1} & \dots & y_{k-N+1} \end{bmatrix}^T$.
 
 % A solução deste problema pode ser encontrada a partir do método dos mínimos quadrados
 
-Se $N=n_\theta$ restrições, o vetor de parâmetros $\vtheta$ pode ser determinado por
+% Se $N=n_\theta$ restrições, o vetor de parâmetros $\vtheta$ pode ser determinado por
+If there is $N=n_\theta$ restrictions, the vector of $\vtheta$ parameters can be determined by
 \begin{equation}
    \vtheta = \Psi^{-1}\vy
    \label{eq:thetaest}.
 \end{equation}
 
-Porém se $N > n_\theta$ restrições são tomadas, o sistema é dito sobre-determinado e a matrix $X$ passa a ser não quadrada e não invertível. Uma solução é reescrever \eqref{eq:yMatrix} de forma que a solução não seja exata, a partir da introdução de um termo de erro $\bm{\xi} \in \mathbb{R}^N$, conhecido como vetor de \emph{resíduos}, resultando em
+% Porém se $N > n_\theta$ restrições são tomadas, o sistema é dito sobre-determinado e a matrix $X$ passa a ser não quadrada e não invertível. Uma solução é reescrever \eqref{eq:yMatrix} de forma que a solução não seja exata, a partir da introdução de um termo de erro $\bm{\xi} \in \mathbb{R}^N$, conhecido como vetor de \emph{resíduos}, resultando em
+However if $N > n_\theta$ restrictions are taken, the system is said to be over-determined and the $X$ matrix becomes non-square and non-invertible. One solution is to rewrite \ eqref {eq: yMatrix} so that the solution is not exact, by introducing an error term $\bm{\xi} \in \mathbb{R}^N$, known as the \emph{residue} vector, resulting in
 \begin{equation} 
    \label{eq:ysobredet}
    \vy =  \Psi\hat{\vtheta} + \vxi.
 \end{equation}
 
-Para que o modelo capture o comportamento do processo modelado, é intuitivo que o vetor de parâmetros estimados $\hat{\vtheta}$ seja escolhido de forma que $\vxi$ seja reduzido em algum sentido. Na estratégia conhecida como Mínimos Quadrados Ordinário ou, simplesmente, mínimos quadrados ou LS (do inglês Least Squares), uma função de custo relacionada ao vetor de resíduos é definida como
+% Para que o modelo capture o comportamento do processo modelado, é intuitivo que o vetor de parâmetros estimados $\hat{\vtheta}$ seja escolhido de forma que $\vxi$ seja reduzido em algum sentido. Na estratégia conhecida como Mínimos Quadrados Ordinário ou, simplesmente, mínimos quadrados ou LS (do inglês Least Squares), uma função de custo relacionada ao vetor de resíduos é definida como
+To capture the behavior of the modeled process in the model, it is intuitive that the vector of estimated parameters $\hat{\vtheta}$ is chosen so that $\vxi$ is reduced in some direction. In the strategy known as Ordinary Least Squares, OLS or, simply, least squares or LS, a cost function related to the residues vector is defined as
 \begin{equation}
    \label{eq:JLS}
    J_{LS} = \sum_{k=1}^{N} \vxi(k)^2 = \vxi^T\vxi = ||\vxi||^2.
 \end{equation}
-Prova-se que o vetor $\hat{\vtheta}_{LS}$, definido como o conjunto de parâmetros que minimiza $J_{LS}$ pode ser calculado por meio da pseudo-inversa de $\Psi$, de forma que \citep{aguirre2015}:
+% Prova-se que o vetor $\hat{\vtheta}_{LS}$, definido como o conjunto de parâmetros que minimiza $J_{LS}$ pode ser calculado por meio da pseudo-inversa de $\Psi$, de forma que \citep{aguirre2015}:
+It is proved that the vector $\hat{\vtheta}_{LS}$, defined as the set of parameters that minimizes $J_{LS}$, can be calculated using the pseudo-inverse of $\Psi$, so that \citep{aguirre2015}:
 \begin{equation}
    \hat{\vtheta}_{LS} = [\Psi^T \Psi]^{-1}\Psi^T \vy.
    \label{eq:LS}
 \end{equation}
-A equação \eqref{eq:LS} representa o estimador dos mínimos quadrados, onde os parâmetros são determinados pela minimização da função de custo referente ao somatório do quadrado dos erros de modelagem.
-Alternativas numéricas mais interessantes que o algorítimo clássico de \eqref{eq:LS} podem ser encontradas \citep{aguirre2015,ljung1999}, porém o fundamento básico permanece o mesmo.
+% A equação \eqref{eq:LS} representa o estimador dos mínimos quadrados, onde os parâmetros são determinados pela minimização da função de custo referente ao somatório do quadrado dos erros de modelagem.
+The equation \ref{eq:LS} represents the least squares estimator, where the parameters are determined by minimizing the cost function referring to the sum of the square of the modeling errors.
+% Alternativas numéricas mais interessantes que o algorítimo clássico de \eqref{eq:LS} podem ser encontradas \citep{aguirre2015,ljung1999}, porém o fundamento básico permanece o mesmo.
+Numerical alternatives more interesting than the classic algorithm of \eqref{eq:LS} can be found \citep{aguirre2015, ljung1999}, but the basic concepts remains the same.
 
 
-\section{Model Validation}\label{sec:model_validation}
+\subsection{Model Validation}\label{sec:model_validation}
 
-Tendo sido estimados os parâmetros que minimizam o resíduo em algum sentido, como por exemplo em função do somatório do quadrado dos erros de modelagem, caso dos mínimos quadrados apresentado em \eqref{eq:LS}, deve-se avaliar o desempenho do modelo quando este estiver sujeito a excitações diferentes daquelas submetidas durante o processo de identificação (treinamento). 
+% Tendo sido estimados os parâmetros que minimizam o resíduo em algum sentido, como por exemplo em função do somatório do quadrado dos erros de modelagem, caso dos mínimos quadrados apresentado em \eqref{eq:LS}, deve-se avaliar o desempenho do modelo quando este estiver sujeito a excitações diferentes daquelas submetidas durante o processo de identificação (treinamento).
+Having estimated the parameters that minimize the residue in some sense, such as as a function of the sum of the square of the modeling errors, in the case of the least squares presented in \eqref{eq:LS}, the performance of the model should be evaluated when it is subject to excitations different from those submitted during the identification process (training).
+% Para  isso, é comum utilizar-se de um conjunto de dados amostrados diferente daquele usado no processo de identificação. A este conjunto de dados dá-se o nome de conjunto de validação. É usual colher-se uma certa quantidade de dados do processo, sujeito a um sinal de excitação adequado, e posteriormente dividir o conjunto de dados resultante em um conjunto de treinamento e outro de validação.
+For this, it is common to use a set of sampled data different from that used in the identification process. This data set is called a validation set. It is usual to collect a certain amount of data from the process, subject to an appropriate excitation signal, and then divide the resulting data set into a training set and a validation set.
 
-Para  isso, é comum utilizar-se de um conjunto de dados amostrados diferente daquele usado no processo de identificação. A este conjunto de dados dá-se o nome de conjunto de validação. É usual colher-se uma certa quantidade de dados do processo, sujeito a um sinal de excitação adequado, e posteriormente dividir o conjunto de dados resultante em um conjunto de treinamento e outro de validação.
+% O passo seguinte consiste em utilizar-se de algum índice de desempenho de forma a quantificar a qualidade da previsão em um teste conhecido como \textit{free-run simulation}. Nessa simulação, o modelo obtido no processo de identificação é submetido ao mesmo sinal de excitação sob o qual fora submetido o conjunto de validação. Os resultados simulados e colhidos armazenados previamente são então comparados a partir de alguma métrica. Dentre as métricas mais usuais, destacam-se o \textit{Mean Square Error} (MSE) e a \textit{Mean Absolute Percentage Error} (MAPE).
+The next step is to use some performance index in order to quantify the quality of the prediction in a test known as \textit{free-run simulation}. In this simulation, the model obtained in the identification process is submitted to the same excitation signal under which the validation set was submitted. The simulated and sampled results previously stored are then compared using some metric. Among the most common metrics, \textit{Mean Square Error} (MSE) and \textit{Mean Absolute Percentage Error} (MAPE) stand out.
 
-O passo seguinte consiste em utilizar-se de algum índice de desempenho de forma a quantificar a qualidade da previsão em um teste conhecido como \textit{free-run simulation}. Nessa simulação, o modelo obtido no processo de identificação é submetido ao mesmo sinal de excitação sob o qual fora submetido o conjunto de validação. Os resultados simulados e colhidos armazenados previamente são então comparados a partir de alguma métrica. Dentre as métricas mais usuais, destacam-se o \textit{Mean Square Error} (MSE) e a \textit{Mean Absolute Percentage Error} (MAPE).
-
-O MSE é dado por
+% O MSE é dado por
+The MSE is given by
 \begin{equation}
    \label{eq:MSE}
    \text{MSE} = \frac{1}{N}\sum_{k=1}^{N}(y_k-\hat{y}_k)^2,
 \end{equation}
-sendo $M$ o número de amostras, $y_k$ o dado amostrado no intervalo $k$ e $\hat{y}_k$ a predição do modelo. O MSE pode ser calculado tanto sobre os dados de treinamento quanto sobre dados de validação. Porém, para fins de validação, os dados de validação devem ser utilizados, umas vez que assim pode-se obter uma medida do desempenho para o modelo se comportando fora do ambiente de treinamento. Um bom modelo, em geral, deve apresentar o MSE sobre os dados de validação próximo ao MSE sobre os dados de treinamento. 
+% sendo $M$ o número de amostras, $y_k$ o dado amostrado no intervalo $k$ e $\hat{y}_k$ a predição do modelo. O MSE pode ser calculado tanto sobre os dados de treinamento quanto sobre dados de validação. Porém, para fins de validação, os dados de validação devem ser utilizados, umas vez que assim pode-se obter uma medida do desempenho para o modelo se comportando fora do ambiente de treinamento. Um bom modelo, em geral, deve apresentar o MSE sobre os dados de validação próximo ao MSE sobre os dados de treinamento.
+being $M$ the number of samples, $y_k$ the data sampled in the time $k$ and $\hat{y}_k$ the model prediction. The MSE can be calculated on both, training and validation data. However, for validation purposes, the validation data must be used, since this way it is possible to obtain a measure of the performance for the model behaving outside the training environment. A good model, in general, should present the MSE on the validation data next to the MSE on the training data.
 
-Baseados no MSE, definem-se dois outros índices de desempenho: o \textit{Mean Square Prediction Error}, ou MSPE, e o \textit{Mean Square Simulation Error}, ou MSSE.
-O MSPE é definido como o MSE utilizando como dados de predição do modelo $\hat{y}_k$ dados de predição um passo a frente. Já o MSSE, utiliza dados de simulação livre como dados de predição $\hat{y}_k$ nos cálculos. Versões modificadas do MSPE podem ser também usadas, como o MS2PE, que utiliza predição de 2 passos a frente.
+% Baseados no MSE, definem-se dois outros índices de desempenho: o \textit{Mean Square Prediction Error}, ou MSPE, e o \textit{Mean Square Simulation Error}, ou MSSE.
+Based on the MSE, two other performance indexes are defined: \textit{Mean Square Prediction Error}, or MSPE, and \textit{Mean Square Simulation Error}, or MSSE.
+% O MSPE é definido como o MSE utilizando como dados de predição do modelo $\hat{y}_k$, ou seja,  dados de predição um passo a frente. Já o MSSE, utiliza dados de simulação livre como dados de predição $\hat{y}_k$ nos cálculos. Versões modificadas do MSPE podem ser também usadas, como o MS2PE, que utiliza predição de 2 passos a frente.
+The MSPE is defined as the MSE using one step ahead prediction as the prediction data $\hat{y}_k$ in MSE computing. MSSE, on the other hand, uses free simulation data as the $\hat{y}_k$ in the calculations. Modified versions of MSPE can also be used, such as MS2PE, which uses 2-step prediction ahead, among others.
 
-O MAPE, por sua vez, calcula o desvio absoluto da predição em relação aos dados observados e é, em geral, calculado em porcentagem, na forma
+% O MAPE, por sua vez, calcula o desvio absoluto da predição em relação aos dados observados e é, em geral, calculado em porcentagem, na forma
+The MAPE index calculates the absolute deviation of the prediction in relation to the observed data and is, in general, calculated as a percentage, in the form
 \begin{equation}
    \label{eq:MAPE}
    % \text{MAPE} =  \frac{100\%}{N}\sum_{k=1}^{N} \frac{|y_k - \hat{y}_k|}{|\max(y_k)-\min(y_k)|}. % Petrus
    \text{MAPE} =  \frac{100}{N{\sigma(\bm{y})}}\sum_{k=1}^{N} {|y_k - \hat{y}_k|}\ \%, % Codigo Aguirre
 \end{equation}
-em que $\bm{y}=[y_1,\ y_2,\ \dots,\ y_N]^T$ e $\sigma(\bm{y})$ representa o desvio padrão de $\bm{y}$. 
+% em que $\bm{y}=[y_1,\ y_2,\ \dots,\ y_N]^T$ e $\sigma(\bm{y})$ representa o desvio padrão de $\bm{y}$.
+where $\bm{y}=[y_1,\ y_2,\ \dots,\ y_N]^T$ and $\sigma(\bm{y})$ represents the standard deviation of $\bm{y}$.
 
-Diferentes formas de escolha dos dados de treinamento e validação em relação à usual apresentada em \eqref{eq:MAPE} podem ser usados.
-% , como por exemplo, quando escolhe-se metade dos dados, ou conjuntos proporcionais.
-Uma destas formas é a “leave-one-out cross-validation”, em que apenas um dado, de todo o conjunto de dados é usado de cada vez \citep{allen1974}.
+% Diferentes formas de escolha dos dados de treinamento e validação em relação à usual apresentada em \eqref{eq:MAPE} podem ser usados.
+Different ways of choosing training and validation data in relation to the usual one presented in \eqref{eq:MAPE} can be used.
+% Uma destas formas é a “leave-one-out cross-validation”, em que apenas um dado, de todo o conjunto de dados é usado de cada vez \citep{allen1974}.
+One of these forms is the “leave-one-out cross-validation”, in which only one sample of data is used at a time \citep{allen1974}.
 % \todo{Melhorar um pouco.} % Acho que esta ok agora, mexi.
 
-Além da validação quantitativa em geral recorre-se ainda a uma avaliação qualitativa, na qual é realizada uma comparação gráfica, quanto ao comportamento dinâmico, entre a curva do sinal amostrado e a curva do sinal estimado pelo modelo resultante.
+% Além da validação quantitativa em geral recorre-se ainda a uma avaliação qualitativa, na qual é realizada uma comparação gráfica, quanto ao comportamento dinâmico, entre a curva do sinal amostrado e a curva do sinal estimado pelo modelo resultante.
+In addition to the quantitative validation, in general, a qualitative evaluation is also used, in which a graphical comparison is made, regarding the dynamic behavior, between the curve of the sampled signal and the signal curve estimated by the resulting model.
 \todo{Melhorar este final}
 
 \input{docs/chapter2A.tex}

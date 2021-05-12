@@ -21,7 +21,7 @@
 
   A feasible reference model is defined, that is, with a relative degree equal to or greater than that of the process. For simplicity, a 1st order model with the same relative degree of the process is chosen, as Example \ref{exm:31}, given by the transfer function
   \begin{equation}
-    M(z) = \frac{1-A}{z-A},
+    T_d(z) = \frac{1-A}{z-A},
     \label{eq:mr_sis2aord}
   \end{equation}
   The parameter adopted here is the same as Exemple \ref{exm:31}, i.e. $A = -T_s/\tau_d = 0.8187$. 
@@ -81,8 +81,8 @@ where $o$ is the maximum allowed degree for the regressors, $n_{\tilde{e}}$ is t
 \end{table}\\
 \todo[inline]{MEXER NESTA TABELA AINDA! Valores estão errados. Já os modifiquei. Definir parâmetros, etc. Colocar os mais essenciais por aqui e os menos, no appendice. }
 
-Note that the controllers presented in \eqref{eq:ex51CasesAB} are obtained for a specific realization of the procedure. All terms that end with the RIP above 0.95 are considered in the hundredth iteration.
-Figure \ref{fig:ex51_RIPevol_2cases} shows the evolution of the RIPs for this realization.
+Note que os controladores apresentados em \eqref{eq:ex51CasesAB} são obtidos para uma realização específica do procedimento. São considerados todos os termos que terminam com o RIP acima de 0,95. 
+A Figura \ref{fig:ex51_RIPevol_2cases} mostra a evolução dos RIPs para esta realização. 
 
 \begin{figure}[H]
   \centering
@@ -92,13 +92,14 @@ Figure \ref{fig:ex51_RIPevol_2cases} shows the evolution of the RIPs for this re
 \end{figure}
 \todo[inline]{Trocar esta figura} 
 
-The ideal regressors are selected before the first 40 steps.
-But as the iterations continue, the $\tilde{u}(k-3)$, $\tilde{u}(k-4)$ and $\tilde{e}(k-4)$ regressors continue to increase monotonically in value and eventually end up being selected.
-The effect of including these terms, although in general they are small, deteriorates the desired behavior of the controller.
-When considering noise in the measurement (case 2), the selection of non-ideal regressors occurs even earlier, as can be seen in the lower graph of \ref{fig:ex51_RIPevol_2cases}.
-Part of this result is due to the worsening of parametric identification during the VRFT procedure, provoked by the polarization effect introduced by noise at the output. The result is that the regressor vectors are no longer orthogonal to the residuals and the OLS estimator becomes polarized. A strategy to mitigate this effect is to use non-polarized estimators, such as VI estimators, or even the ELS.
+Nota-se que os regresores ideias são selecionados antes dos primeiros 40 passos.
+Mas ao continuar com as iterações, os regressores $\tilde{u}(k-3)$, $\tilde{u}(k-4)$ e $\tilde{e}(k-4)$, continuam aumentando monotonicamente seu valor e eventualmente acabam sendo selecionados.
+O efeito da inclusão destes termos apesar de, em geral serem pequenos, deterioram o comportamento desejado do controlador.
+Quando considerado ruído na medição (caso 2), a seleção de regressores não ideais ocorrem ainda mais cedo, como pode ser observado no gráfico inferior da \ref{fig:ex51_RIPevol_2cases}.
+Parte deste resultado se deve principalmente ao piora na identificação paraétrica durante o procedimento VRFT.
+Uma melhora pode ser obtida aumentado-se o nũmero de amostras do processo.
 
-Figure ~\ref{fig:Figs-RespostaSist2aordNARX-png} shows the temporal response for the controllers identified in \eqref{eq:ex51CasesAB}, when the reference signal is taken as a square wave.
+A Figura~\ref{fig:Figs-ResponderSist2aordNARX-png} mostra a resposta temporal para os controladores identificados em \eqref{eq:ex51CasesAB}, quando o sinal de refeência é tomado como uma onda quadrada.
 
 % The figure  shows the temporal response for a square wave in reference signal, for the 2 cases.
 % Note que no Caso 1,
@@ -114,12 +115,12 @@ Figure ~\ref{fig:Figs-RespostaSist2aordNARX-png} shows the temporal response for
   \label{fig:Figs-RespostaSist2aordNARX-png}
 \end{figure}
 
-The behavior of the case with noise is deteriorated in relation to case 1 (without noise). The steady-state error for case 2 is about 10 times greater than case 1, as shown in the lower graph in Figure \ref{fig:Figs-RespostaSist2aordNARX-png} (note the different scales in the error graph in the figure).
-This greater error is due to two factors: selection of an over-parameterized structure of the model by the RaMSS procedure, and worse parametric identification due to the presence of noise at the output, which can result in parameter polarization.
-Note that, as the noise is added to the process output (OEM), and by the procedure of filtering by the inverse of the plant when applying the VRFT, the noise, although white, can cause polarization in the identified parameters.
-The error graph in Figure \ref{fig:Figs-RespostaSist2aordNARX-png} also shows the time response for the case without noise, but considering that only the ideal regressors are taken into account in the identification process.
-In this case, the error decreases, and and this decrease is attributed to the over parameterization caused by the extra regressors selected in case 1.
-Despite this, a small error remains on steady state. This fact is attributed to the effect discussed in Chapter \ref{cap:VRFT}, in which small errors in the identification of parameters make the sum of the coefficients in $y(k)$ not exactly zero, resulting in a system with high gain at low frequencies, but not infinite. As discussed, in the chapter \ref{cap:VRFT} and to be proposed in the chapter \ref{cap:Concl}, it is hoped that this problem can be solved by imposing restrictions on the identification process (use of auxiliary information).
+Nota-se que o comportamento do caso com ruído é deteriorado em relação ao caso 1 (sem ruído). O erro em regime permanente para o caso 2 é da ordem de 10 vezes maior que o caso 1, conforme o gráfico inferior da Figura \ref{fig:Figs-RespostaSist2aordNARX-png} (atenção às escalas diferentes no gráfico de erros da figura).
+Esse erro maior se deve a dois fatores: seleção de uma estrutura sobreparametrizada do modelo pelo procedimento RaMSS, e pior identificação paramétrica devido a presença do ruído na saída, que pode resultar em polarização dos parâmetros.
+Note que, como o ruído é acrescentado a saída do processo (OEM), e pelo procedimento de filtragem pela inversa da planta do ao se aplicar o VRFT, o ruído, apesar de branco, pode acarretar em polarização nos parâmetros identificados.
+O gráfico de erros da Figura \ref{fig:Figs-RespostaSist2aordNARX-png} mostra também a resposta para o caso sem ruídos, mas considerando que apenas os regressores ideais são tomados no processo de identificação.
+Neste caso o erro diminui, e diferença entre os erros é atribuída à sobreparametrização provocada pelos regressores extras selecionados no caso 1. 
+Apesar disso, um pequeno erro em regime permanente permanece, mesmo sem ruídos. Este fato é atribuído ao efeito discutido no Capítulo \ref{cap:VRFT}, em que pequenos erros na identificação de parâmetros fazem com que a soma dos coeficientes em $y(k)$ não seja exatamente nula resultando em um sistema com alto ganho em baixas frequências, mas não com ganho infinito. Como discutido, no capítulo \ref{cap:VRFT} e a ser proposto no capítulo \ref{cap:Concl}, espera-se que este problema possa ser resilvido com a imposição de restrições no processo de identificação (uso de informação auxiliar).
 
 
 

@@ -47,67 +47,93 @@ No âmbito de projeto de controladores baseado em dados, mais especificamente pe
 
 Neste sentido, o presente trabalho tem se voltado ao estudo das possibilidades e consequências do uso dessas tecnologias para escolha da estrutura do controlador que se mostre mais adequada para fins de controle. 
 
+\todo[inline]{Pretendo colocar um paragrafo aqui comentando o que será apresentado no restante do capítulo.} 
 
-\section{Methodology}\label{sec:CSS_metod}
-\todo[inline]{A terminar... coloquei por alto os tópicos para continuar depois.} 
 
-Como metodologia para atingir este objetivo, listam-se as etapas a seguir, que por sua vez são detalhadas nas seções subsequentes:
-\begin{itemize}
-  \item O método RaMSS, como concebido originalmente, é implementado em ambiente computacional e a partir de simulações de processos deseja-se certificar de que a metodologia apresenta bons resultados para identificação de processos, além de garantir que algoritmo esteja funcionando de acordo com o esperado. Alguns resultados são brevemente analisados.
-  \item O algoritmo utilizado na etapa anterior é usado, na sequência, para primeiros testes de projeto de controladores a partir da estratégia VRFT sem modificações significativas em seu mecanismo. Neste cenário se espera alguns primeiros resultados, mas sem maiores compromissos com resultados satisfatórios, mas de grande valia para análise e comparação das modificações propostas. Respostas para sistemas previamente definidos são analisados.
-  \item Como passo seguinte, modifica-se o cálculo do índice de custo responsável pelo cálculo dos RIP do algoritmo RaMMS, visando adaptar estes índices para fins de controle.
-  \item Na sequência apresenta-se um estudo a respeito do uso de informações auxiliares durante o projeto do controlador, como introdução de restrições durante a etapa de identificação que garantam características desejáveis e previamente definidas na malha fechada.
-\end{itemize}
+\section{Methodology}\label{sec:CSS_metod} \todo{Talvez colocar o Título como: ``The RaCSS Methodology''"?}
+\todo[inline]{A terminar... Vou mexer no início e fim desta seção ainda, enquanto estiver traduzindo.} 
+
+% Como metodologia para atingir este objetivo, listam-se as etapas a seguir, que por sua vez são detalhadas nas seções subsequentes:
+Visando atingir o objetivo final de se utilizar uma estratégia para estrutura e identificação paramétrica de controladores a partir de uma abordagem DDC, pretende-se neste trabalho, fazer uso das duas metodologias abordadas em capítulos anteriores: o VRFT, para sintonia de parâmetros do controlador e o RaMSS, para seleção da melhor estrutura do controlador. A partir de do estudo e adaptações de trabalhos anteriores \citep{retesNARMAXModelIdentification2019}, tem-se desenvolvido um algoritmo capaz de unir as duas estratégias com o objetivo de auxiliar tanto na seleção de estruturas, quando na sintodia de controladores não-lieares (ou lineares). O algoritmo tem servido de  framework para estudo e validação da abordagem proposta, a partir de simuações numéricas. Neste sentido, parte dos esforços da pesquisa tem se voltado para a implemetação numérica deste framework. Em uma primeira etapa, foi analisado o comportamento do algoritmo na identificação de modelos de processos, a partir do algoritmo RaMSS, como proposto originalmente. Alguns dos resultados de validação desta etapa são apresentados no Capítulo \ref{cap:cap2}, sob a forma do Exemplo \ref{ex:varHeater}.
+
+Uma vez validado o funcionamento do algorítmo, o método VRFT, discutido no Capítulo \ref{cap:VRFT} é acrescentado ao processo, de forma que o desempenho do RaMSS em selecionar estruturas para um controlador possa ser avaliado na prática.
+Nesta etapa, o algoritmo RamSS, utilizado no Capítulo \ref{cap:cap2} é ligeiramente modificado para lidar com a esimação paramétrica via VRFT, para primeiros testes de projeto de controladores. Neste cenário se espera alguns primeiros resultados, sem maiores compromissos com bons desempenhos, mas de são de grande valia para análise e comparação das modificações propostas. Alguns destes resuldados são apresentados pelos exemplos da seção \ref{sec:prel_results} a seguir, mais especificamente no exemplo \ref{ex:51}.
+
+Como abordado no Capítulo \ref{cap:VRFT}, sob certas condições, o controlador pode ser identificados por procedimentos tradicionais de identificação de sistemas pelo método VRFT. Caso as condições necessárias não sejam satisfeitas (vide a Assumption \ref{ass:machedControl} -- matched control) um filtro pode ser projetado de forma que a minimização do índice de custo relativo aos sinais de entrada e saída do controlador, dado por $J_{VR}(\bm{\theta})$ resulte também na minimização do índice de custo $J_{MR}(\bm{\theta})$ relativo ao erro de rastreamento de um modelo de referência. Esta relação é garantida pelo filtro desde que a estrutura do modelo não seja muito ``distante'' da estrutura ideal, i.e. desde que não seja muito subparametrizada.
+
+Uma proposta é utilizar o procedimento RaMSS para tentar identificar a estrutura ideal para o controlador, ou pelo menos uma estrutura próxima que gere bons resultados ao se utilizar o procedimento VRFT. A identificação desta estrutura é feita a partir de dados colhidos sob a abordagem VRFT. Na tentativa de validar a proposta simulações são feitas em diferentes cenários. 
+Em um primeiro cenário o procedimento RaMSS é aplicado a um processo linear onde seu modelo e o modelo do controlador ideal são previamente conhecidos. O intuito aqui é analisar o comportamento do procedimento na seleção de regressores candidatos a um eventual controlador. Uma análise ao estilo Monte Carlo é aplicada ao processo em 2 casos: no primeiro, o procedimento é realizado sem influência de ruídos nos dados utilizados; no segundo, ruídos são acrescentados aos dados no intuito de simulação de um ambiente mais realista. O Exemplo \ref{ex:sis2aord} analisa estes casos.
+
+O procedimento RaMSS foi originalmente proposto para lidar com identificação de processos, e não controladores.
+A atualização do vetor de probabilidades para inclusão dos regressores (RIPs) é feita baseando-se em índices de desempenho visando avaliar a qualidade de predição do modelo. 
+Esta predição é feita sobre dados de treinamento, utilizando uma versão exponencial do MSSE, e possivelmente, no intuito de aumentar a robustez, sobre dados de validação (free run simulation) por meio de uma versão exponencial do MSSE.
+No entanto, para fins de controle, tais índices podem não ser os melhores.
+Principalmente o índice baseado no MSSE, que exige maior custo computacional sob a proposta de promover melhoras na robustez do modelo identificado. O efeito é uma melhor predição do sinal de saída do do modelo identificado, mesmo quando excitado com sinais diferentes daqueles usados na identificação. 
+Apesar de carecer de mais estudos, a princípio este índice não parece trazer muitos benefícios quando utilizado para fins MSS do controlador, uma vez que o intuito final, no projeto de um controlador, é fazer com que o sinal de saída do processo (e não do controlador), tenha um comportamento desejado. 
+
+Neste sentido, propõe-se adaptações ao método RaMSS original visando objetivos mais adequados a MSS de controladores. Uma modificação estudada, é a substituição da versão exponencial do MSSE, dada por $J_s= e^{-K\cdot MSSE}$, por uma que leve em conta o rastreamento do sistema em malha fechada, um dos principais objetivos do controlador. Este novo índice é definido como
+\begin{equation}
+  J_r=e^{-K\cdot MSTE},
+  \label{eq:}
+\end{equation}
+onde $MSTE$, é o erro médio quadrático de rastreamento, definido como 
+\begin{equation}
+  MSTE = \frac{1}{N}\sum_{k=1}^{N} (y_{rm}(k)-y(k))^2.
+  \label{eq:}
+\end{equation}
+
+Uma vez que a escolha de estrutura é feita pelo método RaMSS modificado, incorporando elementos da estratégia VRFT, e que o intutito é a seleção de estrutura e parâmetros para controladores, batiza-se, aqui, esta estratégia de \textit{Randomized Controler Structure Selection}, ou RaCSS.
+
+Resultados preliminares do uso deste índice são apresentados nesta qualificação. Os Exemplos \ref{ex:52} e \ref{ex:53} apresentam alguns destes resultados e uma análise geral é feita no Capítulo \ref{cap:Concl}. \todo{colocar a referencia correta aqui.} 
+
+Ressalta-se que os resultados apresentados são preliminares e conclusões concretas ainda não puderam ser apresentadas. 
+\todo{batizar o método de RaCSS.} 
+No Capítulo \ref{cap:Concl}, propostas para continuidade do trabalho, como inclusão de informações auxiliares ao procedimento, objetivando incorporar características previamente desejadas ou conhecidas para o controlador, assim como possivelmente o uso de estratégias de aprendizado por reforço, no intuito de reduzir o custo computacional devido ao uso de informações da malha fechada do controlador são apresentadas.
 
 Por fim, discussões a respeito de estabilidade, convergência, polarização e robustez são apresentadas, ainda não em um contexto de garantias, mas como conjecturas de passos que pretende-se aprofundar na sequência da presente pesquisa.
 
 \section{Preliminary Results}\label{sec:prel_results}
 
+\begin{exmp}[Second order Linear System -- continued.]\label{ex:sis2aord}
 
-% \begin{exmp}[Motor de corrente contínua] Considere um motor de corrente contínua, com modelo simplificado dado pela equação diferencial
-% \begin{equation}
-% \label{eq:motorccss}
-%
-% \end{equation}
-% \end{exmp}
-\begin{exmp}[Sistema linear de 2a ordem]\label{ex:sis2aord}
-  Considere o seguinte sistema linear de segunda ordem no tempo discreto:
+  Consider the 2nd-order linear system describe in Example \ref{exm:31}: 
   \begin{equation}
     \label{eq:sis2aord}
-    y_k = a_1y_{k-1} + a_2y_{k-2} + b_1u_{k-1} + b_2u_{k-2},
+    y_k = a_1y_{k-1} + a_2y_{k-2} + b_1u_{k-1} + b_2u_{k-2}.
   \end{equation}
-  onde, para $i = 1,\ 2$, os termos $a_i$, $b_i$ $\in \R$, representam parâmetros constantes; $u_{k-i}$ e $y_{k-i}$ $\in \R$, os sinais de entrada e saída, respectivamente; e $k$ o índice temporal.
-  De acordo com a estratégia VRFT (Capítulo~\ref{cap:VRFT}), deve-se primeiramente definir uma classe de controladores admissíveis $\mathscr{C}$, contendo a estrutura do controlador desejado, e definir um modelo de referência que expresse o comportamento do sistema em malha fechada desejado.
+  % onde, para $i = 1,\ 2$, os termos $a_i$, $b_i$ $\in \R$, representam parâmetros constantes; $u_{k-i}$ e $y_{k-i}$ $\in \R$, os sinais de entrada e saída, respectivamente; e $k$ o índice temporal.
+  According to the VRFT strategy (Chapter ~\ref{cap:VRFT}), one must first define a class of allowable controllers $\mathscr{C}$, containing the desired controller structure, and define a reference model that expresses the desired close loop system's behavior.
 
-  Neste exemplo, deseja-se analisar o uso do algoritmo RAmSS de maneira direta, sem modificações, no intuito de achar a melhor estrutura para um controlador projetado a partir da estratégia VRFT.
-  A fim de se examinar o comportamento do Algoritmo RaMSS em achar o melhor conjunto de regressores, procede-se da como descrito na sequência.
+  In this example, we want to analyze the use of the RAmSS algorithm directly, without modifications, in order to find the best structure for a controller designed from the VRFT strategy.
+  In order to examine the behavior of the RaMSS Algorithm in finding the best set of regressors, we proceed as follows.
 
-  Define-se um modelo de referência factível, ou seja com grau relativo igual ou superior ao do processo. Por simplicidade, escolhe-se um modelo de 1a ordem com mesmo grau relativo, como no Exemplo \ref{exm:31}, dado pela função de transferência
+  A feasible reference model is defined, that is, with a relative degree equal to or greater than that of the process. For simplicity, a 1st order model with the same relative degree of the process is chosen, as Example \ref{exm:31}, given by the transfer function
   \begin{equation}
     T_d(z) = \frac{1-A}{z-A},
     \label{eq:mr_sis2aord}
   \end{equation}
-  Os parâmetros adotados aqui são os mesmos do Exemplo \ref{exm:31}, i.e. $A= \frac{T_s}{\tau_d}=$.
-  O controlador ideal, representado por um modelo ARX, será dado pela estrutura composta pelos regressores apresentados em \eqref{eq:exmp31_uk}, representados aqui por
+  The parameter adopted here is the same as Exemple \ref{exm:31}, i.e. $A = -T_s/\tau_d = 0.8187$. 
+  The ideal controller, represented by an ARX model, will be given by the structure composed of the regressors presented in \eqref{eq:exp31_uk}, represented here by
   \begin{equation}
     \label{eq:exp51_contIdeal}
     u_k = \theta_0e_{k} + \theta_1e_{k-1} + \theta_2e_{k-2} + \theta_3u_{k-1} + \theta_4u_{k-2},
   \end{equation}
-  e terá os parâmetros apresentados em \eqref{eq:exp31_ideal_parameters}, rescritos aqui como
+  and will have the parameters shown in \eqref{eq:exp31_ideal_parameters}, described here as
   \begin{equation}
     \vtheta^\star= \begin{bmatrix} \theta^\star_0 & \theta^\star_1 & \theta^\star_2 & \theta^\star_3 & \theta^\star_4 \end{bmatrix}^T =  \begin{bmatrix} 0.181 & 0.308 &  0.145 &  0.19 & 0.81 \end{bmatrix}^T.
   \label{eq:ex51_ideal_parameters}
 \end{equation}
-Utilizando o algoritmo RaMSS, como abordado na seção~\ref{sec:ramss}, o procedimento é executado para 2 casos:
+Using the RaMSS algorithm, as discussed in the section ~\ref{sec:ramss}, the procedure is performed for 2 cases:
 \begin{description}
-  \item[caso 1] o conjunto universo $\mathscr{M}$ é tomado como todos os possíveis modelos lineares formados pelos monõmios até 4 atrasos temporais para o sinal de entrada (erro virtual, $\overline{e}_k$) e saída (sinal de excitação do processo, $u_k$), respectivamente.
-  \item[caso 2] o conjunto universo $\mathscr{M}$ é tomado como todos os possíveis modelos \textit{não lineares} formados pelos mesmos regressores do caso anterior. 
+  \item[case A] the universe set $\mathscr{M}$ is taken as all possible 3rd degree non linear models formed by the monomials up to 4 delays for input $\tilde{e}_k$ (virtual error) and output $\tilde{u}_k$ (virtual process input) collected data. No noise is considered in this case.
+  \item[case B] the same case as case A, but now with a noise given by a gaussian distribution, i.e. $\nu \sim \mathcal{N}(\mu,\sigma)$, where $\mu=0$ is the mean, and $\sigma= 0.1$ is the standard deviation.
 \end{description}
-Os parâmetros de simulação para os 2 casos são apresentados na tabela~\ref{tab:exp51_param}. 
+The simulation parameters for the 2 cases are shown in the table ~\ref{tab:exp51_param}.
+
 
 \begin{table}[htpb]
   \centering
-  \caption{Parâmetros para simulação do algoritmo RaMSS do exemplo~\ref{ex:sis2aord} }\label{tab:exp51_param}
+  \caption{Parameters for simulating the RaMSS algorithm of the example ~\ref{ex:sis2aord}}\label{tab:exp51_param}
   \begin{tabular}{c|c|c|c|c|c|c|c}
     Caso & $o$ & $n_e$ & $n_m$ & $N_p$ & $N_i$ & $K_J$ & $\gamma$ \\
     \hline
@@ -115,136 +141,122 @@ Os parâmetros de simulação para os 2 casos são apresentados na tabela~\ref{t
     2 & $ 2 $ & $7$ & $4$ & $100$ & $100$ & $1$ & $0.1$
   \end{tabular}
 \end{table}
-\todo{Estou pensando em colocar a tabela em apêndice, com significado dos símbolos apresentados por lá.}
+\todo[inline]{MEXER NESTA TABELA AINDA! Valores estão errados. Já os modifiquei. Definir parâmetros, etc. Colocar os mais essenciais por aqui e os menos, no appendice. }
 
-Em uma primeira análise o procedimento RaMSS é aplicado a um conjunto de dados de 700 amostras, obtido via procedimento VRFT, em que o filtro do VRFT é considerado unitário, i.e os dados não são filtrados. O mesmo conjunto de dados é aplicado para os 2 casos. A cada iteração escolhe-se aleatoriamente, por uma processo de Bernoulli, 100 modelos candidatos a serem analisados. 
+O procedimento RaMSS é aplicado a um conjunto de dados de 700 amostras, obtido via procedimento VRFT, em que o filtro do VRFT é considerado unitário, i.e os dados não são filtrados. O mesmo conjunto de dados é aplicado para os 2 casos. A cada iteração escolhe-se aleatoriamente, por uma processo de Bernoulli, 100 modelos candidatos a serem analisados. Os RIPs são atualizados em, no máximo, 100 iterações, ou até todos convergirem para uma margem acima de 0.9 ou abaixo de 0.1, i.e. adota-se o seguinte critério de parada:
+\begin{align}
+  \textbf{if } \left[iter<iter_{\max}\right] \textbf{ or } \left[\Delta_S < \frac{1}{2} \left(1-\min_{\forall \mu \in \bm{\mu}_k}{ \left| 2\mu -1 \right| }\right)\right] \textbf{ then} \text{, STOP the procedure.}
+\label{eq:}
+\end{align}
+onde $\Delta_S = 0.1$ é a margem de convergência, $iter$ é o número da iteração e $iter_{\max} = 100$ é o máximo de iterações permitido. 
 
+       % <- (1-min(abs(2*mu.vec.df[,iter]-1)))/2
+
+Applying the procedure in both cases, the following controllers are obtained, for a specific realization:
 \begin{align*}
-  u_1(k) &= 10.0707145 e_1(k) - 16.2413162 e_1(k-1) + 6.8274122 e_1(k-3) \\ &\quad + 0.1941415 u_1(k-1) +  0.8059737 u_1(k-2), \\
-  u_2(k) &= 3.4128550 e_2(k) - 3.2267597e_2(k-1) + 0.5117530 u_2(k-1) +  0.4807692m_2(k-2),
+  u_1(k) &= 0.193{u}_1(k-1) + 0.805{u}_1(k-2) + 0.001{u}_1(k-3) \\
+         &+ 0.181{e}_1(k) + 0.307{e}_1(k-1) + 0.1441 \\
+  u_2(k) &= 0.751{u}_2(k-1) + 0.241{u}_2(k-2) -0.33{u}_2(k-3) + 0.322{u}_2(k-4) \\
+         &+ 0.174{e}_2(k) + 0.197{e}_2(k-1) + 0.048{e}_2(k-2) + 0.049{e}_2(k-3) + 0.0591
   % \label{eq:contEstsis2aord}
 \end{align*}
-onde o índice subscrito nas variáveis representam os respectivos casos.
-A evolução dos RIPs, durante uma realização típica é mostrada na \ref{fig:exp51_ripevol1}.
-\begin{figure}[H]
-  \centering
-  \includegraphics{Figs/sis2aord_l_ramss_RIPs.eps}
-  \caption{Evolução dos RIPs para escolha dos regressores para o caso 1.}
-  \label{fig:exp51_ripevol1}
-\end{figure}
-\begin{figure}[H]
-  \centering
-  \includegraphics{Figs/sis2aord_nl_ramss_RIPs.eps}
-  \caption{Evolução dos RIPs para escolha dos regressores para o caso 2.}
-  \label{fig:sis2aord_RIPs_caso2}
-\end{figure}
-% \begin{figure}[H]
-% \centering
-% % \subfloat[\centering]{{\includegraphics[width=8cm]{Figs/sis2aord_RIPs_l.png} }}%
-% % \subfloat[\centering]{{\includegraphics[width=8cm]{Figs/sis2aord_RIPs_nl.png} }}%
-% \subfloat[\centering]{{\includegraphics[width=8cm]{Figs/sis2aord_l_ramss_RIPs.eps} }}%
-% \subfloat[\centering]{{\includegraphics[width=8cm]{Figs/sis2aord_nl_ramss_RIPs.eps} }}%
-% \caption{Evolução dos RIPs para escolha dos regressores para os casos (a) 1 e (b) 2.}
-% \label{fig:sis2aord_RIPs}
-% \end{figure}
+where the index subscribed to the variables represent the respective cases.
 
+The table ~\ref{tab:exp51_param} sumarizes the simulation parameters used in \ref{alg:RaMSS}, for the 2 cases.
+\begin{table}[htpb]
+  \centering
+  \caption{Parameters for simulating the RaMSS algorithm of the example ~\ref{ex:sis2aord}}\label{tab:exp51_param}
+  \begin{tabular}{c|c|c|c|c|c|c|c|c}
+    Case & $o$ & $n_{\tilde{e}}$ & $n_{\tilde{u}}$ & $ N_p$ & $ iter_{\max} $ & $K$ & $\gamma_0$  & $\nu$\\
+    \hline
+    A & $ 3 $ & $4$ & $4$ & $100$ & $100$ & $1$ & $2$ & $0$ \\
+    B & $ 3 $ & $4$ & $4$ & $100$ & $100$ & $1$ & $2$ & $\mathcal{N}(\mu,\sigma)$
+  \end{tabular}
+\end{table}
+
+onde  $o$ é o grau máximo permitido para os regressores, $n_{\tilde{e}}$ é o máximo de atraso para o sinal de erro virtual $\tilde{e}(k)$, $n_{\tilde{u}}$ é o máximo atraso para o sinal de entrada da planta amostrado,  $ N_p$ é o número de modelos escolhidos a cada atualização dos RIPs, $ iter_{\max} $ é o número máximo de iterações permitidas, $\Delta_S$ é o trashold para convergência dos RIPs, $K$ é o ganho para os índices de desempenho apresentados em \ref{eq:Js}, $\gamma_0$ é o ganho inicial de \ref{eq:gamma} e  $\nu$ o ruído adicionado a saída\\
+\todo[inline]{MEXER NESTA TABELA AINDA! Valores estão errados. Já os modifiquei. Definir parâmetros, etc. Colocar os mais essenciais por aqui e os menos, no appendice. }
+
+The evolution of RIPs during a typical execution is shown in \ref{fig:ex51_RIPevol_2cases}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Figs/Cap5/ex51_rips_evol_2cases.tex.pdf}
+  \caption{Typical evolution of RIPs for choosing regressors for case 1 and 2.}
+  \label{fig:ex51_RIPevol_2cases}
+\end{figure}
 
 
 A figura~\ref{fig:Figs-RespostaSist2aordNARX-png} mostra a resposta temporal para os 2 casos.
+
 \begin{figure}[H]
+  \sbox0{\blackdottedline} \sbox1{\bluesolidline} \sbox2{\reddashedline} \sbox3{\blackdashdotline} 
   \centering
-  \includegraphics[width=1\textwidth]{Figs/sis2aord2-cropped.pdf}
-  \caption{Resposta temporal a um sinal de referência a um sinal de referência (preto tracejado) na forma de degraus para o modelo de referência em~\eqref{eq:mr_sis2aord} (preto contínuo) e para um possível modelo escolhido pelo algoritmo RaMSS (azul contínuo).}
+  \includegraphics[width=1\textwidth]{./Figs/Cap5/ex51_resp_temporal_mf_editado.tex.pdf}
+  % \include{./Figs/Cap5/ex51_resp_temporal_mf.tex}
+  \caption{Resposta do sistema em malha fechada (gráfico superior) e respectivos erros absolutos (gráfico inferior) utilizando os controladores identificados no caso A (\usebox1) e no caso B (\usebox2). Os sinais de referência (\usebox3) e de reposta do modelo de de referência (\usebox0) são mostrados no gráfico superior.}
   \label{fig:Figs-RespostaSist2aordNARX-png}
 \end{figure}
 
-\todo[inline,color=cyan]{\textbf{To LAA: } Aguirre, peço desculpas pelas figuras ainda com legendas e com qualidades não vetoriais. Ainda não pesquisei um método efetivo para produzir figuras melhores. Uma alternativa fácil para mim é plotar pelo Matlab. Mas creio que pelo R será tranquilo também. Mas só devo ajustar as figuras lá para o final de semana.} 
-
-Nota-se que, ao se considerar somente termos lineares como candidatos, o algoritmo converge para o conjunto de regressores do caso ideal, porém o mesmo não ocorre quando se considera o caso com termos não-lineares. Mesmo ao repetir o procedimento de forma aleatória e exaustiva, o resultado permanece parecido, convergência para a estrutura ideal para o caso 1 e praticamente todos os casos e convergência para diferentes estruturas, que muitas vezes não condiz com o caso ideal.
-
-Este exemplo serve como base para mostrar o comportamento do RaMSS quando utilizado diretamente ao projeto VRFT\@. Porém nenhuma adaptação é feita a fim de lidar com seleção de estruturas de controlador especificamente.
+\todo[inline]{Ainda em construção, por enquanto só coloquei alguns dos gráficos que irei utilizar. Comparações, com tabelas comparando resultados do RaCSS com o ERR também serão ainda colocados. Logicamente, com devidas análises.}
 
 \end{exmp}
 
+\begin{exmp}[RaCSS aplicado a um sistema linear de 2$^a$ ordem] \label{ex:52}
 
-\todo[color=cyan]{\textbf{To LAA: } O exemplo anterior está mal terminado. Estava trabalhando nele agora por último. Mas estou cansado e estou vendo que piorando mais do que melhorando. Então estou enviando o arquivo do jeito que está.} 
+  \todo[inline]{    
+    Neste exemplo aplico o ``RaCSS'' ao mesmo sistema de 2a ordem do exemplo anterior, mas agora usando informação do erro de rastreamento no cálculo dos RIPs.
 
-\todo[inline]{Estou querendo colocar ainda uma análise ``mais estatística'' da seleção dos modelos. Como neste exemplo, nem sempre os regressores escolhidos são os mesmos, principalmente para o ``caso 2''. A ideia é fazer uma espécie de histograma, considerando várias realizações. Chegui a fazer o hitograma, mas depois percebi que não era exatamente um histograma, mas algo parecido que quero.} 
-% \todo[color=cyan]{\textbf{To LAA: } Quis fazer um exemplo simples para começar, acabou me tomando mais tempo do que deveria. A ideia seria apresentar alguns exemplos (ao longo de uma metodologia que ainda está faltando), primeiramente este, que mostra a aplicação direta do RaMSS ao problema sem modificações. Queria dar uma motivação para usar mudanças propostas. Quero apresentar na sequência um exemplo usando o erro de rastreamento no calculo do RaMSS. Ainda não estou com o resultado totalmente pronto. Decidi tentar colocar uma restrição para garantir um integrador mas os resultados não foram muito animadores. Mas acho que já percebi por que e creio que usando informação do erro de rastreamento isso pode melhorar.}
+    Por enquanto estão somente os gráficos, ainda falta análise e algumas tabelas comparativas com ERR.
+  }
 
-\todo{Colocar aqui sobre as modificações introduzidas no RaMSS a fim de lidar com a identificação do controlador. Aprveitar e batizar o método de RaCSS.} 
-
-% \section{RAmSS aplicado a um sistema linear de 2$^a$ ordem}\label{sec:}
-% \todo[inline]{Neste exemplo aplico o ``RaCSS''a um sistema de 2a ordem, usando informação do erro de rastreamento no cálculo dos RIPs.}
-
-\begin{exmp}[RaCSS aplicado a um sistema linear de 2$^a$ ordem]
-
-  Neste exemplo aplico o ``RaCSS'' ao mesmo sistema de 2a ordem do exemplo anterior, mas agora usando informação do erro de rastreamento no cálculo dos RIPs.
-
-  Por enquanto coloquei basicamente os gráficos dos resultados. O texto será colocado na sequência.
+  Evolução dos RIPs para um caso típico:
 
   \begin{figure}[H]
     \centering
-    \includegraphics{./Figs/s.motorcc.VRFT.racss_train_val_data.eps}
-    \caption{Dados de treinamento (até a amostra 700) e validação (a partir da amostra 700).}\label{fig:RIPs2}
-  \end{figure}
-  \todo[inline]{Os dados de validação estão com problemas, mas foi alguma coisa errada na hora de plotar. Obviamente irei consertar isso. Também não estou muito certo se coloco ou não estes dados.} 
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics{./Figs/s.motorcc.VRFT.racss_RIPs.eps}
-    \caption{Evolução dos RIPs para a estratégia RaCSS aplicada ao modelo linear de 2a ordem.}
-    \label{fig:RIPs2}
+    \includegraphics{Figs/Cap5/ex51_rips_evol_SR.tex.pdf}
+    \caption{Evolução dos RIPs para diferentes valores da parâmetro $\alpha$ considerando dados sem ruído. ({\color{red} Caption ainda será mudada.})}
+    \label{fig:exp51_ev_rips_a1}
   \end{figure}
 
   \begin{figure}[H]
     \centering
-    \includegraphics{Figs/s.heater.var.dissip.VRFT_teste.eps}
-    \caption{Figura de teste.}
-    \label{fig:teste}
+    \includegraphics{Figs/Cap5/ex51_rips_evol_CR.tex.pdf}
+    \caption{Evolução dos RIPs para diferentes valores da parâmetro $\alpha$ considerando dados COM ruído. ({\color{red} Caption ainda será mudada.})}
+    \label{fig:exp51_ev_rips_a1}
+  \end{figure}
+
+
+
+  Convergência dos regressores para 100 simulações para cada parâmetro $\alpha$ diferente:
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics{Figs/Cap5/ex51_iter_con_SEM_ruido.tex.pdf}
+    \caption{Densidades de probabilidades para os regressores escolhidos para diferentes valores de $\alpha$, caso sem ruído.({\color{red} Caption ainda será mudada.})}
+    \label{fig:exp51_itercon_ruido}
   \end{figure}
 
   \begin{figure}[H]
     \centering
-    \includegraphics{./Figs/s.motorcc.VRFT.racss_output.mf.eps}
-    \caption{Resposta em malha fechada ao sinal de referência (pontilhado preto), para o modelo de referência (preto contínuo) e para o controlador obtido usando a estratégia RaCSS (círculo azul).}
-    \label{fig:}
+    \includegraphics{Figs/Cap5/ex51_iter_con_COM_ruido.tex.pdf}
+    \caption{Densidades de probabilidades para os regressores escolhidos para diferentes valores de $\alpha$, caso COM ruído.({\color{red} Caption ainda será mudada.})}
+    \label{fig:exp51_itercon_ruido}
   \end{figure}
 
-  Interessante notar que agora, mesmo usando regressores não-lineares, o que aumenta a possibilidade de modelos, a estrutura do modelo converge para a estrutura ideal, que é linear neste caso
 
 
 \end{exmp}
 
 
-\begin{exmp}[RaCSS aplicado a um sistema não-linear]
-  Neste exemplo a ideia é avaliar o comportamento do ``RaCSS'' a um sistema não-linear. Quero tomar o mesmo modelo de um aquecedor com dissipação variável adotado no exemplo~\ref{ex:varHeater} da seção~\ref{sec:ramss}
+\begin{exmp}[RaCSS aplicado a um sistema não-linear] \label{ex:53}
 
-  \todo[inline]{Estava tentando colocar estes resultados aqui agora, mas está dando algum erro no algoritmo. Como está em cima da hora da nossa reunião, vai ficar assim.}
-  % Por enquanto coloquei basicamente os gráficos dos resultados. O texto será colocado na sequência.
-  %
-  % \begin{figure}[H]
-  % \centering
-  % \includegraphics{./Figs/s.motorcc.VRFT.racss_train_val_data.eps}
-  % \caption{Dados de treinamento (até a amostra 700) e validação (a partir da amostra 700).}
-  % \label{fig:RIPs2}
-  % \end{figure}
-  % \todo[inline]{Os dados de validação estão com problemas, mas foi alguma coisa errada na hora de plotar. Obviamente irei consertar isso.}
-  %
-  % \begin{figure}[H]
-  % \centering
-  % \includegraphics{./Figs/s.motorcc.VRFT.racss_RIPs.eps}
-  % \caption{Evolução dos RIPs para a estratégia RaCSS aplicada ao modelo do aquecedor com dissipação variável.}
-  % \label{fig:RIPs2}
-  % \end{figure}
-  %
-  % \begin{figure}[H]
-  % \centering
-  % \includegraphics{./Figs/s.motorcc.VRFT.racss_output.mf.eps}
-  % \caption{Resposta em malha fechada ao sinal de referência (pontilhado preto), para o modelo de referência (preto contínuo) e para o controlador obtido usando a estratégia RaCSS (círculo azul), considerando o controle de temperatura do aquecedor com dissipação variável.}
-  % \label{fig:}
-  % \end{figure}
-  %
+  \todo[inline]{
+    Neste exemplo a ideia é avaliar o comportamento do ``RaCSS'' a um sistema não-linear. Tomei um modelo de um aquecedor com dissipação variável adotado no seu livro. A ideia é apresentado o modelo no exemplo~\ref{ex:varHeater} da seção~\ref{sec:ramss}, no sentido do RaMSS para identificar o modelo. Depois aproveito o mesmo aqui para identificar o controlador.
+
+    Por enquanto estão somente os gráficos, ainda falta análise e algumas tabelas comparativas com ERR.
+  }
+
+
 
 \end{exmp}
 % =================================================================================================================

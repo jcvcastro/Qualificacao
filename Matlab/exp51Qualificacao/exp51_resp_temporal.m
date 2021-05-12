@@ -4,10 +4,15 @@
 % Data: 2021-04-26
 
 
-modelo_completo=csvread('exp51_resp_temporal_SEM_ruido_case10.csv',1,1);
+modelo_completo=csvread('exp51_resp_temporal_ideal_SR.csv',1,1);
+model_cont0 = modelo_completo(:,2:end)
+q0 = modelo_completo(:,1)
+% modelo_completo=csvread('exp51_resp_temporal_SEM_ruido_case10.csv',1,1);
+modelo_completo=csvread('exp51_resp_temporal_SEM_ruido_case24.csv',1,1);
 model_cont1 = modelo_completo(:,2:end)
 q1 = modelo_completo(:,1)
-modelo_completo=csvread('exp51_resp_temporal_COM_ruido_case10.csv',1,1);
+% modelo_completo=csvread('exp51_resp_temporal_COM_ruido_case10.csv',1,1);
+modelo_completo=csvread('exp51_resp_temporal_COM_ruido_case24.csv',1,1);
 model_cont2 = modelo_completo(:,2:end)
 q2 = modelo_completo(:,1)
 
@@ -34,8 +39,10 @@ yr = MR1aO(r,a,d,1);
 yr=yr';
 
 %% Resposta em Malha fechada
+ymf0 = sis_mf(r,model_sis,rho,y0,model_cont0,q0);
 ymf1 = sis_mf(r,model_sis,rho,y0,model_cont1,q1);
 ymf2 = sis_mf(r,model_sis,rho,y0,model_cont2,q2);
+emf0 = yr-ymf0;
 emf1 = yr-ymf1;
 emf2 = yr-ymf2;
 
@@ -60,9 +67,11 @@ subplot(3,1,1:2);
    hold on;
    ax=gca;
    ax.ColorOrder = cores;
-   plot(ts,yr,':','LineWidth',lw);
-   stairs(ts,ymf1,'LineWidth',lw);
-   stairs(ts,ymf2,'--','LineWidth',lw);
+   stairs(ts,r,'k:','LineWidth',lw);
+   stairs(ts,yr,'k','LineWidth',0.5);
+   stairs(ts,ymf1,'b--','LineWidth',1.5);
+   stairs(ts,ymf2,'r:','LineWidth',lw);
+   % stairs(ts,ymf0,'Color',[0 0.5 0],'LineWidth',lw);
    % set(gca,'Xticklabel',[])
    ylabel('output')
    ylim([-1.5 1.5])
@@ -87,12 +96,13 @@ subplot(3,1,3)
    ax.ColorOrder = cores(2:end,:);
    corMagnif = [.8 .8 .8];
    yyaxis left
-      stairs(ts,emf1,'LineWidth',lw);
-      ylabel('abs. error (case 1)')
+      stairs(ts,emf1,'b--','LineWidth',lw);
+      stairs(ts,emf0,'b-.','LineWidth',lw);
+      ylabel('abs. error (case 1) [10x]')
       yticks([-0.005 0 0.005])
       ylim([-0.01 0.01])
    yyaxis right
-      stairs(ts,emf2,'--','LineWidth',lw);
+      stairs(ts,emf2,'r:','LineWidth',lw);
       ylabel('abs. error (case 2)')
       yticks([-0.1 0 0.1])
    xlabel('iteration ($k$)');
@@ -111,10 +121,10 @@ subplot(3,1,3)
    % rangeY=[0.96 1.001];
 
  %%
- hideToolbar()
+%  hideToolbar()
 
 %% Salva Figuras (para tex)
-% %
+
 figure(f2)
 cleanfigure;
 matlab2tikz('../../Figs/Cap5/ex51_resp_temporal_mf.tex','interpretTickLabelsAsTex', ...

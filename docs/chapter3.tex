@@ -68,7 +68,7 @@ This Section presents some definitions and Assumptions used in the rest of the c
 \end{assum}
 
 \begin{defn}[Ideal Controller]\label{def:idealControler}
-   The ideal controller is defined as in the Section \ref{sec:ideal_controller} and is represented by the map $C^\star $, which maps $\tilde{\bm{e}}\mapsto \tilde{\bm{u}}$. For the linear case, the notation $C^\star(q,\bm{\theta})$ is used for temporal representations or $C^\star (z,\bm{\theta})$ for transfer functions.
+   The ideal controller is defined as in the Section \ref{sec:ideal_controller} and is represented by the map $C_0 $, which maps $\tilde{\bm{e}}\mapsto \tilde{\bm{u}}$. For the linear case, the notation $C_0(q,\bm{\theta})$ is used for temporal representations or $C_0 (z,\bm{\theta})$ for transfer functions.
    % É o controlador que, quando colocado na malha fechada, resulta na mesma saída $\tilde{y}(k)$ que o modelo de referência $M$ (ou $M(q)$ e $M(z)$ para o caso linear), quand ambos estão sobre efeito do mesmo sinal de referência $\tilde{\bm{r}}$.
    % \todo[inline]{}
 \end{defn}
@@ -77,9 +77,9 @@ Considering that a structure for the controller is previously chosen (i.e. if it
 % COMTEMP \todo{Olhar se consigo colocar isso de maneira formal (equacao). Vide Bazanella.} 
 
 \begin{assum}[Matched control]\label{ass:machedControl} %% Assumption By of \citep{bazanella2012} pg 13 
-   The ideal controller belongs to control model class considered, i.e. $C^\star(q) \in \mathscr{C}$, or, equivalently
+   The ideal controller belongs to control model class considered, i.e. $C_0(q) \in \mathscr{C}$, or, equivalently
    \begin{equation}
-      \exists \bm{\theta}_0 : C(q,\bm{\theta}_0)=C^\star(q)
+      \exists \bm{\theta}_0 : C(q,\bm{\theta}_0)=C_0(q)
       \label{eq:assumpMatched}.
    \end{equation}
 \end{assum}
@@ -106,7 +106,7 @@ Note that, from Assumption~\ref{ass:LPC}, we can write the controller $C_\theta(
    J_{VR}(\bm{\theta}) = \frac{1}{N}\sum_{k=1}^{N} \left[ \tilde{u}(k) - \bm{\varphi}^{T}(k)\bm{\theta} \right]^{2} = \norm{\tilde{u}(k)-\bm{\varphi}^T(k)\bm{\theta}}^{2}
 \label{eq:JVR_reg}
 \end{equation}
-where $\bm{\Psi}$ is xx the regressors matrix, as defined in the Section~\ref{sec:parest}, equation~\ref{eq:yMatrix}.
+where $\Psi$ is xx the regressors matrix, as defined in the Section~\ref{sec:parest}, equation~\ref{eq:yMatrix}.
 
 \begin{defn}[SR$q$ process \citep{bazanella2012}] \label{def:SRq}
    A quasi-stationary process is said to be sufficiently rich of order $q$ -- or simply SR$q$ -- if its spectrum has at least $q$ nonzero components.
@@ -191,7 +191,7 @@ Using the $J_{VR}(\bm{\theta})$ index in place of $J_{RM}(\bm{\theta})$ has the 
    \label{fig:JVR_JRM_plot}
 \end{figure}
 
-Note that the Theorem \ref{thr:theoremVRFT} is valid if the Assumption~\ref{ass:machedControl} is satisfied. In a general case, the structure, or class of $C^\star$ is unknown, which ends up leading to the choice of a structure for $C_\theta$ belonging to a class $\mathscr{C}$ such that Assumption \ref{ass:machedControl} is not satisfied, i.e. $C^\star \notin \mathscr{C} $.
+Note that the Theorem \ref{thr:theoremVRFT} is valid if the Assumption~\ref{ass:machedControl} is satisfied. In a general case, the structure, or class of $C_0$ is unknown, which ends up leading to the choice of a structure for $C_\theta$ belonging to a class $\mathscr{C}$ such that Assumption \ref{ass:machedControl} is not satisfied, i.e. $C_0 \notin \mathscr{C} $.
 A great contribution of VRFT is the choice of filters that, applied to the sampled signal $\tilde{\bm{u}}$ and the predicted signal $C_\theta[\tilde{\bm{e}}]$, bring the estimated value of $\bm{\theta}$ closer to the optimum value $\bm{\theta}_0$. This subject is discussed in more detail in the Section \ref{sec:filtro_caso_não_linear}.
 
 \section{Controller Parameter Identification}%
@@ -215,9 +215,9 @@ Another possibility to deal with polarization is to use the extended least squar
 
 \section{The Unmatched Control and the Filter Selection}%
 \label{sec:filtro_caso_não_linear}
-As discussed at the end of the Section~\ref{sec:the_ideal_control_design_problem}, if the Assumption ~\ref{ass:machedControl} is not satisfied, i.e. $C^\star \not\in \mathscr{C}$, the Theorem ~\ref{thr:theoremVRFT} no longer applies. Note that this is a recurring situation in practice, since there is, frequently, few information about the process.
+As discussed at the end of the Section~\ref{sec:the_ideal_control_design_problem}, if the Assumption ~\ref{ass:machedControl} is not satisfied, i.e. $C_0 \not\in \mathscr{C}$, the Theorem ~\ref{thr:theoremVRFT} no longer applies. Note that this is a recurring situation in practice, since there is, frequently, few information about the process.
 
-However, \cite{campi2006} presents a filter that, when applied to the data used to find the minimizer of $J_{VR}(\bm{\theta})$, produces well-tuned controllers, even when the controller belongs to a class $\mathscr{C}$ other than the $C^\star$ class, as long as this class is not ``too far'', that is, the controller should not be too under-parameterized with respect to the control objective.
+However, \cite{campi2006} presents a filter that, when applied to the data used to find the minimizer of $J_{VR}(\bm{\theta})$, produces well-tuned controllers, even when the controller belongs to a class $\mathscr{C}$ other than the $C_0$ class, as long as this class is not ``too far'', that is, the controller should not be too under-parameterized with respect to the control objective.
 
 To achieve the mentioned objective, an increased and filtered cost function is assumed, given by
 \begin{equation}
@@ -227,15 +227,15 @@ To achieve the mentioned objective, an increased and filtered cost function is a
 where $F$ represents the mentioned filter and:
 \begin{align}
    \bm{\theta}^+ &\triangleq  [\bm{\theta}^{T} \ \tilde{\theta} ]^T, \quad \tilde{\theta} \in \mathbb{R} ; \\
-   C_{\bm{\theta}^+} &\triangleq C_{\theta}+\tilde{\theta}\left(C^\star-C_\Delta\right),
+   C_{\bm{\theta}^+} &\triangleq C_{\theta}+\tilde{\theta}\left(C_0-C_\Delta\right),
 \end{align}
 where $C_\Delta=C_{\bm{\theta}}$ is computed for $\bm{\theta}=\bm{0}$. It can be verified that:
 \begin{itemize}
    \setlength\itemsep{0.1pt}
    \renewcommand{\labelitemi}{--}
-   \item $C^\star$ é obtido for $\bm{\theta}_0^+ \triangleq [\bm{0}^T\ 1]^T$;
+   \item $C_0$ é obtido for $\bm{\theta}_0^+ \triangleq [\bm{0}^T\ 1]^T$;
    \item $\left\{C_{\theta}\right\}$ it is obtained by imposing $\tilde{\theta} = 0$.
-   \item $C_\Delta$ represents the part of $C^\star$ that cannot be explained by the chosen controller family.
+   \item $C_\Delta$ represents the part of $C_0$ that cannot be explained by the chosen controller family.
 \end{itemize}
 
 A new expanded cost function for the reference model is defined as
@@ -360,9 +360,9 @@ The equation \ref{eq:OLSFiltered} can be solved, for example, by the OLS estimat
 
    Figure \ref{fig:u_y_til_VRFT} shows this \textit{virtual} values (2 bottom ones) calculated over the sampled data $\tilde{\bm{u}}$ and $\tilde{\bm{y}}$ (2 top ones).
 
-   As the process in this example is considered known, the ideal controller $C^\star(z)$ can be calculated according to \eqref{eq:Cdz}, replacing \eqref{eq:Mz} and \eqref{eq:ex31.Pz}, i.e.
+   As the process in this example is considered known, the ideal controller $C_0(z)$ can be calculated according to \eqref{eq:Cdz}, replacing \eqref{eq:Mz} and \eqref{eq:ex31.Pz}, i.e.
    \begin{align}
-      C^\star(z) &= \frac{M(z)}{P(z)\left(1-M(z)\right)} \\
+      C_0(z) &= \frac{M(z)}{P(z)\left(1-M(z)\right)} \\
              &= \frac{(1 - A)z^2 + (Aa_{p1} - a_{p1})z - a_{p2} + Aa_{p2}}{b_{p1}z^2 + (b_{p2} - b_{p1})z - b_{p2}} \\
              &= \frac{0.1813 z^2 + 0.3082 z + 0.145}{ z^2 - 0.19 z - 0.81}
    \end{align}
@@ -380,14 +380,14 @@ The equation \ref{eq:OLSFiltered} can be solved, for example, by the OLS estimat
 
    If the ideal parameters are not known, they can be estimated using the sampled data, $\tilde{\bm{u}}$ and $\tilde{\bm{y}}$ instead of $\bm{u}$ and $\bm{y}$ in \eqref{eq:exp31_uk} and, by constructing a matrix of regressors as, for example (it's not the only chice), given by
    \begin{equation*}
-      \bm{\Psi}^T=\begin{bmatrix} \bm{\varphi_1} & \bm{\varphi_1} & \dots & \bm{\varphi_k}  & \dots & \bm{\varphi_N} \end{bmatrix}
+      \Psi^T=\begin{bmatrix} \bm{\varphi_1} & \bm{\varphi_1} & \dots & \bm{\varphi_k}  & \dots & \bm{\varphi_N} \end{bmatrix}
    \end{equation*}
    where $\bm{\varphi}^T_k =\begin{bmatrix} \tilde{\bm{e}}_{k} & \tilde{\bm{e}}_{k-1} & \tilde{\bm{e}}_{k-2} & \tilde{\bm{u}}_{k-1} & \tilde{\bm{u}}_{k-2} \end{bmatrix}$ is the vector of regressors.
    Using parameter estimation techniques such as the OLS method, it is possible to estimate $\bm{\theta}$ with good approximation.
    If the excitation signal is persistently exciting, and there is no correlated noise affecting the output, when the number of samples $N$ tends to infinity, i.e. $N \to \infty$, $\bm{\theta}$ tends to $\bm{\theta}^\star$.
    In this example, noise is disregarded and $\bm{\theta}$ is estimated by
    \begin{equation*}
-      \hat{\bm{\theta}} = (\bm{\Psi}^T\bm{\Psi})^{-1}\bm{\Psi}\tilde{\bm{u}}
+      \hat{\bm{\theta}} = (\Psi^T\Psi)^{-1}\Psi\tilde{\bm{u}}
    \label{eq:}
    \end{equation*}
    
