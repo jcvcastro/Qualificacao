@@ -191,28 +191,34 @@ A fundamental element for controller design and analysis in optimization-based c
    \min_{\bm{\theta}} J(\bm{\theta}),
 \end{equation}
 % onde $\vtheta \in \mathbb{R}$ é um vetor de $n_{\theta}$ parâmetros adotado como variável decisão e $J(\bm{\theta})$ é uma \textit{função de custo}\footnote{Outros termos também são conhecidos na literatura, como \textit{índice (ou função) de desempenho}, ou ainda, \textit{função objetivo}.}. Quanto menor o valor de $J(\bm{\theta})$, melhor o desempenho segundo algum critério adotado. Dependendo do objetivo de controle, ou até mesmo por questões de garantias analíticas de estabilidade, diferentes funções de custo podem ser adotadas. Uma abordagem muito comum é escolher uma função de custo baseada na  norma-2 quadrática média\footnote{A norma-2 de um sinal discreto, ou vetor, $x(t)$ é definida como $||x(t)|| \triangleq \sqrt{ \sum_{t=1}^{N} [x(t)]^{2} }$. Elevando esse valor ao quadrado temos a norma-2 quadrática, que representa a energia do sinal que, dividida pelo número de amostras, como em \eqref{eq:H2}, resulta em sua energia média.}
-onde $\vtheta \in \mathbb{R}$ é um vetor de $n_{\theta}$ parâmetros adotado como variável decisão e $J(\bm{\theta})$ é uma \textit{função de custo}\footnote{Outros termos também são conhecidos na literatura, como \textit{índice (ou função) de desempenho}, ou ainda, \textit{função objetivo}.}. Quanto menor o valor de $J(\bm{\theta})$, melhor o desempenho segundo algum critério adotado. Dependendo do objetivo de controle, ou até mesmo por questões de garantias analíticas de estabilidade, diferentes funções de custo podem ser adotadas. Uma abordagem muito comum é escolher uma função de custo baseada na  norma-2 quadrática média\footnote{A norma-2 de um sinal discreto, ou vetor, $x(t)$ é definida como $||x(t)|| \triangleq \sqrt{ \sum_{t=1}^{N} [x(t)]^{2} }$. Elevando esse valor ao quadrado temos a norma-2 quadrática, que representa a energia do sinal que, dividida pelo número de amostras, como em \eqref{eq:H2}, resulta em sua energia média.}
-na forma
+where $\vtheta \in \mathbb{R}$ is a vector of $n_{\theta}$ parameters adopted as a decision variable and $J(\bm{\theta})$ is a \textit{cost function}\footnote{Other terms are also known in the literature, such as \textit{performance index (or function)}, or else, \textit{objective function}.}. The lower the value of $J(\bm{\theta})$, the better the performance according to some adopted criterion. Depending on the control objective, or even for reasons of analytical stability guarantees, different cost functions can be adopted. A very common approach is to choose a cost function based on the mean quadratic norm-2 \footnote{The norm-2 of a discrete signal, or vector, $x(t)$ is defined as $||x(t)|| \triangleq \sqrt{ \sum_{t=1}^{N} [x(t)]^{2} }$. Raising this value squared we have the quadratic norm-2, which represents the energy of the signal which, divided by the number of samples, as in \eqref{eq:H2}, results in its average energy.}
+in the form
 \begin{equation}
    ||x(k)||^{2} =\frac{1}{N}\sum_{k=1}^{N} \left[ x(k) \right]^{2} \triangleq \bar{\E} \left[ x(k) \right]^{2}
    \label{eq:H2}
 \end{equation}
-em que $x(k)$ representa uma função genérica, $N$, o número de amostras e $\bar{\E}\left[ \cdot \right] $, um operador definido como
+% em que $x(k)$ representa uma função genérica, $N$, o número de amostras e $\bar{\E}\left[ \cdot \right] $, um operador definido como
+where $x(k)$ represents a generic function, $N$, the number of samples and $\bar{\E}\left[ \cdot \right] $, an operator defined as
 \begin{equation}
    \bar{\E}[x(k)] \triangleq \frac{1}{N}\sum_{k=1}^{N} [x(k)],
 \end{equation}
-que representa o cálculo da média amostral, e será usado no decorrer do texto em substituição ao somatório, por conveniência.
+% que representa o cálculo da média amostral, e será usado no decorrer do texto em substituição ao somatório, por conveniência.
+which represents the calculation of the sample mean, and will be used throughout the text to replace the summation, for convenience.
 
-O critério apresentado em \eqref{eq:H2} é conhecido como \textit{critério de desempenho} $H_2$ e é o que se adota neste trabalho e, para fins de objetividade, será o único abortado neste texto.
+% O critério apresentado em \eqref{eq:H2} é conhecido como \textit{critério de desempenho} $H_2$ e é o que se adota neste trabalho e, para fins de objetividade, será o único abortado neste texto.
+The criterion presented in \eqref{eq:H2} is known as \textit{performance criterion} $H_2$.
 
-O critério  $H_2$, para fins de controle, é definido de acordo com o objetivo de controle. Estes objetivos, em geral, são adotados como: (1) rastreamento de referência, (2) rejeição de ruídos e (3) economia de esforço de controle. Critérios mistos adotando mais de um destes objetivos, podem também ser definidos, como é o caso do (4) composite performance criteria. As próximas seções tratam destes critérios com um pouco mais de detalhes.
+% O critério  $H_2$, para fins de controle, é definido de acordo com o objetivo de controle. Estes objetivos, em geral, são adotados como: (1) rastreamento de referência, (2) rejeição de ruídos e (3) economia de esforço de controle. Critérios mistos adotando mais de um destes objetivos, podem também ser definidos, como é o caso do (4) composite performance criteria. As próximas seções tratam destes critérios com um pouco mais de detalhes.
+The $H_2$ criterion, for control purposes, is defined according to the control objective. These objectives, in general, are adopted as: (1) reference tracking, (2) noise rejection and (3) control effort saving. Mixed criteria adopting more than one of these objectives, can also be defined, as is the case of (4) composite performance criteria. The following sections deal with these criteria in a little more detail.
 
 
 \subsubsection{The Reference Tracking Objective}%
 \label{sub:the_reference_tracking_objective}
-Um dos principais objetivos do controle em malha fechada é fazer com que o sinal controlado siga um sinal de referência desejado, de modo que sejam o mais próximo possível. Desprezando-se o efeito do ruído na saída, e considerando um controlador parametrizado, a resposta do sistema em malha fechada é dada por \eqref{eq:ytheta}.
+% Um dos principais objetivos do controle em malha fechada é fazer com que o sinal controlado siga um sinal de referência desejado, de modo que sejam o mais próximo possível. Desprezando-se o efeito do ruído na saída, e considerando um controlador parametrizado, a resposta do sistema em malha fechada é dada por \eqref{eq:ytheta}.
+One of the main objectives of closed loop control is to make the controlled signal follow a desired reference signal, so that they are as close as possible. Disregarding the effect of noise on the output, and considering a parameterized controller, the response of the closed-loop system is given by \eqref{eq:ytheta}.
 
-Esse objetivo pode ser traduzido como a minimização de uma função custo dada pela norma-2 do erro de rastreamento, na forma
+% Esse objetivo pode ser traduzido como a minimização de uma função custo dada pela norma-2 do erro de rastreamento, na forma
+This objective can be translated as the minimization of a cost function given by 2-norm of the tracking error, in the form
 \begin{equation}
    % J(\bm{\theta}) = \bar{\E}\left[ r(t) - y_r(t,\bm{\theta}) \right].
    J_r^N(\bm{\theta}) \triangleq || r - y_\theta ||^2 .
@@ -227,31 +233,39 @@ Esse objetivo pode ser traduzido como a minimização de uma função custo dada
 \subsubsection{The Reference Model Objective}%
 \label{sub:The Reference Model Objective}
 
-Um fato bem conhecido na comunidade de controle é que na prática é impossível fazer com que a saída siga perfeitamente o sinal de referência durante todo o tempo, ou seja \eqref{eq:Jr} nunca será zero.
-Para contornar esse fato uma saída é relaxar o objetivo de rastreamento por outro que satisfaça pré-requisitos desejados (como tempo de acomodação, instante de pico, sobressalto máximo, dentre outros), mas que seja menos exigente que a referência original.
+% Um fato bem conhecido na comunidade de controle é que na prática é impossível fazer com que a saída siga perfeitamente o sinal de referência durante todo o tempo, ou seja \eqref{eq:Jr} nunca será zero.
+A well-known fact in the control community is that in practice it is impossible to make the output follow the reference signal perfectly at all times, that is, \eqref{eq:Jr} will never be zero.
+% Para contornar esse fato uma saída é relaxar o objetivo de rastreamento por outro que satisfaça pré-requisitos desejados (como tempo de acomodação, instante de pico, sobressalto máximo, dentre outros), mas que seja menos exigente que a referência original.
+To get around this fact, one way out is to relax the tracking objective by another that satisfies the desired prerequisites (such as accommodation time, peak time, maximum startle, among others), but which is less demanding than the original reference.
 
-Esse novo objetivo é traduzido para um modelo conhecido como \textit{modelo de referência} representado aqui por um mapa de $\mathbb{R}^{N}$ para $\mathbb{R}^{N}$, que mapeia um sinal de referência, digamos, $\tilde{r}$ para um sinal de saída $\tilde{y}$ com um comportamento desejado\footnote{o símbolo \ $\tilde{}$ \ enfatiza que estes sinais são para o modelo de referência.}.
+% Esse novo objetivo é traduzido para um modelo conhecido como \textit{modelo de referência} representado aqui por um mapa de $\mathbb{R}^{N}$ para $\mathbb{R}^{N}$, que mapeia um sinal de referência, digamos, $\tilde{r}$ para um sinal de saída $\tilde{y}$ com um comportamento desejado\footnote{o símbolo \ $\tilde{}$ \ enfatiza que estes sinais são para o modelo de referência.}.
+This new objective is translated into a model known as \textit{reference model} represented here by a map from $\mathbb{R}^{N}$ to $\mathbb{R}^{N}$, which maps a reference signal, say, $\tilde{r}$ to an exit signal $\tilde{y}$ with a desired behavior \footnote{the symbol $\tilde{}$ emphasizes that these signals are for the reference model.}.
 \begin{equation}
    M:\tilde{r} \in \mathbb{R}^N \mapsto \tilde{y} \in \mathbb{R}^N
 \label{eq:Mmap}
 \end{equation}
-Este mapa, a princípio pode ser um modelo não linear, desde que seja suave e invertível. Porém, em geral, por conveniência, é escolhido como um modelo linear, mas ainda sim deve ser invertível. Defini-se a seguinte hipótese:
-\begin{assum}[Invertibilidade do modelo de referência]
-   $M$ é triangular inferior e invertível.
+% Este mapa, a princípio pode ser um modelo não linear, desde que seja suave e invertível. Porém, em geral, por conveniência, é escolhido como um modelo linear, mas ainda sim deve ser invertível. Defini-se a seguinte hipótese:
+This map, in principle, can be a non-linear model, as long as it is smooth and invertible. However, in general, for convenience, it is chosen as a linear model, but it must still be invertible. The following Assumption was defined:
+\begin{assum}[Invertibility of the reference model]
+   $M$ is lower triangular and invertible.
 \end{assum}
-O fato de $M$ ser adotado como triangular inferior garante que será causal, com atraso puro maior ou igual a 1.
-Um exemplo de escolha típica para $M$, para o caso linear, é o filtro
+% O fato de $M$ ser adotado como triangular inferior garante que será causal, com atraso puro maior ou igual a 1.
+The fact that $M$ is adopted as a lower triangular ensures that it will be causal, with a pure delay greater than or equal to 1.
+% Um exemplo de escolha típica para $M$, para o caso linear, é o filtro
+An example of a typical choice for $M$, for the linear case, is the filter
 \begin{equation}
    M(q)=\frac{b_{1} q^{-1}+\cdots+b_{n_{M r}} q^{-n_{M r}}}{1+a_{1} q^{-1}+\cdots+a_{n_{M y}} q^{-n_{M y}}}
 \label{eq:Mq}
 \end{equation}
-sendo $n_{Mr}$ e $n_{My}$ os máximos atrasos pra a referência e para a saída, respectivamente, e $q$ um operador de atraso. No domínio do tempo, \eqref{eq:Mq} corresponde a 
+% sendo $n_{Mr}$ e $n_{My}$ os máximos atrasos pra a referência e para a saída, respectivamente, e $q$ um operador de atraso. No domínio do tempo, \eqref{eq:Mq} corresponde a
+where $n_{Mr}$ and $n_{My}$ are the maximum delays for the reference and for the output, respectively, and $q$ is a delay operator. In the time domain, \eqref{eq:Mq} corresponds to
 \begin{align}
    \label{eq:ytMr}
    \tilde{y}(k)=-a_{1} \tilde{y}(k-1)-\cdots &-a_{n_{M y}} \tilde{y}\left(k-n_{M y}\right) +b_{1} \tilde{r}(k-1)+\cdots+b_{n_{M r}} \tilde{r}\left(k-n_{M r}\right)
 \end{align}
 
-Uma vez definido o modelo de referência que traduz o comportamento desejado em malha fechada, o novo objetivo de controle é traduzido como
+% Uma vez definido o modelo de referência que traduz o comportamento desejado em malha fechada, o novo objetivo de controle é traduzido como
+Once the reference model that reflects the desired behavior in closed loop has been defined, the new control objective is translated as
 
    % e será, neste texto, referido como $M(z)$, quando na forma de função de transferência (linear) ou $M(q)$ quando na forma de modelos temporais (linear ou não linear), ou simplesmente $M$ quando na forma apresentada na section \ref{sec:}. Neste sentido, uma nova função de custo é definida como
 \begin{equation}
@@ -259,23 +273,27 @@ Uma vez definido o modelo de referência que traduz o comportamento desejado em 
    % J_{RM}^N(\bm{\theta}) \triangleq \bar{\E}\left[ y_r(k,\bm{\theta}) - y_{RM}(k) \right]^{2} = \bar{\E}\left[ T(q,\bm{\theta},r(k)) - M(q,r(k)) \right]^{2}
    \label{eq:Jy}
 \end{equation}
-sendo $\tilde{y} = M[\tilde{r}]$ o sinal de saída do modelo de referência desejado, quando sobre efeito de um sinal de referência $r$. Tal critério é conhecido como \textit{critério do modelo de referência}.
+% sendo $\tilde{y} = M[\tilde{r}]$ o sinal de saída do modelo de referência desejado, quando sobre efeito de um sinal de referência $r$. Tal critério é conhecido como \textit{critério do modelo de referência}.
+ where $\tilde{y} = M[\tilde{r}]$ represents the output signal of the desired reference model, when under the effect of a reference signal $r$. This criterion is known as \textit{reference model criterion}.
 
 
 \subsubsection{The Noise Rejection Objective}%
 \label{sub:the_noise_rejection_objective}
 
-Outro objetivo comum em sistemas de controle é minimizar o efeito do ruído no sinal de saída. O sinal de saída devido somente a atuação do sinal de ruído no processo pode ser escrito como
+% Outro objetivo comum em sistemas de controle é minimizar o efeito do ruído no sinal de saída. O sinal de saída devido somente a atuação do sinal de ruído no processo pode ser escrito como
+Another common goal in control systems is to minimize the effect of noise on the output signal. The output signal due only to the action of the noise signal in the process can be written as
 \begin{equation}
    y_{\theta\nu}(\bm{\theta}) \triangleq S_\theta[\nu] = \nu-P[C_\theta[Dy_{\theta\nu}],
 \end{equation}
-em que $\nu \triangleq \nu(0{:}N)$ representa o sinal de ruído e $S_{\theta}$ um mapa de ruído para a saída do processo, ou seja $M:\nu \mapsto y_{\theta\nu}$, que, para o caso linear, é também conhecido como função sensibilidade. Quando analisada a magnitude deste sinal em função de alguma norma, tem-se o critério de desempenho de rejeição de ruído $J_\nu^N(\bm{\theta})$ que, utilizando a norma-2, é dado por
+% em que $\nu \triangleq \nu(0{:}N)$ representa o sinal de ruído e $S_{\theta}$ um mapa de ruído para a saída do processo, ou seja $M:\nu \mapsto y_{\theta\nu}$, que, para o caso linear, é também conhecido como função sensibilidade. Quando analisada a magnitude deste sinal em função de alguma norma, tem-se o critério de desempenho de rejeição de ruído $J_\nu^N(\bm{\theta})$ que, utilizando a norma-2, é dado por
+where $\nu \triangleq \nu(0{:}N)$ represents the noise signal and $S_{\theta}$ a noise map for the process output, i.e. $M:\nu \mapsto y_{\theta\nu}$, which, for the linear case, is also known as the sensitivity function. When analyzing the magnitude of this signal as a function of some norm, results in the performance criterion of noise rejection $J_\nu^N(\bm{\theta})$ which, using the 2-norm, is given by
 \begin{equation}
    J_\nu^N(\bm{\theta}) \triangleq \norm{ y_{\theta\nu} }^2 = \norm{ S_\theta[\nu] }^2.
    \label{eq:Jnoise}
 \end{equation}
 
-Assim como no caso do rastreamento, não é possível a eliminação completa do efeito do ruído e um relaxamento neste critério é desejável, pelos mesmos motivos. Neste caso é definida uma função sensibilidade desejada $S_{M}$\footnote{O índice $M$ é utilizado para manter a analogia com o índice utilizado pelo modelo de referência para o caso de rastreamento.} e adota-se o critério
+% Assim como no caso do rastreamento, não é possível a eliminação completa do efeito do ruído e um relaxamento neste critério é desejável, pelos mesmos motivos. Neste caso é definida uma função sensibilidade desejada $S_{M}$\footnote{O índice $M$ é utilizado para manter a analogia com o índice utilizado pelo modelo de referência para o caso de rastreamento.} e adota-se o critério
+As in the case of tracking, it is not possible to completely eliminate the effect of noise and relaxation in this criterion is desirable, for the same reasons. In this case, a desired sensitivity function is defined $S_{M}$ \footnote{The $M$ index is used to maintain the analogy with the index used by the reference model for the tracking case.}, and the following criterion is adopted
 \begin{equation}
    J_{RM\nu}^N(\bm{\theta}) \triangleq  \norm{S_\theta[\nu] - S_M[\nu]}^{2}.
    \label{eq:JeRM}
@@ -288,30 +306,35 @@ Assim como no caso do rastreamento, não é possível a eliminação completa do
 \subsubsection{The Economy of Control Effort Objective}%
 \label{sub:the_economy_of_control_effot_objective}
 
-Um objetivo comum no projeto de controladores, principalmente na área de controle ótimo, é a minimização do esforço de controle. Para minimizar o sinal de controle o seguinte índice pode ser definido:
+% Um objetivo comum no projeto de controladores, principalmente na área de controle ótimo, é a minimização do esforço de controle. Para minimizar o sinal de controle o seguinte índice pode ser definido:
+A common objective in the design of controllers, especially in the area of optimal control, is to minimize the control effort by means of control signal. To minimize the control signal, the following index can be defined:
 \begin{equation}
    J_u^N(\bm{\theta}) \triangleq \norm{ u(k) }^{2},
    \label{eq:Ju}
 \end{equation}
-sendo $u(k)$ o sinal de controle. Porém este índice não deve ser usado sozinho, uma vez que $J_u^N(\bm{\theta}) = 0$ implicaria em $u \equiv 0$. Portanto o que se faz é utilizar-se de uma combinação deste índice, com outros, por exemplo, com o objetivo de rastreamento de referência, resultando em 
+% sendo $u(k)$ o sinal de controle. Porém este índice não deve ser usado sozinho, uma vez que $J_u^N(\bm{\theta}) = 0$ implicaria em $u \equiv 0$. Portanto o que se faz é utilizar-se de uma combinação deste índice, com outros, por exemplo, com o objetivo de rastreamento de referência, resultando em
+ where $u(k)$ is the control signal. However, this index should not be used alone, since $J_u^N(\bm{\theta}) = 0$ would imply $u \equiv 0$. So what is done is to use a combination of this index, with others, for example, with the reference tracking, resulting in
 \begin{equation}
-   J_\lambda^N = J_{RM}^N(\bm{\theta}) + \lambda J_u^N(\bm{\theta})
+   J_\lambda^N = J_{RM}^N(\bm{\theta}) + \lambda J_u^N(\bm{\theta}),
    \label{eq:Jl}
 \end{equation}
-em que $\lambda \in \mathbb{R}$ representa um parâmetro de ajuste.
-Ao se utilizar de controladores baseados em modelo de referência, como o caso do VRFT a ser visto no \ref{cap:VRFT}, um efeito de economia de esforço de controle pode ser obtido ao se escolher um modelo de referência adequado. Portanto, neste trabalho a inclusão do índice \eqref{eq:Ju} na função de custo é desconsiderado.
-
+% em que $\lambda \in \mathbb{R}$ representa um parâmetro de ajuste.
+where $\lambda \in \mathbb{R}$ represents an adjustment parameter.
+% Ao se utilizar de controladores baseados em modelo de referência, como o caso do VRFT a ser visto no \ref{cap:VRFT}, um efeito de economia de esforço de controle pode ser obtido ao se escolher um modelo de referência adequado. Portanto, neste trabalho a inclusão do índice \eqref{eq:Ju} na função de custo é desconsiderado.
+When using controllers based on a reference model, such as the case of VRFT (to be seen in \ref{cap:VRFT}), a control effort saving effect can be obtained by choosing an appropriate reference model. Therefore, in this work, the inclusion of the \eqref{eq:Ju} index in the cost function is disregarded.
 
 
 \subsubsection{The Composite Performance Objective}%
 \label{sub:the_composite_performance_objective}
 
-Outro objetivo, mais realista que o de rastreamento de referência, é o \textit{composite performance}, que objetiva tanto reduzir o erro de rastreamento quanto rejeitar efeitos do ruído na saída. Este critério é dado por
+% Outro objetivo, mais realista que o de rastreamento de referência, é o \textit{composite performance}, que objetiva tanto reduzir o erro de rastreamento quanto rejeitar efeitos do ruído na saída. Este critério é dado por
+Another objective, more realistic than that of reference tracking, is \textit{composite performance}, which aims to both, reduce tracking errors, and reject noise effects on the output. This criterion is given by
 \begin{equation}
    J_T^N(\bm{\theta}) \triangleq \norm{ y_{\theta\nu} - \tilde{y} }^2,
    \label{eq:JT}
 \end{equation}
-em que, diferentemente de $\tilde{y}$ em \eqref{eq:Jy}, o sinal $y_{\theta\nu}= P[C_\theta[r-y_\theta]] + S[\nu]$ depende do ruído. O critério final será a soma dos dois critérios anteriores, uma vez que a referência e o ruído são sinais independentes estatisticamente e pode ser escrito como
+% em que, diferentemente de $\tilde{y}$ em \eqref{eq:Jy}, o sinal $y_{\theta\nu}= P[C_\theta[r-y_\theta]] + S[\nu]$ depende do ruído. O critério final será a soma dos dois critérios anteriores, uma vez que a referência e o ruído são sinais independentes estatisticamente e pode ser escrito como
+where, unlike $\tilde{y}$ in \eqref{eq:Jy}, the signal $y_{\theta\nu}= P[C_\theta[r-y_\theta]] + S[\nu]$ depends on the noise. The final criterion will be the sum of the two previous criteria, since the reference and the noise are statistically independent signals and can be written as
 
 \begin{equation}
    J_T^N(\bm{\theta}) = \norm{ P[C_\theta[r-Dy_\theta]] - M[r] }^{2} + \norm{ S[\nu] }^2.
@@ -327,26 +350,33 @@ em que, diferentemente de $\tilde{y}$ em \eqref{eq:Jy}, o sinal $y_{\theta\nu}= 
 \label{sec:ideal_controller}
 % COMTEMP \todo{Tirar o ``Matched Control??''.}
 
-Considerando o sistema realimentado apresentado em \eqref{eq:ymf}, e assumindo a invertibilidade de $P$ e que $M$ é triangular inferior, resolvendo \eqref{eq:ymf} para $C$, é possível calcular o controlador ideal, que resulta nos parâmetros ótimos para $C_\theta$, desde que $C_\theta$ tenha mesma estrutura (ou pertença à mesma classe) do controlador ideal. Este controlador ideal é definido como:
+% Considerando o sistema realimentado apresentado em \eqref{eq:ymf}, e assumindo a invertibilidade de $P$ e que $M$ é triangular inferior, resolvendo \eqref{eq:ymf} para $C$, é possível calcular o controlador ideal, que resulta nos parâmetros ótimos para $C_\theta$, desde que $C_\theta$ tenha mesma estrutura (ou pertença à mesma classe) do controlador ideal. Este controlador ideal é definido como:
+Considering the feedback system presented in \eqref{eq:ymf}, and assuming the invertibility of $P$ and that $P$ is lower triangular, solving \eqref{eq:ymf} for $C$, it is possible to calculate the ideal controller, which results in the optimal parameters for $C_\theta$, as long as $C_\theta$ has the same structure (or belongs to the same class) as the ideal controller. This ideal controller is defined as:
 \begin{equation}
    C_0 \triangleq P^{-1}(I-MD)^{-1}M,
 \label{eq:}
 \end{equation}
-onde $I$ é a matriz identidade e $C^{i}$ é o controlador ideal.
+% onde $I$ é a matriz identidade e $C^{i}$ é o controlador ideal.
+where $I$ is the identity matrix and $C^{i}$ is the ideal controller.
 
-Quando o $C_0$ é usado na malha fechada, o mapa de $r$ para $y$ é dado por $M$, ou seja, $y=M[r]$
+% Quando o $C_0$ é usado na malha fechada, o mapa de $r$ para $y$ é dado por $M$, ou seja, $y=M[r]$
+When $C_0$ is used in the closed loop, the map from $r$ to $y$ is given by $M$, that is, $y=M[r]$
 
-Para o caso linear SISO (Single Input Single Output), se o modelo do processo é conhecido e considerando que este é de 
+% Para o caso linear SISO (Single Input Single Output), se o modelo do processo é conhecido e considerando que este é de
+For the linear SISO case, if the process model is known and considering that it is of
 % \todo{[DONE] Falar aqui (citar) do trabalho da Lucíola no sentido de lidar com fase não mínima. Talvez citar Stogestad também.}
-fase mínima, o controlador ideal $C_0$ pode ser escrito na forma de função de transferência como
+minimum phase, the ideal controller xxxxx can be written in the form of a transfer function as
 \begin{equation}
    C_0(z) = \frac{M(z)}{P(z)\left(1-M(z)\right)},
    \label{eq:Cdz}
 \end{equation}
-em que $P(z)$ e $M(z)$ representam respectivamente as funções de transferência do processo e do modelo de referência.
+% em que $P(z)$ e $M(z)$ representam respectivamente as funções de transferência do processo e do modelo de referência.
+where $P(z)$ and $M(z)$, respectively, represent the transfer functions of the process and the reference model.
 
-Note que, se o processo é de fase não mínima, devido a zeros fora do círculo unitário no plano-$z$, a inversa de $P(z)$ em \eqref{eq:Cdz} resulta em instabilidade do sistema. Soluções para este problema têm sido apresentadas há décadas para projetos MBC, como por exemplo regras para sintonia de PID, como a desenvolvida por \cite{skogestad2003}.
-Uma abordagem no mais recente, no âmbito do DDC, é apresentada por \cite{campestrini2011}.
+% Note que, se o processo é de fase não mínima, devido a zeros fora do círculo unitário no plano-$z$, a inversa de $P(z)$ em \eqref{eq:Cdz} resulta em instabilidade do sistema. Soluções para este problema têm sido apresentadas há décadas para projetos MBC, como por exemplo regras para sintonia de PID, como a desenvolvida por \cite{skogestad2003}.
+Note that, if the process is non-minimum phase, due to zeros outside the unit circle in the $z$-plane, the inverse of $P(z)$ in \eqref{eq:Cdz} results in system instability. Solutions to this problem have been presented for decades for MBC projects, such as rules for PID tuning, such as the one developed by \cite{skogestad2003}.
+% Uma abordagem no mais recente, no âmbito do DDC, é apresentada por \cite{campestrini2011}.
+An most recent approach, within the DDC scope, is presented by \cite{campestrini2011}.
 % COMTEMP \todo{Colocar um pouco mais sobre esteartigo aqui.} 
 
 
