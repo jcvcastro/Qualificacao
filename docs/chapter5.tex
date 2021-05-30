@@ -115,12 +115,13 @@ In this sense, it is proposed adaptations to the original RaMSS method aiming at
 \end{equation}
 where $MSTE$, is defined here as the mean squared tracking error, given by
 \begin{equation}
-  MSTE = \frac{1}{N}\sum_{k=1}^{N} (y_{rm}(k)-y(k))^2.
+  MSTE = \frac{1}{N}\sum_{k=1}^{N} (y_{rm}(k)-y(k))^2,
   \label{eq:MSTE}
 \end{equation} 
+where $y_{rm}$ is the reference model output and $y(k)$ is the closed loop output, to same the reference signal.
 
 % O índice de desempenho final $\mathcal{J}$, utilizado em $\mathcal{I}$ (vide Equacão \ref{eq:desMedioReg}) para o cálculo dos RIPs, passa a ser calculado por:
-The final performance index $\mathcal{J}$, used in $\mathcal{I}$ (see Equation \ref{eq:desMedioReg}) for the computation of RIPs, is now calculated by:
+The final performance index $\mathcal{J}$, used in $\mathcal{I}$ (see Equation \ref{eq:desMedioReg}) to compute the RIPs, is now calculated by:
 \begin{equation}
   \mathcal{J} = \alpha \mathcal{J}_r + (1-\alpha)\mathcal{J}_p
 \label{eq:Jracss}

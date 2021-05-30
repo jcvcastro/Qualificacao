@@ -1,3 +1,4 @@
+% -*- TeX-master: "/home/joao/DOUTORADO/GIT/Qualificacao/Qualificacao.tex" -*-
 %!TEX root = ../Qualificacao.tex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -86,7 +87,8 @@ Figure \ref{fig:ex51_RIPevol_2cases} shows the evolution of the RIPs for this re
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{Figs/Cap5/ex51_rips_evol_2cases.tex.pdf}
+  % \includegraphics[width=\textwidth]{Figs/Cap5/ex51_rips_evol_2cases.tex.pdf}
+  \includegraphics[width=\textwidth]{Figs/Cap5/ex51_rips.tex.pdf}
   \caption{Typical evolution of RIPs for choosing regressors for case 1 and 2.}
   \label{fig:ex51_RIPevol_2cases}
 \end{figure}
@@ -120,8 +122,6 @@ Note that, as the noise is added to the process output (OEM), and by the procedu
 The error graph in Figure \ref{fig:Figs-RespostaSist2aordNARX-png} also shows the time response for the case without noise, but considering that only the ideal regressors are taken into account in the identification process.
 In this case, the error decreases, and and this decrease is attributed to the over parameterization caused by the extra regressors selected in case 1.
 Despite this, a small error remains on steady state. This fact is attributed to the effect discussed in Chapter \ref{cap:VRFT}, in which small errors in the identification of parameters make the sum of the coefficients in $y(k)$ not exactly zero, resulting in a system with high gain at low frequencies, but not infinite. As discussed, in the chapter \ref{cap:VRFT} and to be proposed in the chapter \ref{cap:Concl}, it is hoped that this problem can be solved by imposing restrictions on the identification process (use of auxiliary information).
-
-
 
 
 

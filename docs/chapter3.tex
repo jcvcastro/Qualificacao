@@ -1,4 +1,4 @@
-% -*- TeX-master: "Qualificacao.tex" -*-
+% -*- TeX-master: "../Qualificacao.tex" -*-
 %!TEX root = Qualificacao.tex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -23,7 +23,7 @@ where $N$ represents the number of data samples, $\vtheta = \begin{bmatrix} \the
 
 To achieve the objective of minimizing \eqref{eq:Jy}, \cite{campi2002}, for the linear case, and \cite{campi2006}, for the non-linear case, show that, under certain conditions, presented in sequence, when minimizing a cost index defined as
 \begin{equation}
-   J_{VR}^N(\vtheta) \triangleq \lim_{N \to \infty}  \frac{1}{N} \sum_{k=1}^N \left[u(k) - C_\theta(q,\vtheta)\bar{e}(k)\right]^2
+ J_{VR}^N(\vtheta) \triangleq \lim_{N \to \infty}  \frac{1}{N} \sum_{k=1}^N \left[u(k) - C_\theta(q,\vtheta)\bar{e}(k)\right]^2
    \label{eq:Jvr},
 \end{equation}
 % minimiza-se também o índice $J_{RM}(\theta)$ definido em ~\eqref{eq:Jy}. Em \eqref{eq:Jvr}, $u(k)$ representa o sinal de entrada aplicado ao processo durante a coleta de dados, $C(q,\vtheta)$ o modelo do controlador a ser ajustado e $e(k)$ é o chamado \textit{erro virtual}, definido como
@@ -103,22 +103,22 @@ Unless otherwise noted, this chapter assumes that there are no measurement noise
 
 Note that, from Assumption~\ref{ass:LPC}, we can write the controller $C_\theta(q,\bm{\theta},\tilde{\bm{e}}) = \bm{\vvarphi}^{T}\bm{\theta}$, with $\bm{\vvarphi}$ being a vector of regressors as discussed in Section~\ref{sec:parest}. Thus, considering the Assumption~\ref{ass:asympCount}, we have
 \begin{equation}
-   J_{VR}(\bm{\theta}) = \frac{1}{N}\sum_{k=1}^{N} \left[ \tilde{u}(k) - \bm{\varphi}^{T}(k)\bm{\theta} \right]^{2} = \norm{\tilde{u}(k)-\bm{\varphi}^T(k)\bm{\theta}}^{2}
+   J_{VR}(\bm{\theta}) = \frac{1}{N}\sum_{k=1}^{N} \left[ \tilde{u}(k) - \bm{\varphi}^{T}(k)\bm{\theta} \right]^{2} = \norm{\tilde{\bm{u}}-\Psi^T\bm{\theta}}^{2}
 \label{eq:JVR_reg}
 \end{equation}
-where $\Psi$ is xx the regressors matrix, as defined in the Section~\ref{sec:parest}, equation~\ref{eq:yMatrix}.
+where $\Psi$ the regressors matrix, as defined in the Section~\ref{sec:parest}, equation~\refeq{eq:yMatrix}.
 
 \begin{defn}[SR$q$ process \citep{bazanella2012}] \label{def:SRq}
    A quasi-stationary process is said to be sufficiently rich of order $q$ -- or simply SR$q$ -- if its spectrum has at least $q$ nonzero components.
 \end{defn}
 
 \begin{defn}[Persistence of excitation \citep{bazanella2012}] \label{def:PoE}
-   A quasi-stationary vector $\vvarphi$ is said to be persistently exciting if $\bar{\mathbb{E}}[\vvarphi(k)\varphi(k)^{T}] > 0$
+   A quasi-stationary vector $\vvarphi$ is said to be persistently exciting if $\bar{\mathbb{E}}[\vvarphi(k)\vvarphi(k)^{T}] > 0$
 \end{defn}
 \todo{colocar uma Assumption que esta definição é satisfeita? Acho que basta a PoE que a SRq já se satisfaz.} 
 
 \begin{assum}
-   The signal $\tilde{\bm{r}}$ used in the excitation of process $P$ is persistently exciting (definition \label{def:PoE}), which implies being SRq (definition \label{def:SRq}).
+   The signal $\tilde{\bm{u}}$ used in the excitation of process $P$ is persistently exciting (definition \label{def:PoE}), which implies being SRq (definition \label{def:SRq}).
 \end{assum}
 
 
@@ -137,7 +137,7 @@ where $\Psi$ is xx the regressors matrix, as defined in the Section~\ref{sec:par
 
 As already mentioned, the proposal of the VRFT procedure is to show that when solving the problem of minimizing $J_{VR}(\bm{\theta})$, that is, finding the vector of parameters $\bm{\theta}$ that leads to this solution, the cost function related to the reference model output tracking error, $J_{RM}(\bm{\theta})$ is also minimized with the same parameters, i.e.
 \begin{equation}
-   \bm{\theta}_0 = \argmin_{\forall \bm{\theta} \in \mathbb{R}^n_\theta} J_{VR}(\bm{\theta}) = \argmin_{\forall \bm{\theta} \in \mathbb{R}^n_\theta} J_{RM}(\bm{\theta}).
+   \bm{\theta}_0 = \argmin_{\forall \bm{\theta} \in \mathbb{R}^{n_\theta}} J_{VR}(\bm{\theta}) = \argmin_{\forall \bm{\theta} \in \mathbb{R}^{n_\theta}} J_{RM}(\bm{\theta}).
 \label{eq:theta_JVR_JRM}
 \end{equation}
 Considering that \textit{all} the Assumptions in the previous section are satisfied, \cite{campi2002} shows that this is possible for the linear case, as well as for the nonlinear case \citep{campi2006}. They define the following theorem:
@@ -162,7 +162,7 @@ As $\bm{y}_{\theta_0}$ is the closed loop response of the plant with the control
 \bm{y}_{\theta_0}=P\left[C_{\theta_{0}}\left[\tilde{\bm{r}}-D \bm{y}_{\theta_0}\right]\right] \texttt{ and } \tilde{\bm{y}}=P[\tilde{\bm{u}}].
 \label{eq:}
 \end{equation*}
-Considering the Assumption \ref {ass:invert}, it is possible to conclude that
+Considering the Assumption~\ref{ass:invert}, it is possible to conclude that
 \begin{equation}
    C_{\theta_{0}}\left[\tilde{\bm{r}}-D \bm{y}_{\theta_0}\right]=\tilde{\bm{u}}.
 \label{eq:Cteta}
@@ -191,7 +191,7 @@ Using the $J_{VR}(\bm{\theta})$ index in place of $J_{RM}(\bm{\theta})$ has the 
    \label{fig:JVR_JRM_plot}
 \end{figure}
 
-Note that the Theorem \ref{thr:theoremVRFT} is valid if the Assumption~\ref{ass:machedControl} is satisfied. In a general case, the structure, or class of $C_0$ is unknown, which ends up leading to the choice of a structure for $C_\theta$ belonging to a class $\mathscr{C}$ such that Assumption \ref{ass:machedControl} is not satisfied, i.e. $C_0 \notin \mathscr{C} $.
+Note that the Theorem~\ref{thr:theoremVRFT} is valid if the Assumption~\ref{ass:machedControl} is satisfied. In a general case, the structure, or class of $C_0$ is unknown, which ends up leading to the choice of a structure for $C_\theta$ belonging to a class $\mathscr{C}$ such that Assumption~\ref{ass:machedControl} is not satisfied, i.e. $C_0 \notin \mathscr{C} $.
 A great contribution of VRFT is the choice of filters that, applied to the sampled signal $\tilde{\bm{u}}$ and the predicted signal $C_\theta[\tilde{\bm{e}}]$, bring the estimated value of $\bm{\theta}$ closer to the optimum value $\bm{\theta}_0$. This subject is discussed in more detail in the Section \ref{sec:filtro_caso_não_linear}.
 
 \section{Controller Parameter Identification}%
@@ -433,7 +433,7 @@ The equation \ref{eq:OLSFiltered} can be solved, for example, by the OLS estimat
       \bm{\theta}_C^T &= \begin{bmatrix}   -0.202 & 0.351 & 0.0229 \end{bmatrix} \nonumber 
    \end{align}
    
-   Figure \ref{fig:exp31_time_resp} shows the temporal response of the closed-loop system with the controllers obtained for the 3 cases, together with the signal from the reference model. It is considered a square reference signal and that a disturbance of magnitude 0.5 is applied at the output, at time $k=75$. The figure also shows the answer for a fourth case to be discussed ahead.
+   Figure~\ref{fig:exp31_time_resp} shows the temporal response of the closed-loop system with the controllers obtained for the 3 cases, together with the signal from the reference model. It is considered a square reference signal and that a disturbance of magnitude 0.5 is applied at the output, at time $k=75$. The figure also shows the answer for a fourth case to be discussed ahead.
    \begin{figure}[htpb]
       \sbox0{\blackdottedline} \sbox1{\redsolidline} \sbox2{\bluedashedline} \sbox3{\greendashdottedline} \sbox4{\magentadottedline}
       \footnotesize

@@ -96,7 +96,7 @@ The controller considered, as well as the process, is represented by a non-linea
 \label{eq:uknl}
 \end{equation}
 % em que $n_{Cu}$ e $n_{Ce}$ são os máximos atrasos no sinal de controle (saída do controlador e no sinal de erro de rastreamento (entrada do controlador).
-where $n_{Cu}$ and $n_{Ce}$ are the maximum delays in the control signal (controller output and tracking error signal (controller input).
+where $n_{Cu}$ and $n_{Ce}$ are the maximum delays in the control signal (controller output) and tracking error signal (controller input).
 
 % Assim como para o processo, o controlador é sujeito às condições iniciais $i.c.= u(-1), \ldots, u(-n_{C u}), e(-1), \ldots, e(-n_{C e})$
 As for the process, the controller is subject to the initial conditions $$i.c.= u(-1), \ldots, u(-n_{C u}), e(-1), \ldots, e(-n_{C e})$$
@@ -354,7 +354,7 @@ where, unlike $\tilde{y}$ in \eqref{eq:Jy}, the signal $y_{\theta\nu}= P[C_\thet
 Considering the feedback system presented in \eqref{eq:ymf}, and assuming the invertibility of $P$ and that $P$ is lower triangular, solving \eqref{eq:ymf} for $C$, it is possible to calculate the ideal controller, which results in the optimal parameters for $C_\theta$, as long as $C_\theta$ has the same structure (or belongs to the same class) as the ideal controller. This ideal controller is defined as:
 \begin{equation}
    C_0 \triangleq P^{-1}(I-MD)^{-1}M,
-\label{eq:}
+\label{eq:IdealController}
 \end{equation}
 % onde $I$ é a matriz identidade e $C^{i}$ é o controlador ideal.
 where $I$ is the identity matrix and $C^{i}$ is the ideal controller.
@@ -365,7 +365,7 @@ When $C_0$ is used in the closed loop, the map from $r$ to $y$ is given by $M$, 
 % Para o caso linear SISO (Single Input Single Output), se o modelo do processo é conhecido e considerando que este é de
 For the linear SISO case, if the process model is known and considering that it is of
 % \todo{[DONE] Falar aqui (citar) do trabalho da Lucíola no sentido de lidar com fase não mínima. Talvez citar Stogestad também.}
-minimum phase, the ideal controller xxxxx can be written in the form of a transfer function as
+minimum phase, the ideal controller \eqref{eq:IdealController} can be written in the form of a transfer function as
 \begin{equation}
    C_0(z) = \frac{M(z)}{P(z)\left(1-M(z)\right)},
    \label{eq:Cdz}

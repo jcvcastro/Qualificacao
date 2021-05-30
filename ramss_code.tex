@@ -1,0 +1,443 @@
+% PPGEE - UFMG
+%-------------------------------------------------------------------
+% % Editando:
+%     \documentclass[12pt,a4paper,titlepage]{book}
+%     \usepackage[left=1.5cm,right=3.5cm,top=4cm,bottom=2.5cm]{geometry}
+% Final:
+    \documentclass[12pt,a4paper,titlepage,final]{book}
+    \usepackage[left=2.5cm,right=2.5cm,top=4cm,bottom=2.5cm]{geometry}
+% Rascunho:
+    % \documentclass[12pt,a4paper,titlepage,draft]{book} \documentclass[12pt,a4paper,titlepage]{book}
+    % \usepackage[left=1.5cm,right=3.5cm,top=4cm,bottom=2.5cm]{geometry}
+
+
+% \documentclass[12pt,a4paper,titlepage,brazil,portugues]{book}
+%--------------------------------------------------------------------
+%--------------------------------------------------------------------
+% Pacotes usados {{
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts,amstext,textcomp}         % permite simbolos matematicos
+\usepackage{bm}                                                % negrito em letras gregas
+\usepackage{mathrsfs}                                          % permite o uso de letras trabalhadas
+\usepackage{amsthm}
+\usepackage{pgf}
+\usepackage{graphicx}
+\usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
+\usepackage{color}
+\usepackage{xcolor}
+\definecolor{myOrange}{rgb}{1,0.5,0}
+% \definecolor{myOrange}{rgb}{1,0.5,0}
+\usepackage{booktabs}                                          % Tabelas com qualidade de publicao
+\usepackage{indentfirst}
+\usepackage{rotating}
+\usepackage{braket}
+\usepackage[ruled,vlined]{algorithm2e}                         % Para algoritmos (melhor que o outro)
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{makeidx}
+\usepackage{setspace}
+\usepackage[colorlinks,citecolor=blue]{hyperref}               % tirar [colorlinks] para imprimir
+% \usepackage{autonum}                                         % Mostra numeracao somente em eq citadas
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}                               % Mostra numeracao somente em eq citadas
+\usepackage{ae}
+\usepackage[below]{placeins}
+\usepackage{flafter}
+\usepackage{pxfonts}
+% \usepackage{subfigure}
+\usepackage{appendix}
+\usepackage{listings}                                          % para cdigo fonte
+\usepackage[symbol]{footmisc}                                  % Mudando marcadores do footnote
+
+% Tikz
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{shapes,arrows,calc,automata,positioning}
+\usetikzlibrary{plotmarks}    % marcas nos graficos
+\usetikzlibrary{arrows.meta}  % estilos de setas
+
+% \usetikzlibrary{external}
+% \usepgfplotslibrary{external}
+% % \tikzexternalize[prefix=tikz/]
+% \tikzexternalize[optimize=false,prefix=Figs/]
+% \tikzset{external/force remake=false}
+\usepgfplotslibrary{patchplots}
+
+\usepackage{soul}                                              % para highlighth (todonotes)
+\usepackage{natbib}                                            % para usar citep, etc...
+\usepackage{subfig}                                            % para subfiguras
+
+\pgfplotsset{compat=newest}
+%% the following commands are needed for some matlab2tikz features
+\usepackage{grffile}   % Permite usar carc. esp. em nomes de arq
+\usepackage{amsmath}   % Enhance-ments for improving mathematical formulas
+
+\usepackage[
+      textsize=scriptsize,
+      colorinlistoftodos,
+      % shadow,
+      color=yellow,
+      backgroundcolor=yellow,
+      % obeyDraft
+      obeyFinal
+      ]{todonotes}
+% \usepackage[
+      % natbib=true,
+      % % citestyle=authoryear,
+      % citestyle=rusnat,
+      % % bibstyle=authortitle,
+      % % style=authoryear-comp,
+      % hyperref=true,
+      % backend=biber,
+      % maxbibnames=99,
+      % giveninits=true,
+      % uniquename=init,
+      % maxcitenames=2,
+      % parentracker=true,
+      % url=false,
+      % doi=false,
+      % isbn=false,
+      % eprint=false,
+      % backref=true]{biblatex}
+% \usepackage[style    = abnt,           % Sistema alfabetico
+          % % style    = abnt-numeric,   % Sistema numerico
+          % % style    = abnt-ibid,      % Notas de referencia]{biblatex}
+% ]{biblatex}
+% \usepackage{mcode}
+% \usepackage{amssymb}
+% \usepackage{amsmath}
+% \usepackage{caligra} %letras caligraficas
+% \usepackage{caligr}%letras caligraficas
+% \usepackage{dsfont}%barra escura para conjuntos
+% \usepackage[dvips]{graphicx}
+% \thispagestyle{empty}
+% \usepackage{epsfig,latexsym}
+% \usepackage{psfrag}
+% \usepackage{epsfig}
+% \usepackage[siunitx]{circuitikz} % fazer diagramas de blocos
+% \usepackage{algorithm}
+% \usepackage[noend]{algpseudocode}   % Para pseudo-codigos
+% \usepackage[linesnumbered,ruled,vlined]{algorithm2e} % Para algoritmos (melhor que o outro)
+% \usepackage[pdftex]{hyperref}
+% \usepackage[hang,small]{caption}
+% \usepackage{icomma}
+
+% Para nao sobrar espaos em branco estranhos
+% \widowpenalty=1000 \clubpenalty=1000
+% \newcommand{\gepeto}[1]{\vspace*{12pt}\begin{singlespace}\hspace{2cm}\begin{small}\parbox{12cm}{#1}\end{small}\end{singlespace}\vspace*{20pt}}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{defi}{Definio}[section]
+% \newtheorem{propo}{Proposio}[section]
+% \newtheorem{coro}{Corolrio}[section]
+% \newtheorem{exem}{Exemplo}[section]
+% \newtheorem{lema}{Lema}[section]
+% \newtheorem{consi}{Considerao}[section]
+
+
+% Modificacoes em legenda
+\setlength{\belowcaptionskip}{10pt}
+% \addbibsource{referencias.bib}
+
+% {{{ Modificas em legenda (quando ocorre quebra das palavras indesejadas)
+% \hyphenation{na-tu-ra-is}
+% \hyphenation{ge-ra-do}
+
+% {{{ Definicao de comandos
+
+\newcommand{\comment}[1]{}
+\newcommand{\veq}{\vspace{0.2cm}}
+\newcommand{\x}{\\[5pt]}
+\newcommand{\C}[1]{\relax}
+
+\newtheorem{teo}{Theorem}[section]
+\newtheorem{defin}[teo]{Definition}
+\newtheorem{nota}{Note}[section]
+
+% }}}
+
+% {{{ Novos operadores
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+% }}}
+
+% {{{ Captulo personalizado
+\makeatletter
+\def\thickhrulefill{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
+\def\@makechapterhead#1{%
+  \vspace*{10\p@}%
+  {\parindent \z@ \centering \reset@font
+        \thickhrulefill\quad
+        \bfseries \@chapapp{} \thechapter
+        \quad \thickhrulefill
+        \par\nobreak
+        \vspace*{10\p@}%
+        \interlinepenalty\@M
+        \hrule
+        \vspace*{10\p@}%
+        \Huge \bfseries #1\par\nobreak
+        \par
+        \vspace*{10\p@}%
+        \hrule
+    \vskip 70\p@    %100
+  }}
+\def\@makeschapterhead#1{%
+  \vspace*{10\p@}%
+  {\parindent \z@ \centering \reset@font
+        \thickhrulefill
+        \par\nobreak
+        \vspace*{10\p@}%
+        \interlinepenalty\@M
+        \hrule
+        \vspace*{10\p@}%
+        \Huge \bfseries #1\par\nobreak
+        \par
+        \vspace*{10\p@}%
+        \hrule
+    \vskip 70\p@
+ }
+}
+
+%--------------------------------------------------------------------
+%Variacao da altura da linha
+\renewcommand{\baselinestretch}{1.1}
+
+%--------------------------------------------------------------------
+%Coloca Rascunho e a data
+\newcommand{\reviewtimetoday}[2]{\special{!userdict begin
+/bop-hook{gsave 20 710 translate 45 rotate 0.8 0.8 0.8 0.8 0 setcmykcolor
+/Times-Roman findfont 10 scalefont setfont 0 0   moveto (#1) show
+0 -12 moveto (#2) show grestore}def end}}
+% You can turn on or off this option.
+\reviewtimetoday{\today}{Draft Version}
+
+%--------------------------------------------------------------------
+%Criar o index
+\makeindex
+
+%Devido ao fancyheading
+\headheight 14.7pt
+
+%--------------------------------------------------------------------
+%Trocando os efeitos da virgula e ponto
+% \DeclareMathSymbol{,}{\mathord}{letters}{"3B}
+% \DeclareMathSymbol{.}{\mathpunct}{letters}{"3A}
+
+% }}}
+\input{novoscomandos.tex}
+% \graphicspath{{Figs/}}
+
+\begin{document}
+
+
+% {{{ DEFINICAO DE CORES
+\newcommand{\blacksolidlinethin}{\raisebox{2pt}{\tikz{\draw[black,solid,line width=0.5pt](0,0) -- (8mm,0);}}}
+\newcommand{\blacksolidline}{\raisebox{2pt}{\tikz{\draw[black,solid,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\blackdottedline}{\raisebox{2pt}{\tikz{\draw[black,dotted,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\blackdashdotline}{\raisebox{2pt}{\tikz{\draw[black,dashdotted,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\bluesolidline}{\raisebox{2pt}{\tikz{\draw[blue,solid,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\bluedashedline}{\raisebox{2pt}{\tikz{\draw[blue,dashed,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\bluedashdotedline}{\raisebox{2pt}{\tikz{\draw[blue,dashdotted,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\reddashedline}{\raisebox{2pt}{\tikz{\draw[red,dashed,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\redsolidline}{\raisebox{2pt}{\tikz{\draw[red,solid,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\reddottedline}{\raisebox{2pt}{\tikz{\draw[red,dotted,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\greendashdottedline}{\raisebox{2pt}{\tikz{\draw[black!50!green,dashdotted,line width=1pt](0,0) -- (8mm,0);}}}
+\newcommand{\magentadottedline}{\raisebox{2pt}{\tikz{\draw[magenta,dotted,line width=1pt](0,0) -- (8mm,0);}}}
+% }}} FIM DE DEFINICAO DE CORES  ================================================
+
+% % {{{ ELEMENTOS PRE-TEXTUAIS
+%
+% % %--------------------------------------------------------------------
+% % %Pagina em algarismos romanos
+% \pagenumbering{roman}
+% % % \selectlanguage{brazil}
+% % \selectlanguage{english}
+% %
+% %--------------------------------------------------------------------
+% %Capa
+% \input{cover.tex}
+% \clearpage
+% \thispagestyle{empty}
+% \cleardoublepage
+% %--------------------------------------------------------------------
+% %
+% % % %--------------------------------------------------------------------
+% % % %Dedicatoria
+% % % \input{dedicatoria.tex}
+% % % \clearpage
+% % % \thispagestyle{empty}
+% % % \cleardoublepage
+% % % %--------------------------------------------------------------------
+% %
+% %
+% % % %--------------------------------------------------------------------
+% % % %Agradecimentos
+% % % \input{agradecimentos.tex}
+% % % \clearpage
+% % % \thispagestyle{empty}
+% % % \cleardoublepage
+% % % %--------------------------------------------------------------------
+% %
+% %
+% % % %--------------------------------------------------------------------
+% % % %Epigrafe
+% % % \input{epigrafe.tex}
+% % % \clearpage
+% % % \thispagestyle{empty}
+% % % \cleardoublepage
+% % % %--------------------------------------------------------------------
+% %
+% %
+% % % %%--------------------------------------------------------------------
+% %Sumario
+% \pagestyle{myheadings}
+% \begin{spacing}{1.5}
+% \tableofcontents
+% \end{spacing}
+% \clearpage
+% \thispagestyle{empty}
+% \cleardoublepage
+% %
+% %
+% % % %%--------------------------------------------------------------------
+% %Resumo
+% \begin{spacing}{1}
+% \input{resumo.tex}
+% \clearpage
+% \thispagestyle{empty}
+% \cleardoublepage
+% % % %%--------------------------------------------------------------------
+% %
+% %
+% % % %%--------------------------------------------------------------------
+% %Abstract
+% \input{abstract.tex}
+% \clearpage
+% \thispagestyle{empty}
+% \cleardoublepage
+% \end{spacing}
+% % % %%--------------------------------------------------------------------
+% %
+% % %%--------------------------------------------------------------------
+% % %Lista de figuras
+% \begin{sloppypar}
+% \listoffigures
+% \end{sloppypar}
+% \addcontentsline{toc}{chapter}{Lista of Figures}
+% \clearpage
+% \thispagestyle{empty}
+% \cleardoublepage
+% % %%--------------------------------------------------------------------
+% %
+% % %%Lista de Tabelas
+% \begin{spacing}{1}
+% % \listoftables
+% % \addcontentsline{toc}{chapter}{List of Tables}
+% % \clearpage
+% % \thispagestyle{empty}
+% % \cleardoublepage
+% % %
+% %%--------------------------------------------------------------------
+% %%Simbolos
+%   \input{symbols.tex}
+%   \clearpage
+%   \thispagestyle{empty}
+%   \cleardoublepage
+% %%--------------------------------------------------------------------
+% %
+% % %%%Abreviaturas
+% %%--------------------------------------------------------------------
+%   \input{abreviations.tex}
+%   \clearpage \thispagestyle{empty}
+%   \cleardoublepage
+% \end{spacing}
+% % %--------------------------------------------------------------------
+% %
+% % %Comecando os capitulos
+% % %--------------------------------------------------------------------
+% \clearpage
+% \pagestyle{myheadings}
+% \pagenumbering{arabic}
+% % %--------------------------------------------------------------------
+%
+% % }}} FIM DE ELEMENTOS PRE-TEXTUAIS  ================================================
+
+% {{{ Defincao de cabecalhos -------------------------------------------
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}{}}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\rightmark}
+\fancyhead[RE]{\leftmark}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.0pt}
+\addtolength{\headheight}{2.5pt}                % 2.5pt
+\fancypagestyle{plain}{
+     \fancyhead{}
+     \renewcommand{\headrulewidth}{0pt}
+     }
+% }}} ------------------------------------------------------------------
+
+
+
+
+\begin{algorithm}[htpb]
+  \caption{RaMSS algorithm}\label{alg:RaMSS}
+  $\bm{y},N_p,m,\mu_{\min},\mu_{\max},K,\mathscr{R}=\{\phi_{1},\dots,\phi_{m}\}$ \\
+  \While{$iter < iter_{\max}$} 
+   {
+     $ \bm{\mu} \gets \bm{\mu}_0$ \\
+     \For{$i=1:N_p$}
+      {
+         $\tau \gets 0$; $\bm{\psi}(k) \gets [\ ]$ \\ 
+         \For{$j=1:m$}
+         {
+           $r_j \gets \text{Be}(\mu_j)$ \\
+            \If{$r_j = 1$}
+            {
+            $\bm{\psi}(k) \gets \begin{bmatrix} \bm{\psi}^T(k) & \phi_j \end{bmatrix}^T $ \\
+            $\tau \gets \tau + 1$ \\
+            }
+         }
+         $\hat{\bm{\theta}}$ \gets LS \\
+         \For{$h=1:\tau$}
+         {
+           $\tilde{\bm{\psi}}(k) \gets \text{non-redundant}(\bm{\psi(k)})$ \\
+         }
+         $\hat{\bm{y}} \gets \text{Predict}(\tilde{\bm{\psi}}(k))$ \\
+         $\mathcal{J}_i \gets e^{-K\cdot MSPE(\bm{y},\bm{\hat{y}})} $
+      }
+      \For{$j=1:m$}
+      {
+         $\mathcal{J}^{+} \gets 0$; $ \mathcal{J}^{-} \gets 0$; $n^{+} \gets 0$; $n^{-} \gets 0$; \\
+         \For{$i=1:N_p$}
+         {
+            \If{$\phi_j(k) \in \tilde{\bm{\psi}}(k)$}
+            {
+               $\mathcal{J}^{+} \gets \mathcal{J}^{+} + \mathcal{J}_i$ \\
+               $n^{+} \gets n^{+} + 1$
+            } \Else
+            {
+               $\mathcal{J}^{-} \gets \mathcal{J}^{-} + \mathcal{J}_i$ \\
+               $n^{-} \gets n^{-} + 1$
+            }
+          }
+            $\mathcal{I}_j \gets \left( \frac{\mathcal{J}^{+}}{\max(n^+,1)} - \frac{\mathcal{J}^{-}}{\max(n^-,1)} \right) $ \\
+         $\mu_j \gets \mu_j + \gamma \mathcal{I}_j$ \\
+         $\mu_j \gets \max \left( \min(\mu_j, \mu_{\max}), \mu_{\min} \right) $ \\
+         
+      }
+   }
+\end{algorithm}%[H]
+
+
+%--------------------------------------------------------------------
+\end{document}
+
+% vim: set sw=4 ts=4 sts=2 tw=80 ft=tex 
+

@@ -41,7 +41,7 @@ As, in general, the mathematical expectation of the equation \eqref{eq:desMedioR
 
 % onde $ \mathscr{M}^+_j \subset \mathscr{M}$ e $ \mathscr{M}^+_j \subset \mathscr{M}$, representam os conjuntos de todos os modelos que, respectivamente, contêm e não contêm o $j$-ésimo regressor $\phi_j$, com $n_j^+ = \dim \mathscr{M}^+_j $ e $n_j^- = \dim \mathscr{M}^-_j$. Os termos $\mathcal{J}^{+}_{i}$ e  $\mathcal{J}^{-}_{i}$ representam os respectivos índices de desempenho para os casos que contêm e que não contêm $\phi_j$.
 
-where $ \mathscr{M}^+_j \subset \mathscr{M}$ and $ \mathscr{M}^+_j \subset \mathscr{M}$, represent the sets of all models that, respectively, contain and do not contain the $j$-th regressor $\phi_j$, with $n_j^+ = \dim \mathscr{M}^+_j $ and $n_j^- = \dim \mathscr{M}^-_j $. The terms $\mathcal{J}^{+}_{i}$ and $\mathcal{J}^{-}_{i}$ represent the respective performance indexes for cases that contain and do not contain $\phi_j$.
+where $ \mathscr{M}^+_j \subset \mathscr{M}$ and $ \mathscr{M}^-_j \subset \mathscr{M}$, represent the sets of all models that, respectively, contain and do not contain the $j$-th regressor $\phi_j$, with $n_j^+ = \dim \mathscr{M}^+_j $ and $n_j^- = \dim \mathscr{M}^-_j $. The terms $\mathcal{J}^{+}_{i}$ and $\mathcal{J}^{-}_{i}$ represent the respective performance indexes for cases that contain and do not contain $\phi_j$.
 
 
 
@@ -153,15 +153,15 @@ The pseudo-code for the described RaMSS method is presented in Algorithm \ref{al
 
 \begin{algorithm}[htpb]
   \caption{RaMSS algorithm}\label{alg:RaMSS}
-  $\bm{y},N_p,m,\mu_{\min},\mu_{\max},K,\mathscr{M}=\{\phi_{1},\dots,\phi_{m}\}$ \\
+  $\bm{y},N_p,m,\mu_{\min},\mu_{\max},K,\mathscr{R}=\{\phi_{1},\dots,\phi_{m}\}$ \\
   \While{$iter < iter_{\max}$} 
    {
-     $ \bm{\mu} \gets \bm{\mu}_0$
+     $ \bm{\mu} \gets \bm{\mu}_0$ \\
      \For(\tcp*[f]{Model Sampling}){$i=1:N_p$}
       {
          $\tau \gets 0$ \\
          $\bm{\psi}(k) \gets [\ ]$ \tcp*[f]{Initialize model} \\
-         \For{$i=1:m$}
+         \For{$j=1:m$}
          {
            $r_j \gets \text{Be}(\mu_j)$ \tcp*[f]{Sample from a Bernoulli distribution}\\
             \If{$r_j = 1$}
@@ -179,7 +179,7 @@ The pseudo-code for the described RaMSS method is presented in Algorithm \ref{al
       }
       \For(\tcp*[f]{RIP Update}){$j=1:m$}
       {
-         $\mathcal{J}^{+} \gets 0$; $ \mathcal{J}^{-}$; $n^{+} \gets 0$; $n^{-} \gets 0$; \\
+         $\mathcal{J}^{+} \gets 0$; $ \mathcal{J}^{-} \gets 0$; $n^{+} \gets 0$; $n^{-} \gets 0$; \\
          \For{$i=1:N_p$}
          {
             \If{$\phi_j(k) \in \tilde{\bm{\psi}}(k)$}
@@ -191,10 +191,11 @@ The pseudo-code for the described RaMSS method is presented in Algorithm \ref{al
                $\mathcal{J}^{-} \gets \mathcal{J}^{-} + \mathcal{J}_i$ \\
                $n^{-} \gets n^{-} + 1$
             }
-            $\mathcal{I}_j \gets \left( \frac{\mathcal{J}^{+}}{\max(n^+,1)} \frac{\mathcal{J}^{-}}{\max(n^-,1)} \right) $ \\
+          }
+            $\mathcal{I}_j \gets \left( \frac{\mathcal{J}^{+}}{\max(n^+,1)} - \frac{\mathcal{J}^{-}}{\max(n^-,1)} \right) $ \\
          $\mu_j \gets \mu_j + \gamma \mathcal{I}_j$ \\
          $\mu_j \gets \max \left( \min(\mu_j, \mu_{\max}), \mu_{\min} \right) $ \\
-         }
+         
       }
    }
 \end{algorithm}%[H]

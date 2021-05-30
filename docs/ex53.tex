@@ -1,4 +1,5 @@
 %!TEX root = Qualificacao.tex
+% -*- TeX-master: "../Qualificacao.tex" -*-
 
 \begin{exmp}[RaCSS aplicado a um sistema não-linear] \label{ex:53}
 
@@ -21,13 +22,13 @@
 \begin{figure}[htpb]
   \centering
   \includegraphics[width=\textwidth]{Figs/Cap5/ex53_sample_data.tex.pdf}
-  \caption{Entrada e saída do aquecedor, em p.u.}
+  \caption{Input signal $\tilde{u}$ (upper graph) and heater output $\tilde{y}$ (lower graph), in p.u.}
   \label{fig:ex53_samp_data}
 \end{figure}
  % O período de amostragem original é de 12 segundos, porém, por simplicidade, será considerado aqui que este período de amostragem é de um segundo, $T_s =1$ s. Isto não afeta em nada os resultados a serem obtidos para fins deste exemplo numérico. Fazendo esta simplificação considera-se um modelo de referência dado por um sistema de primeira ordem, com atraso de transporte de 3 segundos e com constante de tempo de 10 segundos, resultando na seguinte função de transferência no tempo contínuo
 The original sampling period is 12 seconds, however, for simplicity, it will be considered here that this sampling period is one second, $T_s =1$ s. This has no effect on the results to be obtained for the purposes of this numerical example. Making this simplification, it is considered a reference model given by a first order system, with a transport delay of 3 seconds and a time constant of 10 seconds, resulting in the following transfer function in continuous time
 \begin{equation}
-   M(s) = \frac{e^{-\tau_d s}}{\tau s-1},
+   M(s) = \frac{e^{-\tau_d s}}{\tau s+1},
 \label{eq:}
 \end{equation}
 % em que $\tau = 10$ é a constante de tempo desejada e $\tau_d = 3$ é o atraso de transporte. A versão discreta deste modelo pode ser escrita como:
@@ -42,7 +43,7 @@ where $\tau = 10$ s is the desired time constant and $\tau_d = 3$ s is the trans
  % Considera-se como regressores candidatos todos os regressores formados por monômios até 8 atrasos em $\tilde{u}$ (sinal de saída do controlador) e em $\tilde{e}$ (erro virtual).
  It is considered all regressors formed by monomials up to 8 delays in $\tilde{u}$ (controller output signal) and $\tilde{e}$ (virtual error) as candidate regressors to RaCSS.
  % Os parâmetros adotados no algorítmo RaCSS são apresentados na \ref{tab:exp53_param}, onde $\alpha$ é o fator de acoplamento dado em \eqref{eq:Jracss} e os significados dos outros símbolos são os mesmos da \ref{tab:exp51_param}.
- The parameters adopted in the RaCSS algorithm are presented in Table \ref{tab:exp53_param}, where xxxxxxxx is the factor given in \eqref{eq:Jracss} and the meanings of the other symbols are the same as presented in Table \ref{tab:exp51_param} .
+ The parameters adopted in the RaCSS algorithm are presented in Table \ref{tab:exp53_param}, where $\alpha$ is the factor given in \eqref{eq:Jracss} and the meanings of the other symbols are the same as presented in Table \ref{tab:exp51_param} .
 
 \begin{table}[htpb]
   \centering
@@ -75,7 +76,7 @@ A typical evolution for the RIPs, after 200 iterations is shown in Figure \ref{f
   \sbox0{\blacksolidlinethin} \sbox1{\bluedashedline} \sbox2{\greendashdottedline} \sbox3{\reddashedline} \sbox4{\blackdottedline} 
     \centering
     \includegraphics[width=\textwidth]{Figs/Cap5/ex53_resp_temp.tex.pdf}
-    \caption{Closed loop response for controllers obtained using the first 15 (\usebox1), 19 (\usebox2) and 27 (\usebox3) RIPs obtained using RaCSS, together with the reference signal (\usebox4) and the reference model response (\usebox0).}
+    \caption{Closed loop response for controllers obtained using RaCSS choosing the first 15 (\usebox1), 19 (\usebox2) and 27 (\usebox3) regressors with greater RIPs , together with the reference signal (\usebox4) and the reference model response (\usebox0).}
     \label{fig:ex31_resp_temporal}
   \end{figure}
 

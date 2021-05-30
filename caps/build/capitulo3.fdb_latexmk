@@ -1,0 +1,16 @@
+# Fdb version 3
+["pdflatex"] 1621283790 "capitulo3.tex" "build/capitulo3.pdf" "capitulo3" 1621283790
+  "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1616952564 3524 cb3e574dea2d1052e39280babc910dc8 ""
+  "/usr/share/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1616952564 1328 c834bbb027764024c09d3d2bf908b5f0 ""
+  "/usr/share/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1616952564 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
+  "/usr/share/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm" 1616952564 768 1321e9409b4137d6fb428ac9dc956269 ""
+  "/usr/share/texmf-dist/web2c/texmf.cnf" 1616952564 33301 a3134070eacafb10b1f371612ce2650d ""
+  "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1620865949 354350 3691811c303220ae16c19ccf26366b8c ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1620865913 2635860 4b3b70e8d751e051b7295a7becb46154 ""
+  "Matlab/figs/exp31_train_data4.tex" 0 -1 0 ""
+  "build/./Matlab/figs/exp31_train_data4.tex" 0 -1 0 ""
+  "build/capitulo3.aux" 1621283697 8 a94a2480d3289e625eea47cd1b285758 ""
+  "capitulo3.tex" 1621283789 44033 882b76b64d018537de3f02dcc296f51e ""
+  (generated)
+  "build/capitulo3.log"
+  "build/capitulo3.pdf"
